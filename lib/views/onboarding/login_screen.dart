@@ -8,9 +8,12 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {},
-      child: const Scaffold(),
+    return BlocProvider<AuthBloc>(
+      create: (context) => context.read<AuthBloc>(),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {},
+        child: const Scaffold(),
+      ),
     );
   }
 }

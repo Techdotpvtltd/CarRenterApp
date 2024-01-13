@@ -30,3 +30,13 @@ class AuthStateRegisterring extends AuthState {
 class AuthStateLoggedIn extends AuthState {
   AuthStateLoggedIn({required super.isLoading});
 }
+
+// Loading Login Screen State  ========================================
+class AuthStateLoadedLogin extends AuthState {
+  AuthStateLoadedLogin({required super.isLoading});
+}
+
+/// Loading GetStarted Screen
+class AuthStateLoadedGetStarted extends AuthState {
+  AuthStateLoadedGetStarted({required super.isLoading});
+}

@@ -6,5 +6,8 @@ class AuthEventUninitialize extends AuthEvent {}
 // AuthEventInitialize  ========================================
 class AuthEventInitialize extends AuthEvent {}
 
-// AuthEventGetStarted  ========================================
-class AuthEventGetStarted extends AuthEvent {}
+/// Loading LoginScreen
+class AuthEventLoadedLogin extends AuthEvent {}
+
+/// Loading GetStarted Screen
+class AuthEventLoadedGetStarted extends AuthEvent {}

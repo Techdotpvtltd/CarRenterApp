@@ -1,4 +1,5 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
+import 'package:beasy/bloc/auth/auth_event.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/navigation_service.dart';
@@ -16,7 +17,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void _navigateToNextScreen(AuthBloc bloc) {
-    NavigationService.off(context, const GetStartedScreen());
+    bloc.add(AuthEventLoadedGetStarted());
   }
 
   @override
