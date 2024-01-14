@@ -30,15 +30,15 @@ class _BeasyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Beasy',
       navigatorKey: navKey,
+      title: 'Beasy',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor),
         useMaterial3: true,
       ),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+          BlocProvider<AuthBloc>(create: (currentContext) => AuthBloc()),
         ],
         child: const _BeasyPage(),
       ),
@@ -73,10 +73,7 @@ class _BeasyPage extends StatelessWidget {
         );
       },
       buildWhen: (previous, current) {
-        // if (current is AuthStateLoadedLogin) {
-        //   return false;
-        // }
-        return true;
+        return false;
       },
     );
   }

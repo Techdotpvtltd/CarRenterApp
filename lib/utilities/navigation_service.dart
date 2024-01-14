@@ -1,8 +1,9 @@
+import 'package:beasy/main.dart';
 import 'package:flutter/material.dart';
 
 class NavigationService {
   static void go(BuildContext context, Widget child) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => child));
+    Navigator.push(navKey.currentContext!, MaterialPageRoute(builder: (context) => child));
   }
 
   static void off(BuildContext context, Widget child) {

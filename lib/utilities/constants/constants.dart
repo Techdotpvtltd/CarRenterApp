@@ -25,6 +25,7 @@ const SizedBox gapH42 = SizedBox(height: 42);
 const SizedBox gapH44 = SizedBox(height: 44);
 const SizedBox gapH46 = SizedBox(height: 46);
 const SizedBox gapH48 = SizedBox(height: 48);
+const SizedBox gapH50 = SizedBox(height: 50);
 
 // Gap Weight  ========================================
 const SizedBox gapW2 = SizedBox(width: 2);
