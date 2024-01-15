@@ -36,4 +36,11 @@ class StyleGuide {
     fontSize: 12,
     fontWeight: FontWeight.w500,
   );
+
+  /// User For onboarding Subtitle Text
+  static const TextStyle onboardingText1 = TextStyle(
+    fontFamily: Assets.plusJakartaFont,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+  );
 }

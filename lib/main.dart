@@ -73,7 +73,7 @@ class _BeasyPage extends StatelessWidget {
         );
       },
       buildWhen: (previous, current) {
-        return false;
+        return true;
       },
     );
   }

@@ -3,17 +3,36 @@ import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:flutter/material.dart';
 
-class CustomTitleTextFiled extends StatelessWidget {
-  const CustomTitleTextFiled({super.key});
-
+class CustomTitleTextField extends StatelessWidget {
+  const CustomTitleTextField({
+    super.key,
+    required this.fieldText,
+    required this.hintText,
+    this.controller,
+    this.suffixWidget,
+    this.onTFTap,
+    this.obscureText = false,
+    this.errorText,
+    this.isReadyOnly = false,
+    this.keyboardType,
+  });
+  final String fieldText;
+  final String hintText;
+  final TextEditingController? controller;
+  final Widget? suffixWidget;
+  final VoidCallback? onTFTap;
+  final bool obscureText;
+  final String? errorText;
+  final bool isReadyOnly;
+  final TextInputType? keyboardType;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Email Address",
-          style: TextStyle(
+        Text(
+          fieldText,
+          style: const TextStyle(
             color: Color(0xFF181717),
             fontSize: 10,
             fontFamily: Assets.plusJakartaFont,
@@ -22,6 +41,11 @@ class CustomTitleTextFiled extends StatelessWidget {
         ),
         gapH8,
         TextField(
+          controller: controller,
+          obscureText: obscureText,
+          onTap: onTFTap,
+          keyboardType: keyboardType,
+          readOnly: isReadyOnly,
           style: StyleGuide.textStyle3.copyWith(color: const Color(0xFF2C2C2C)),
           decoration: InputDecoration(
             contentPadding:
@@ -44,11 +68,13 @@ class CustomTitleTextFiled extends StatelessWidget {
             ),
             filled: true,
             fillColor: const Color(0xFFF7F7F7),
-            hintText: "Hi",
-            errorStyle: StyleGuide.textStyle3.copyWith(color: Colors.red),
+            hintText: hintText,
             hintStyle: StyleGuide.textStyle3.copyWith(
               color: const Color(0xFF6B6B6B),
             ),
+            errorText: errorText,
+            errorStyle: StyleGuide.textStyle3.copyWith(color: Colors.red),
+            suffixIcon: suffixWidget,
           ),
         ),
       ],
