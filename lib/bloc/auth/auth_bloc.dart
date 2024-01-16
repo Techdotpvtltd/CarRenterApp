@@ -9,10 +9,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateStartup(isLoading: false));
     });
 
-    // Loading Login Screen Event  ========================================
+    // Show Login Screen Event  ========================================
     on<AuthEventLoadedLogin>(
         (event, emit) => emit(AuthStateLoadedLogin(isLoading: false)));
+    // Show GetStarted Screen Event  ========================================
     on<AuthEventLoadedGetStarted>(
         (event, emit) => emit(AuthStateLoadedGetStarted(isLoading: false)));
+    // Show SignUp Screen  ========================================
+    on<AuthEventLoadedSignup>(
+      (event, emit) => emit(AuthStateLoadedSignup(isLoading: false)),
+    );
   }
 }

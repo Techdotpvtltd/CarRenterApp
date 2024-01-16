@@ -15,4 +15,12 @@ class AppStrings {
   static const String siginIn = "Sign In";
   static const String createNewAccount = "Create new Account";
   static const String orSignInWith = "Or Sign in with";
+  // SignUpScreen  ========================================
+  static const String createAccount = "Create Account";
+  static const String firstName = "First Name";
+  static const String confirmPassword = "Confirm Password";
+  static const String addLocation = "Add Location";
+  static const String enterLocation = "Enter Location";
+  static const String alreadyHaveAccount = "Already have an Account?";
+  static const String signIn = "Sign In";
 }

@@ -40,3 +40,8 @@ class AuthStateLoadedLogin extends AuthState {
 class AuthStateLoadedGetStarted extends AuthState {
   AuthStateLoadedGetStarted({required super.isLoading});
 }
+
+// Loaded SignupScreen State  ========================================
+class AuthStateLoadedSignup extends AuthState {
+  AuthStateLoadedSignup({required super.isLoading});
+}

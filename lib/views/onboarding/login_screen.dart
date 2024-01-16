@@ -1,4 +1,5 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
+import 'package:beasy/bloc/auth/auth_event.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
@@ -128,11 +129,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {},
                     ),
                     gapH20,
-                    Text(
-                      AppStrings.createNewAccount,
-                      style: StyleGuide.onboardingText1.copyWith(
-                        color: const Color(0xFF808080),
-                        fontSize: 13,
+                    InkWell(
+                      onTap: () {
+                        context.read<AuthBloc>().add(AuthEventLoadedSignup());
+                      },
+                      child: Text(
+                        AppStrings.createNewAccount,
+                        style: StyleGuide.onboardingText1.copyWith(
+                          color: const Color(0xFF808080),
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                     gapH38,

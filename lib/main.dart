@@ -3,6 +3,7 @@ import 'package:beasy/bloc/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/views/onboarding/get_started_screen.dart';
 import 'package:beasy/views/onboarding/login_screen.dart';
+import 'package:beasy/views/onboarding/sign_up_screen.dart';
 import 'package:beasy/views/onboarding/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,8 +63,13 @@ class _BeasyPage extends StatelessWidget {
         if (state is AuthStateLoadedGetStarted) {
           return const GetStartedScreen();
         }
+
         if (state is AuthStateLoadedLogin) {
           return const LoginScreen();
+        }
+
+        if (state is AuthStateLoadedSignup) {
+          return const SignUpScreen();
         }
 
         return const Scaffold(
@@ -73,7 +79,7 @@ class _BeasyPage extends StatelessWidget {
         );
       },
       buildWhen: (previous, current) {
-        return true;
+        return false;
       },
     );
   }
