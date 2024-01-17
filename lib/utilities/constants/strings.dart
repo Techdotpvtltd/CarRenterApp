@@ -53,4 +53,10 @@ class AppStrings {
       "We need to know your location in order to suggest nearby services.";
   static const String allowLocationAccess = "Allow Location Access";
   static const String enterLocationManully = "Enter location Manully";
+
+  // HomeRentalScreen  ========================================
+  static const String seeAll = "Sell All";
+  static const String topBrands = "Top Brands";
+  static const String availableNearYour = "Available Near Your";
+  static const String topDeals = "Top Deals";
 }

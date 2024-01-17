@@ -19,6 +19,7 @@ class Assets {
   static const String locationIcon = "assets/icons/location_ic.png";
   static const String vanIcon = "assets/icons/van_ic.png";
   static const String userIcon = "assets/icons/user_ic.png";
+  static const String bmwIcon = "assets/icons/bmw.png";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";

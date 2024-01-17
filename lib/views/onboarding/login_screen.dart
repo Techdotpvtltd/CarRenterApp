@@ -131,7 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     gapH50,
                     RoundedButton(
                       title: AppStrings.siginIn,
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<AuthBloc>().add(AuthEventRegistered());
+                      },
                     ),
                     gapH20,
                     InkWell(

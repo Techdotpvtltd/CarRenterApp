@@ -1,5 +1,7 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
+import 'package:beasy/bloc/rental/rental_bloc.dart';
+import 'package:beasy/bloc/rental/rental_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/views/onboarding/enable_notification_screen.dart';
 import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/auth/auth_event.dart';
 import 'observers/app_bloc_observer.dart';
+import 'views/rental/bottom_navi.dart';
 
 void main() {
   Bloc.observer = AppBlocObserver();
@@ -43,7 +46,8 @@ class _BeasyApp extends StatelessWidget {
       ),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthBloc>(create: (currentContext) => AuthBloc()),
+          BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+          BlocProvider<RentalBloc>(create: (context) => RentalBloc()),
         ],
         child: const _BeasyPage(),
       ),
@@ -87,7 +91,7 @@ class _BeasyPage extends StatelessWidget {
           return const EnableLocationAccessScreen();
         }
         if (state is AuthStateRegistered) {
-          return const RentalHomeScreen();
+          return const BottomNavUser();
         }
 
         // if (state is AuthStateLoadedForgotPassword) {
@@ -101,7 +105,7 @@ class _BeasyPage extends StatelessWidget {
         );
       },
       buildWhen: (previous, current) {
-        return true;
+        return false;
       },
     );
   }
