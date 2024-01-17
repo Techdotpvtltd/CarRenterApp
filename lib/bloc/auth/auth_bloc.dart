@@ -19,9 +19,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLoadedSignup>(
       (event, emit) => emit(AuthStateLoadedSignup(isLoading: false)),
     );
+    // Show UserType Screen  ========================================
+    on<AuthEventNeedsToSetUserType>(
+      (event, emit) => emit(AuthStateNeedsToSetUserType(isLoading: false)),
+    );
 
-    // Show ForgotPassword Screen Event  ========================================
-    on<AuthEventLoadedForgotPassword>(
-        (event, emit) => emit(AuthStateLoadedForgotPassword(isLoading: false)));
+    // Show Noticiation Enabled Screen  ========================================
+    on<AuthEventNeedsToEnableNotification>(
+      (event, emit) =>
+          emit(AuthStateNeedsToEnableNotification(isLoading: false)),
+    );
+
+    // Show Access Location Screen  ============================================
+    on<AuthEventNeedsToAllowLocationAccess>(
+      (event, emit) => emit(AuthStateNeedToAllowLocation(isLoading: false)),
+    );
+
+    // Show Next Screens  ============================================
+    on<AuthEventRegistered>(
+      (event, emit) => emit(AuthStateRegistered(isLoading: false)),
+    );
   }
 }

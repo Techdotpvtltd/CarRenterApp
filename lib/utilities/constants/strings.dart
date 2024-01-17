@@ -24,4 +24,33 @@ class AppStrings {
   static const String alreadyHaveAccount = "Already have an Account? ";
   static const String signIn = "Sign In";
   static const String signUp = "Sign Up";
+  // ForgotPasswordScreen  ========================================
+  static const String pleaseEnterEmailForForgotPassword =
+      "Please Enter Email for forgot password";
+  static const String next = "Next";
+  static const String email = "Email";
+  // VerifyEmailScreen  ========================================
+  static const String emailVerification = "Email Verification";
+  static const String weWillSendYouALinkOnYourEmail =
+      "We will send you a link on your email. ";
+  static const String openEmailApp = "Open Email App";
+  static const String skipIWillConfirmLater = "Skip, I’ll confirm later";
+  // UserTypeScreen  ========================================
+  static const String areYou = "Are you!";
+  static const String rental = "Rental";
+  static const String serviceProvider = "Service Provider";
+  static const String pleaseSelectYourRoleForThisApp =
+      "Please Select your role for this app.";
+  // NotificationEnableScreen  ========================================
+  static const String enableNotificationAccess = "Enable Notification access";
+  static const String noticationAccessDescription =
+      "Enable notification to receive real-time updates";
+  static const String allowNotification = "Allow Notification";
+  static const String maybeLater = "May be later";
+  // LocationEnableScreen  ========================================
+  static const String whatIsYourLocation = "What is your location";
+  static const String locationAccessDescription =
+      "We need to know your location in order to suggest nearby services.";
+  static const String allowLocationAccess = "Allow Location Access";
+  static const String enterLocationManully = "Enter location Manully";
 }

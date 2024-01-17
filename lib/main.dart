@@ -1,11 +1,14 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/views/onboarding/forgot_screen.dart';
+import 'package:beasy/views/onboarding/enable_notification_screen.dart';
+import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
 import 'package:beasy/views/onboarding/get_started_screen.dart';
 import 'package:beasy/views/onboarding/login_screen.dart';
 import 'package:beasy/views/onboarding/sign_up_screen.dart';
 import 'package:beasy/views/onboarding/splash_screen.dart';
+import 'package:beasy/views/onboarding/user_type_screen.dart';
+import 'package:beasy/views/rental/rental_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,10 +75,25 @@ class _BeasyPage extends StatelessWidget {
         if (state is AuthStateLoadedSignup) {
           return const SignUpScreen();
         }
-
-        if (state is AuthStateLoadedForgotPassword) {
-          return const ForgotScreen();
+        if (state is AuthStateNeedsToSetUserType) {
+          return const UserTypeScreen();
         }
+
+        if (state is AuthStateNeedsToEnableNotification) {
+          return const EnableNotificationScreen();
+        }
+
+        if (state is AuthStateNeedToAllowLocation) {
+          return const EnableLocationAccessScreen();
+        }
+        if (state is AuthStateRegistered) {
+          return const RentalHomeScreen();
+        }
+
+        // if (state is AuthStateLoadedForgotPassword) {
+        //   return const ForgotScreen();
+        // }
+
         return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(),

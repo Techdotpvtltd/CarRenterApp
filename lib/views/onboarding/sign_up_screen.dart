@@ -1,9 +1,11 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
+import 'package:beasy/bloc/auth/auth_event.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -101,11 +103,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     gapH26,
                     Image.asset('assets/images/demo_map.png'),
                     gapH26,
-                    RoundedButton(title: AppStrings.signUp, onPressed: () {}),
+                    RoundedButton(
+                        title: AppStrings.signUp,
+                        onPressed: () {
+                          context
+                              .read<AuthBloc>()
+                              .add(AuthEventNeedsToSetUserType());
+                        }),
                     gapH26,
                     Text.rich(
                       TextSpan(text: AppStrings.alreadyHaveAccount, children: [
                         TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context
+                                  .read<AuthBloc>()
+                                  .add(AuthEventLoadedLogin());
+                            },
                           text: AppStrings.siginIn,
                           style: StyleGuide.onboardingText1.copyWith(
                             color: StyleGuide.primaryColor,

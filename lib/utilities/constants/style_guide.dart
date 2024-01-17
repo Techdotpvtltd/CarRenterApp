@@ -12,6 +12,9 @@ class StyleGuide {
   /// User For Button Title, Black or other background's widget
   static const Color textColor1 = Colors.white;
 
+  /// User For Onboarding Title, Value: 1E1E1E
+  static const Color textColor2 = Color(0xFF1E1E1E);
+
   // Text Style ======================================
 
   /// User for Onboarding title and on BackgroundWidget Title

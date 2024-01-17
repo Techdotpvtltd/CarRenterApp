@@ -13,6 +13,12 @@ class Assets {
   static const String googleIcon = "assets/icons/google-ic.svg";
   static const String appleIcon = "assets/icons/apple-ic.svg";
   static const String fbIcon = "assets/icons/fb-ic.svg";
+  static const String bellIcon = "assets/icons/bell_ic.png";
+  static const String emailSent = "assets/icons/mail_sent.png";
+  static const String lockIcon = "assets/icons/lock_ic.png";
+  static const String locationIcon = "assets/icons/location_ic.png";
+  static const String vanIcon = "assets/icons/van_ic.png";
+  static const String userIcon = "assets/icons/user_ic.png";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";

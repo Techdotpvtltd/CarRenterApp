@@ -5,6 +5,7 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/onboarding_text_widget.dart';
@@ -12,6 +13,7 @@ import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/utilities/widgets/social_icon_button.dart';
 import 'package:beasy/utilities/widgets/term_condition_widget.dart';
 import 'package:beasy/utilities/widgets/text_button_child_widget.dart';
+import 'package:beasy/views/onboarding/forgot_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -118,9 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            context
-                                .read<AuthBloc>()
-                                .add(AuthEventLoadedForgotPassword());
+                            NavigationService.go(context, const ForgotScreen());
                           },
                           child: const TextButtonChildWidget(
                             text: AppStrings.forgotPassword,
@@ -131,15 +131,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     gapH50,
                     RoundedButton(
                       title: AppStrings.siginIn,
-                      onPressed: () {
-                        context
-                            .read<AuthBloc>()
-                            .add(AuthEventLoadedForgotPassword());
-                      },
+                      onPressed: () {},
                     ),
                     gapH20,
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        context.read<AuthBloc>().add(AuthEventLoadedSignup());
+                      },
                       child: Text(
                         AppStrings.createNewAccount,
                         style: StyleGuide.onboardingText1.copyWith(

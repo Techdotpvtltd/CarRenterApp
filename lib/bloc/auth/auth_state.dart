@@ -46,7 +46,37 @@ class AuthStateLoadedSignup extends AuthState {
   AuthStateLoadedSignup({required super.isLoading});
 }
 
-// Loaded ForgotScreen State  ========================================
-class AuthStateLoadedForgotPassword extends AuthState {
-  AuthStateLoadedForgotPassword({required super.isLoading});
+// Registered State  ========================================
+class AuthStateRegistered extends AuthState {
+  AuthStateRegistered({required super.isLoading});
+}
+
+// UserTypeSet State  ========================================
+class AuthStateSetUserType extends AuthState {
+  AuthStateSetUserType({required super.isLoading});
+}
+
+// UserTypeSet State  ========================================
+class AuthStateNeedsToSetUserType extends AuthState {
+  AuthStateNeedsToSetUserType({required super.isLoading});
+}
+
+// EnabledNotificationState  ========================================
+class AuthStateEnabledNotification extends AuthState {
+  AuthStateEnabledNotification({required super.isLoading});
+}
+
+// NeedToEnableNotificationState  ========================================
+class AuthStateNeedsToEnableNotification extends AuthState {
+  AuthStateNeedsToEnableNotification({required super.isLoading});
+}
+
+// AuthStateAllowedLocation  ========================================
+class AuthStateAllowedLocation extends AuthState {
+  AuthStateAllowedLocation({required super.isLoading});
+}
+
+// AuthStateNeedToAllowLocation  ========================================
+class AuthStateNeedToAllowLocation extends AuthState {
+  AuthStateNeedToAllowLocation({required super.isLoading});
 }
