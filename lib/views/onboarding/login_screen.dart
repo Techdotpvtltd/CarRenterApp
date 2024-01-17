@@ -10,6 +10,7 @@ import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/onboarding_text_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/utilities/widgets/social_icon_button.dart';
+import 'package:beasy/utilities/widgets/term_condition_widget.dart';
 import 'package:beasy/utilities/widgets/text_button_child_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
               hasScrollBody: false,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    top: 40, left: 33, right: 33, bottom: 10),
+                    top: 40, left: 33, right: 33, bottom: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fieldText: AppStrings.emailAddress,
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    gapH34,
+                    gapH22,
                     CustomTitleTextField(
                       fieldText: AppStrings.password,
                       hintText: AppStrings.enterYourPassword,
@@ -116,7 +117,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context
+                                .read<AuthBloc>()
+                                .add(AuthEventLoadedForgotPassword());
+                          },
                           child: const TextButtonChildWidget(
                             text: AppStrings.forgotPassword,
                           ),
@@ -126,13 +131,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     gapH50,
                     RoundedButton(
                       title: AppStrings.siginIn,
-                      onPressed: () {},
+                      onPressed: () {
+                        context
+                            .read<AuthBloc>()
+                            .add(AuthEventLoadedForgotPassword());
+                      },
                     ),
                     gapH20,
                     InkWell(
-                      onTap: () {
-                        context.read<AuthBloc>().add(AuthEventLoadedSignup());
-                      },
+                      onTap: () {},
                       child: Text(
                         AppStrings.createNewAccount,
                         style: StyleGuide.onboardingText1.copyWith(
@@ -186,28 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const Spacer(),
                     gapH30,
-                    Text.rich(
-                      TextSpan(
-                        text: "By signing up you agree to our ",
-                        children: [
-                          TextSpan(
-                              text: "Terms",
-                              style: StyleGuide.onboardingText1.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: StyleGuide.primaryColor)),
-                          const TextSpan(text: " and "),
-                          TextSpan(
-                              text: "\nConditions of Use",
-                              style: StyleGuide.onboardingText1.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: StyleGuide.primaryColor)),
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
-                      style: StyleGuide.onboardingText1.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF9CA4AB)),
-                    )
+                    const TermConditionWidget(),
                   ],
                 ),
               ),

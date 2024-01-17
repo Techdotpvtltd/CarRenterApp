@@ -22,6 +22,7 @@ class BackgroundWidget extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           SafeArea(
+            bottom: false,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,

@@ -45,3 +45,8 @@ class AuthStateLoadedGetStarted extends AuthState {
 class AuthStateLoadedSignup extends AuthState {
   AuthStateLoadedSignup({required super.isLoading});
 }
+
+// Loaded ForgotScreen State  ========================================
+class AuthStateLoadedForgotPassword extends AuthState {
+  AuthStateLoadedForgotPassword({required super.isLoading});
+}

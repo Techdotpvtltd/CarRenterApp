@@ -21,6 +21,7 @@ class AppStrings {
   static const String confirmPassword = "Confirm Password";
   static const String addLocation = "Add Location";
   static const String enterLocation = "Enter Location";
-  static const String alreadyHaveAccount = "Already have an Account?";
+  static const String alreadyHaveAccount = "Already have an Account? ";
   static const String signIn = "Sign In";
+  static const String signUp = "Sign Up";
 }

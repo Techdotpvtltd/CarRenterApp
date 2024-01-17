@@ -14,3 +14,6 @@ class AuthEventLoadedGetStarted extends AuthEvent {}
 
 /// Loaded Signup Screen Event
 class AuthEventLoadedSignup extends AuthEvent {}
+
+///Loaded ForgotPassword Screen Event
+class AuthEventLoadedForgotPassword extends AuthEvent {}

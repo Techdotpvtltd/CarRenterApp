@@ -19,5 +19,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLoadedSignup>(
       (event, emit) => emit(AuthStateLoadedSignup(isLoading: false)),
     );
+
+    // Show ForgotPassword Screen Event  ========================================
+    on<AuthEventLoadedForgotPassword>(
+        (event, emit) => emit(AuthStateLoadedForgotPassword(isLoading: false)));
   }
 }

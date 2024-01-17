@@ -1,6 +1,7 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/views/onboarding/forgot_screen.dart';
 import 'package:beasy/views/onboarding/get_started_screen.dart';
 import 'package:beasy/views/onboarding/login_screen.dart';
 import 'package:beasy/views/onboarding/sign_up_screen.dart';
@@ -72,6 +73,9 @@ class _BeasyPage extends StatelessWidget {
           return const SignUpScreen();
         }
 
+        if (state is AuthStateLoadedForgotPassword) {
+          return const ForgotScreen();
+        }
         return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(),
