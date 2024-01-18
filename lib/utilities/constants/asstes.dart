@@ -23,9 +23,13 @@ class Assets {
   static const String starIcon = "assets/icons/star_ic.svg";
   static const String heartIcon = "assets/icons/heart_ic.svg";
   static const String heartFillIcon = "assets/icons/heart_fill_ic.svg";
+  static const String cameraIcon = "assets/icons/camera-ic.svg";
+  static const String penIcon = "assets/icons/pen-ic.svg";
+  static const String flagIcon = "assets/icons/flag-ic.png";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";
   static const String blueBackgound = "assets/images/blue_background.png";
   static const String demoCar = "assets/images/car.jpg";
+  static const String demoMap = "assets/images/demo_map.png";
 }

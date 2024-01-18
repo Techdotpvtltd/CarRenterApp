@@ -4,6 +4,7 @@ import 'package:beasy/bloc/rental/rental_event.dart';
 import 'package:beasy/bloc/rental/rental_state.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/views/main/profile_screen.dart';
 import 'package:beasy/views/rental/rental_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +33,7 @@ class _BottomNavWalkState extends State<BottomNavUser> {
       },
       listener: (context, state) {},
       buildWhen: (previous, current) {
-        return false;
+        return true;
       },
     );
   }
@@ -142,7 +143,7 @@ class _BottomNavWidgetState extends State<_BottomNavWidget> {
           ? const RentalHomeScreen()
           : _currentIndex == 1
               ? const RentalHomeScreen()
-              : const RentalHomeScreen(),
+              : const ProfileScreen(),
     );
   }
 }

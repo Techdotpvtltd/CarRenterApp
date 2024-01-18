@@ -10,12 +10,14 @@ class RoundedButton extends StatelessWidget {
     this.height,
     required this.title,
     required this.onPressed,
+    this.textSize,
   });
 
   final double? width;
   final double? height;
   final String title;
   final Function() onPressed;
+  final double? textSize;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +35,10 @@ class RoundedButton extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: Assets.plusJakartaFont,
           fontWeight: FontWeight.w700,
-          fontSize: 16,
+          fontSize: textSize ?? 16,
           color: StyleGuide.textColor1,
         ),
       ),

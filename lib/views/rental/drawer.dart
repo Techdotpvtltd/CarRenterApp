@@ -13,6 +13,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import '../../bloc/drawer/drawer_screen_state.dart';
 import 'bottom_navi.dart';
+import 'notification_screen.dart';
 
 List titles = [
   "Home",
@@ -216,7 +217,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       case 1:
         return const AllBookings();
       case 2:
-        return const BottomNavUser();
+        return const NotificationScreen();
       case 3:
         return const BottomNavUser();
       case 4:

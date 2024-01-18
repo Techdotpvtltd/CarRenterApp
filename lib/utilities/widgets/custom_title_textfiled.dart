@@ -15,11 +15,13 @@ class CustomTitleTextField extends StatelessWidget {
     this.errorText,
     this.isReadyOnly = false,
     this.keyboardType,
+    this.prefixWidget,
   });
   final String fieldText;
   final String hintText;
   final TextEditingController? controller;
   final Widget? suffixWidget;
+  final Widget? prefixWidget;
   final VoidCallback? onTFTap;
   final bool obscureText;
   final String? errorText;
@@ -75,6 +77,7 @@ class CustomTitleTextField extends StatelessWidget {
             errorText: errorText,
             errorStyle: StyleGuide.textStyle3.copyWith(color: Colors.red),
             suffixIcon: suffixWidget,
+            prefixIcon: prefixWidget,
           ),
         ),
       ],

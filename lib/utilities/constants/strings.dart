@@ -59,4 +59,6 @@ class AppStrings {
   static const String topBrands = "Top Brands";
   static const String availableNearYour = "Available Near Your";
   static const String topDeals = "Top Deals";
+  // NotificationScreen  ========================================
+  static const String notifications = "Notifications";
 }

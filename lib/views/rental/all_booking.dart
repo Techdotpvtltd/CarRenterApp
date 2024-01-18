@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../utilities/widgets/txt_widget.dart';
-
 class AllBookings extends StatefulWidget {
   const AllBookings({super.key});
 
@@ -412,6 +410,7 @@ class _AllBookingsState extends State<AllBookings> {
                               thickness: 2,
                             ),
                             const SizedBox(height: 1),
+                            gapH18,
                             RoundedButton(
                               title: "Write Review",
                               onPressed: () {},
