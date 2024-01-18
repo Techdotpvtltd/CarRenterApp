@@ -2,8 +2,11 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
-import 'package:beasy/utilities/widgets/product_section_widget.dart';
+import 'package:beasy/utilities/widgets/rental_home_widgets/product_card.dart';
+import 'package:beasy/utilities/widgets/rental_home_widgets/product_section_widget.dart';
+import 'package:beasy/views/rental/product_screen.dart';
 import 'package:flutter/material.dart';
 
 class RentalHomeScreen extends StatefulWidget {
@@ -71,16 +74,14 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
       outerWidget: SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 30),
+          padding: const EdgeInsets.fromLTRB(28, 56, 28, 90),
           child: Column(
             children: [
               ProductSectionWidget(
                 title: AppStrings.topBrands,
                 itemCount: 10,
                 cardHeight: 40,
-                onPressedAll: () {
-                  debugPrint("On All Pressed");
-                },
+                onPressedAll: () {},
                 onPressedProduct: (index) {
                   setState(() {
                     _selectedBrand = index;
@@ -92,7 +93,7 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: _selectedBrand == index
-                        ? StyleGuide.primaryColor
+                        ? StyleGuide.primaryColor2
                         : Colors.white,
                     border: Border.all(
                       color: _selectedBrand == index
@@ -125,19 +126,27 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
               gapH18,
               ProductSectionWidget(
                 title: AppStrings.availableNearYour,
-                onPressedAll: () {},
+                onPressedAll: () {
+                  NavigationService.go(context, const ProductScreen());
+                },
                 itemCount: 5,
                 onPressedProduct: (index) {},
-                builder: (index) => const SizedBox(),
+                builder: (index) => const ProductCard(
+                  width: 167,
+                ),
                 cardHeight: 170,
               ),
               gapH18,
               ProductSectionWidget(
                 title: AppStrings.topDeals,
-                onPressedAll: () {},
+                onPressedAll: () {
+                  NavigationService.go(context, const ProductScreen());
+                },
                 itemCount: 5,
                 onPressedProduct: (index) {},
-                builder: (index) => const SizedBox(),
+                builder: (index) => const ProductCard(
+                  width: 167,
+                ),
                 cardHeight: 170,
               )
             ],

@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 class StyleGuide {
   // Colors  ========================================
   /// Use For BoundedButtons, Navigation Background, pop_up/dialogs,
+  ///
+  /// 3474FF
   static const Color primaryColor = Color(0xFF3474FF);
+
+  /// Use For Widget's background,
+  ///
+  /// 3563E8
+  static const Color primaryColor2 = Color(0xFF3563E8);
 
   /// Use For Screen Background,
   static const Color backgroundColor = Colors.white;

@@ -18,7 +18,7 @@ class EnableNotificationScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
-              left: 24, right: 24, top: mediaQueryHeight * 0.1, bottom: 20),
+              left: 24, right: 24, top: screenHeight * 0.1, bottom: 20),
           child: OnBoardingCenteredWidget(
             iconPath: Assets.bellIcon,
             title: AppStrings.enableNotificationAccess,

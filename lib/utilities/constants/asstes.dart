@@ -20,8 +20,12 @@ class Assets {
   static const String vanIcon = "assets/icons/van_ic.png";
   static const String userIcon = "assets/icons/user_ic.png";
   static const String bmwIcon = "assets/icons/bmw.png";
+  static const String starIcon = "assets/icons/star_ic.svg";
+  static const String heartIcon = "assets/icons/heart_ic.svg";
+  static const String heartFillIcon = "assets/icons/heart_fill_ic.svg";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";
   static const String blueBackgound = "assets/images/blue_background.png";
+  static const String demoCar = "assets/images/car.jpg";
 }

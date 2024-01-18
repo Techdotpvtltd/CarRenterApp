@@ -60,6 +60,5 @@ SizedBox gapSreenHeight(double value) =>
 SizedBox gapSreenWidth(double value) =>
     SizedBox(width: MediaQuery.of(navKey.currentContext!).size.width * value);
 
-final double mediaQueryWidth = MediaQuery.of(navKey.currentContext!).size.width;
-final double mediaQueryHeight =
-    MediaQuery.of(navKey.currentContext!).size.height;
+final double screenWidth = MediaQuery.of(navKey.currentContext!).size.width;
+final double screenHeight = MediaQuery.of(navKey.currentContext!).size.height;
