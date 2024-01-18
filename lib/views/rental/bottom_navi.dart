@@ -1,3 +1,4 @@
+import 'package:beasy/bloc/drawer/drawer_cubit.dart';
 import 'package:beasy/bloc/rental/rental_bloc.dart';
 import 'package:beasy/bloc/rental/rental_event.dart';
 import 'package:beasy/bloc/rental/rental_state.dart';
@@ -38,7 +39,7 @@ class _BottomNavWalkState extends State<BottomNavUser> {
 }
 
 class _BottomNavWidget extends StatefulWidget {
-  const _BottomNavWidget({super.key});
+  const _BottomNavWidget();
 
   @override
   State<_BottomNavWidget> createState() => _BottomNavWidgetState();
@@ -52,83 +53,86 @@ class _BottomNavWidgetState extends State<_BottomNavWidget> {
       extendBody: true,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
-      bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 0.0),
-            child: SalomonBottomBar(
-              backgroundColor: Colors.white,
-              selectedColorOpacity: 1,
-              selectedItemColor: const Color(0xffFEAF75),
-              itemPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              currentIndex: _currentIndex,
-              onTap: (i) {
-                setState(() {
-                  _currentIndex = i;
-                });
-              },
-              items: [
-                SalomonBottomBarItem(
-                  unselectedColor: Colors.transparent,
-                  icon: Image.asset("assets/icons/n1.png",
+      bottomNavigationBar: Visibility(
+        visible: !context.read<DrawerCubit>().open,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 0.0),
+              child: SalomonBottomBar(
+                backgroundColor: Colors.white,
+                selectedColorOpacity: 1,
+                selectedItemColor: const Color(0xffFEAF75),
+                itemPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                currentIndex: _currentIndex,
+                onTap: (i) {
+                  setState(() {
+                    _currentIndex = i;
+                  });
+                },
+                items: [
+                  SalomonBottomBarItem(
+                    unselectedColor: Colors.transparent,
+                    icon: Image.asset("assets/icons/n1.png",
+                        height: 22,
+                        color: _currentIndex == 0
+                            ? Colors.white
+                            : const Color(0xffAEAEAE)),
+                    title: const Text(
+                      "Home",
+                      style: TextStyle(
+                        fontFamily: Assets.plusJakartaFont,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: StyleGuide.textColor1,
+                      ),
+                    ),
+                    selectedColor: StyleGuide.primaryColor,
+                  ),
+                  SalomonBottomBarItem(
+                    unselectedColor: Colors.transparent,
+                    icon: Image.asset("assets/icons/n2.png",
+                        height: 22,
+                        color: _currentIndex == 1
+                            ? Colors.white
+                            : const Color(0xffAEAEAE)),
+                    title: const Text(
+                      "Chat",
+                      style: TextStyle(
+                        fontFamily: Assets.plusJakartaFont,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: StyleGuide.textColor1,
+                      ),
+                    ),
+                    selectedColor: StyleGuide.primaryColor,
+                  ),
+                  SalomonBottomBarItem(
+                    unselectedColor: Colors.transparent,
+                    icon: Image.asset(
+                      "assets/icons/n3.png",
                       height: 22,
-                      color: _currentIndex == 0
+                      color: _currentIndex == 2
                           ? Colors.white
-                          : const Color(0xffAEAEAE)),
-                  title: const Text(
-                    "Home",
-                    style: TextStyle(
-                      fontFamily: Assets.plusJakartaFont,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: StyleGuide.textColor1,
+                          : const Color(0xffAEAEAE),
+                      colorBlendMode: BlendMode.srcIn,
                     ),
-                  ),
-                  selectedColor: StyleGuide.primaryColor,
-                ),
-                SalomonBottomBarItem(
-                  unselectedColor: Colors.transparent,
-                  icon: Image.asset("assets/icons/n2.png",
-                      height: 22,
-                      color: _currentIndex == 1
-                          ? Colors.white
-                          : const Color(0xffAEAEAE)),
-                  title: const Text(
-                    "Chat",
-                    style: TextStyle(
-                      fontFamily: Assets.plusJakartaFont,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: StyleGuide.textColor1,
+                    title: const Text(
+                      "Profile",
+                      style: TextStyle(
+                        fontFamily: Assets.plusJakartaFont,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: StyleGuide.textColor1,
+                      ),
                     ),
+                    selectedColor: StyleGuide.primaryColor,
                   ),
-                  selectedColor: StyleGuide.primaryColor,
-                ),
-                SalomonBottomBarItem(
-                  unselectedColor: Colors.transparent,
-                  icon: Image.asset(
-                    "assets/icons/n3.png",
-                    height: 22,
-                    color: _currentIndex == 2
-                        ? Colors.white
-                        : const Color(0xffAEAEAE),
-                    colorBlendMode: BlendMode.srcIn,
-                  ),
-                  title: const Text(
-                    "Profile",
-                    style: TextStyle(
-                      fontFamily: Assets.plusJakartaFont,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: StyleGuide.textColor1,
-                    ),
-                  ),
-                  selectedColor: StyleGuide.primaryColor,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

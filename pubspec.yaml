@@ -39,6 +39,8 @@ dependencies:
   flutter_svg: ^2.0.9
   salomon_bottom_bar: ^3.3.2
   responsive_sizer: ^3.2.0
+  flutter_zoom_drawer: ^3.0.3
+
   # google_maps_flutter:
 
 dev_dependencies:

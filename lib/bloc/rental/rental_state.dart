@@ -12,3 +12,8 @@ class RentalStateUnInitialize extends RentalState {
 class RentalStateInitialize extends RentalState {
   RentalStateInitialize({required super.isLoading});
 }
+
+class RentalStateIsDrawwerOpened extends RentalState {
+  final bool isOpened;
+  RentalStateIsDrawwerOpened({super.isLoading = false, required this.isOpened});
+}

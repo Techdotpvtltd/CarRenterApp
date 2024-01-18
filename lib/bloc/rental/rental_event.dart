@@ -4,3 +4,5 @@ abstract class RentalEvent {}
 class RentalEventUninitialize extends RentalEvent {}
 
 class RentalEventInitialize extends RentalEvent {}
+
+class RentalEventIsDrawerOpened extends RentalEvent {}

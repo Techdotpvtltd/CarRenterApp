@@ -1,7 +1,6 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
 import 'package:beasy/bloc/rental/rental_bloc.dart';
-import 'package:beasy/bloc/rental/rental_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/views/onboarding/enable_notification_screen.dart';
 import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
@@ -10,14 +9,13 @@ import 'package:beasy/views/onboarding/login_screen.dart';
 import 'package:beasy/views/onboarding/sign_up_screen.dart';
 import 'package:beasy/views/onboarding/splash_screen.dart';
 import 'package:beasy/views/onboarding/user_type_screen.dart';
-import 'package:beasy/views/rental/rental_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/auth/auth_event.dart';
 import 'observers/app_bloc_observer.dart';
-import 'views/rental/bottom_navi.dart';
+import 'views/rental/drawer.dart';
 
 void main() {
   Bloc.observer = AppBlocObserver();
@@ -60,7 +58,6 @@ class _BeasyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AuthBloc>().add(AuthEventInitialize());
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -91,21 +88,17 @@ class _BeasyPage extends StatelessWidget {
           return const EnableLocationAccessScreen();
         }
         if (state is AuthStateRegistered) {
-          return const BottomNavUser();
+          return const HomeDrawer();
         }
 
         // if (state is AuthStateLoadedForgotPassword) {
         //   return const ForgotScreen();
         // }
 
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
+        return const SplashScreen();
       },
       buildWhen: (previous, current) {
-        return false;
+        return true;
       },
     );
   }

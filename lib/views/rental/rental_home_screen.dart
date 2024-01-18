@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:beasy/bloc/drawer/drawer_cubit.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -8,6 +11,8 @@ import 'package:beasy/utilities/widgets/rental_home_widgets/product_card.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_section_widget.dart';
 import 'package:beasy/views/rental/product_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 class RentalHomeScreen extends StatefulWidget {
   const RentalHomeScreen({super.key});
@@ -18,6 +23,7 @@ class RentalHomeScreen extends StatefulWidget {
 
 class _RentalHomeScreenState extends State<RentalHomeScreen> {
   int _selectedBrand = 0;
+  final bool _isVisibleNav = true;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,9 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
             Row(
               children: [
                 InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.read<DrawerCubit>().openDrawer();
+                    },
                     child: Image.asset(
                       "assets/icons/draw.png",
                       height: 16,
