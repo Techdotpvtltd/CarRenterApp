@@ -6,7 +6,6 @@ import 'package:beasy/utilities/widgets/custom_app_bar.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../utilities/constants/constants.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -18,6 +17,13 @@ class NotificationScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: CustomAppBar(
+          isBackButtonBackgroundVisible: false,
+          suffixIcon: Image.asset(
+            Assets.drawerIcon,
+            color: Colors.black,
+            width: 12,
+            height: 12,
+          ),
           title: AppStrings.notifications,
           onPressed: () {
             context.read<DrawerCubit>().openDrawer();

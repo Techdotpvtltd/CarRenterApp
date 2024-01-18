@@ -18,6 +18,7 @@ class DrawerCubit extends Cubit<DrawerScreenState> {
   void openDrawer() {
     Timer(const Duration(microseconds: 800), () {
       _open = true;
+      emit(DrawerStateToggled(true, isLoading: false));
     });
     zoomDrawerController.toggle?.call();
     emit(DrawerStateToggled(true, isLoading: false));
@@ -26,8 +27,6 @@ class DrawerCubit extends Cubit<DrawerScreenState> {
   void closeDrawer() {
     Timer(const Duration(microseconds: 800), () {
       _open = false;
-      // Get.find<NavController>().isVisible = true;
-      // Get.find<NavController>().update();
       emit(DrawerStateToggled(false, isLoading: false));
     });
     zoomDrawerController.close?.call();

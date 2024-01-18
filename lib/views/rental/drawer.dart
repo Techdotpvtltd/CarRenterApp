@@ -103,8 +103,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                                   bloc.closeDrawer();
                                                 },
                                                 child: const Icon(
-                                                    Icons
-                                                        .arrow_back_ios_new_rounded,
+                                                    Icons.arrow_back,
                                                     color: Colors.black),
                                               ),
                                               const Spacer(),

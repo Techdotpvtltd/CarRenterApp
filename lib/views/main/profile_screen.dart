@@ -1,11 +1,12 @@
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
-import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../utilities/widgets/custom_app_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,11 +14,39 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: PreferredSize(
-      //     preferredSize: Size.fromHeight(60),
-      //     child: CustomAppBar(
-      //       title: "Profile",
-      //     )),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(40),
+          child: CustomAppBar(
+            isBackButtonVisible: false,
+            title: "",
+            actions: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFE8FAFF),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(Assets.penIcon),
+                    gapW6,
+                    const Text(
+                      "Edit Profile",
+                      style: TextStyle(
+                        fontFamily: Assets.plusJakartaFont,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: StyleGuide.primaryColor2,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )),
       body: SafeArea(
           child: CustomScrollView(
         physics: const ScrollPhysics(),
