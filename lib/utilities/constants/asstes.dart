@@ -29,10 +29,12 @@ class Assets {
   static const String flagIcon = "assets/icons/flag-ic.png";
   static const String magnifier = "assets/icons/magnifier-ic.svg";
   static const String doubleCheckIc = "assets/icons/double-check-ic.svg";
+  static const String clipBoardIcon = "assets/icons/clip_board_ic.svg";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";
   static const String blueBackgound = "assets/images/blue_background.png";
   static const String demoCar = "assets/images/car.jpg";
   static const String demoMap = "assets/images/demo_map.png";
+  static const String userImage = "assets/images/boy.png";
 }
