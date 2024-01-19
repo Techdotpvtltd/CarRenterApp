@@ -1,6 +1,6 @@
 import 'package:beasy/bloc/auth/auth_bloc.dart';
 import 'package:beasy/bloc/auth/auth_state.dart';
-import 'package:beasy/bloc/rental/rental_bloc.dart';
+import 'package:beasy/bloc/rental/rental_product_bloc.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/views/onboarding/enable_notification_screen.dart';
 import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'observers/app_bloc_observer.dart';
-import 'views/rental/drawer.dart';
+import 'views/menu/drawer_screen.dart';
 
 void main() {
   Bloc.observer = AppBlocObserver();
@@ -38,13 +38,17 @@ class _BeasyApp extends StatelessWidget {
       navigatorKey: navKey,
       title: 'Beasy',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor),
         useMaterial3: true,
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor).copyWith(
+          background: Colors.white,
+        ),
       ),
       home: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-          BlocProvider<RentalBloc>(create: (context) => RentalBloc()),
+          BlocProvider<RentalProductBloc>(
+              create: (context) => RentalProductBloc()),
         ],
         child: const _BeasyPage(),
       ),

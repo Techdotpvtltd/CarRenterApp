@@ -61,4 +61,8 @@ class AppStrings {
   static const String topDeals = "Top Deals";
   // NotificationScreen  ========================================
   static const String notifications = "Notifications";
+  // MessagesScreen  ========================================
+  static const String messages = "Messages";
+  static const String searchChats = "Search Chats";
+  static const String closeChat = "Close Chat";
 }

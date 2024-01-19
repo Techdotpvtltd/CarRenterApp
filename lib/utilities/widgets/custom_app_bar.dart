@@ -14,6 +14,7 @@ class CustomAppBar extends StatelessWidget {
     this.isBackButtonVisible = true,
     this.isBackButtonBackgroundVisible = true,
     this.titleSpace = 12,
+    this.isVisible = true,
   });
   final String? title;
   final List<Widget>? actions;
@@ -23,9 +24,12 @@ class CustomAppBar extends StatelessWidget {
   final bool isBackButtonVisible;
   final bool isBackButtonBackgroundVisible;
   final double titleSpace;
+  final bool isVisible;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Visibility(
+      visible: isVisible,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: AppBar(

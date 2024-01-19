@@ -1,10 +1,11 @@
 import 'package:beasy/bloc/drawer/drawer_cubit.dart';
 import 'package:beasy/bloc/drawer/drawer_screen_state.dart';
-import 'package:beasy/bloc/rental/rental_bloc.dart';
-import 'package:beasy/bloc/rental/rental_event.dart';
+import 'package:beasy/bloc/rental/rental_product_bloc.dart';
+import 'package:beasy/bloc/rental/rental_product_event.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/views/main/profile_screen.dart';
+import 'package:beasy/views/common/profile_screen.dart';
+import 'package:beasy/views/message/chat_screen.dart';
 import 'package:beasy/views/rental/rental_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ class BottomNavUser extends StatelessWidget {
   const BottomNavUser({super.key});
   @override
   Widget build(BuildContext context) {
-    context.read<RentalBloc>().add(RentalEventInitialize());
+    context.read<RentalProductBloc>().add(RentalProductEventInitialize());
 
     return const _BottomNavWidget();
   }
@@ -33,6 +34,7 @@ class _BottomNavWidgetState extends State<_BottomNavWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      resizeToAvoidBottomInset: true,
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar: BlocBuilder<DrawerCubit, DrawerScreenState>(
@@ -121,11 +123,10 @@ class _BottomNavWidgetState extends State<_BottomNavWidget> {
           ),
         ),
       ),
-      resizeToAvoidBottomInset: false,
       body: _currentIndex == 0
           ? const RentalHomeScreen()
           : _currentIndex == 1
-              ? const RentalHomeScreen()
+              ? const ChatScreen()
               : const ProfileScreen(),
     );
   }

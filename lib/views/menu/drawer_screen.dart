@@ -6,13 +6,13 @@ import 'package:beasy/bloc/drawer/drawer_cubit.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/views/rental/all_booking.dart';
+import 'package:beasy/views/menu/all_booking.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import '../../bloc/drawer/drawer_screen_state.dart';
-import 'bottom_navi.dart';
+import '../rental/bottom_navi.dart';
 import 'notification_screen.dart';
 
 List titles = [
@@ -57,16 +57,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
             listener: (context, state) {
               if (state is DrawerStateToggled) {}
             },
-            child: Stack(
-              children: [
-                Positioned.fill(
-                    child: Container(
-                  color: Colors.white,
-                )),
-                Positioned.fill(
-                  child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    body: Builder(
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: Stack(
+                children: [
+                  Positioned.fill(
+                      child: Container(
+                    color: Colors.white,
+                  )),
+                  Positioned.fill(
+                    child: Builder(
                       builder: (context) {
                         return Stack(
                           children: [
@@ -200,8 +200,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

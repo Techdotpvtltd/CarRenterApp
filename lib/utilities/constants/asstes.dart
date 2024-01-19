@@ -27,6 +27,8 @@ class Assets {
   static const String cameraIcon = "assets/icons/camera-ic.svg";
   static const String penIcon = "assets/icons/pen-ic.svg";
   static const String flagIcon = "assets/icons/flag-ic.png";
+  static const String magnifier = "assets/icons/magnifier-ic.svg";
+  static const String doubleCheckIc = "assets/icons/double-check-ic.svg";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";

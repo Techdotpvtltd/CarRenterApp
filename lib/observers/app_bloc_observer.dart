@@ -5,8 +5,8 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    debugPrint(
-        'PreviousState: ${change.currentState.runtimeType} CurrentState: ${change.nextState.runtimeType}');
+    // debugPrint(
+    // 'PreviousState: ${change.currentState.runtimeType} CurrentState: ${change.nextState.runtimeType}');
   }
 
   @override
@@ -30,13 +30,16 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    debugPrint('${event.runtimeType} from ${bloc.runtimeType}');
+    // debugPrint('${event.runtimeType} from ${bloc.runtimeType}');
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
     debugPrint(
-        '${transition.runtimeType} => currentState: ${transition.currentState.runtimeType} nextState: ${transition.nextState.runtimeType} => event: ${transition.event.runtimeType}');
+        "\n================= ${bloc.runtimeType}  =======================");
+    debugPrint(
+        'Event: ${transition.event.runtimeType}\nCurrent State: ${transition.currentState.runtimeType} ---- Next State: ${transition.nextState.runtimeType}');
+    debugPrint("================= End =====================\n");
   }
 }
