@@ -7,43 +7,56 @@ class BackgroundWidget extends StatelessWidget {
     super.key,
     required this.innerWidget,
     required this.outerWidget,
+    this.mediumWidget,
   });
   final Widget innerWidget;
   final Widget outerWidget;
+  final Widget? mediumWidget;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Image.asset(
-            Assets.blueBackgound,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            fit: BoxFit.cover,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage(Assets.blueBackgound),
           ),
-          SafeArea(
-            bottom: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                innerWidget,
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: StyleGuide.backgroundColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(42),
-                        topRight: Radius.circular(42),
+        ),
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              innerWidget,
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                  ),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: mediumWidget != null ? 30 : 0),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: StyleGuide.backgroundColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(42),
+                              topRight: Radius.circular(42),
+                            ),
+                          ),
+                          child: outerWidget,
+                        ),
                       ),
-                    ),
-                    child: outerWidget,
+                      mediumWidget != null ? mediumWidget! : const SizedBox(),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

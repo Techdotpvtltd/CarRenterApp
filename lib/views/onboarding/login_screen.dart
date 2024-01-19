@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {},
       child: BackgroundWidget(
         innerWidget: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 43, horizontal: 33),
+          padding: EdgeInsets.fromLTRB(33, 25, 33, 45),
           child: OnboardingTextWidget(
             title: AppStrings.hiWelcomBack,
             subTitle: AppStrings.pleaseFillUpYourInfo,

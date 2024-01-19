@@ -33,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       listener: ((context, state) {}),
       child: BackgroundWidget(
         innerWidget: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 43, horizontal: 33),
+          padding: EdgeInsets.fromLTRB(33, 25, 33, 45),
           child: OnboardingTextWidget(
             title: AppStrings.createAccount,
             subTitle: AppStrings.pleaseFillUpYourInfo,
@@ -116,9 +116,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              context
-                                  .read<AuthBloc>()
-                                  .add(AuthEventLoadedLogin());
+                              context.read<AuthBloc>().add(
+                                    AuthEventLoadedLogin(),
+                                  );
                             },
                           text: AppStrings.siginIn,
                           style: StyleGuide.onboardingText1.copyWith(
