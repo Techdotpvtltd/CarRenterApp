@@ -8,6 +8,7 @@ import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_card.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_section_widget.dart';
 import 'package:beasy/utilities/widgets/search_widget.dart';
+import 'package:beasy/views/rental/all_brand_screen.dart';
 import 'package:beasy/views/rental/product_screen.dart';
 import 'package:beasy/views/rental/search_product_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
-      innerWidget: Padding(
+      topWidget: Padding(
         padding: const EdgeInsets.only(left: 28, right: 28, bottom: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,17 +94,19 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
           ),
         ],
       ),
-      outerWidget: SingleChildScrollView(
+      bottomWidget: SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(28, 56, 28, 90),
+          padding: const EdgeInsets.fromLTRB(28, 36, 28, 90),
           child: Column(
             children: [
               ProductSectionWidget(
                 title: AppStrings.topBrands,
                 itemCount: 10,
                 cardHeight: 40,
-                onPressedAll: () {},
+                onPressedAll: () {
+                  NavigationService.go(context, const AllBrandScreen());
+                },
                 onPressedProduct: (index) {
                   setState(() {
                     _selectedBrand = index;

@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 class BackgroundWidget extends StatelessWidget {
   const BackgroundWidget({
     super.key,
-    required this.innerWidget,
-    required this.outerWidget,
+    required this.topWidget,
+    required this.bottomWidget,
     this.mediumWidget,
   });
-  final Widget innerWidget;
-  final Widget outerWidget;
+  final Widget topWidget;
+  final Widget bottomWidget;
   final Widget? mediumWidget;
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class BackgroundWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              innerWidget,
+              topWidget,
               Expanded(
                 child: Container(
                   decoration: const BoxDecoration(
@@ -46,7 +46,7 @@ class BackgroundWidget extends StatelessWidget {
                               topRight: Radius.circular(42),
                             ),
                           ),
-                          child: outerWidget,
+                          child: bottomWidget,
                         ),
                       ),
                       mediumWidget != null ? mediumWidget! : const SizedBox(),

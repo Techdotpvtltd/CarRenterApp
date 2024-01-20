@@ -25,14 +25,14 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {},
       child: BackgroundWidget(
-        innerWidget: const Padding(
+        topWidget: const Padding(
           padding: EdgeInsets.only(top: 0, left: 33, right: 33, bottom: 25),
           child: OnboardingTextWidget(
             title: AppStrings.areYou,
             subTitle: AppStrings.pleaseSelectYourRoleForThisApp,
           ),
         ),
-        outerWidget: Padding(
+        bottomWidget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 33, vertical: 44),
           child: CustomScrollView(
             physics: const ScrollPhysics(),

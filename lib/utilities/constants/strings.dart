@@ -67,5 +67,8 @@ class AppStrings {
   static const String closeChat = "Close Chat";
   // SearchProductScreen  ========================================
   static const String search = "Search";
-  static const String searchVechile = "Search Vechile";
+  static const String searchVechile = "Search Vehicle";
+  // AllBrandScreen  ========================================
+  static const String allBrand = "All Brand";
+  static const String searchVehicleOrBrands = "Search Vehicle or Brands";
 }

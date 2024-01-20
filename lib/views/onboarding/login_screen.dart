@@ -39,14 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {},
       child: BackgroundWidget(
-        innerWidget: const Padding(
+        topWidget: const Padding(
           padding: EdgeInsets.fromLTRB(33, 25, 33, 45),
           child: OnboardingTextWidget(
             title: AppStrings.hiWelcomBack,
             subTitle: AppStrings.pleaseFillUpYourInfo,
           ),
         ),
-        outerWidget: CustomScrollView(
+        bottomWidget: CustomScrollView(
           physics: const ScrollPhysics(),
           slivers: [
             SliverFillRemaining(

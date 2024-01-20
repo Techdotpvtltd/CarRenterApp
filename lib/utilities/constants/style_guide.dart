@@ -61,5 +61,6 @@ class StyleGuide {
   static const TextStyle productCardStyle1 = TextStyle(
     fontFamily: Assets.plusJakartaFont,
     fontWeight: FontWeight.w700,
+    fontSize: 12,
   );
 }

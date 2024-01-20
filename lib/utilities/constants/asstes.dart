@@ -37,4 +37,5 @@ class Assets {
   static const String demoCar = "assets/images/car.jpg";
   static const String demoMap = "assets/images/demo_map.png";
   static const String userImage = "assets/images/boy.png";
+  static const String demoBrandLogo = "assets/images/bmw-logo.png";
 }
