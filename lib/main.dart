@@ -41,8 +41,8 @@ class _BeasyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme:
             ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor).copyWith(
-          background: Colors.white,
-        ),
+                // background: Colors.white,
+                ),
       ),
       home: MultiBlocProvider(
         providers: [

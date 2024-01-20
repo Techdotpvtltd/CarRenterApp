@@ -9,6 +9,7 @@ import 'package:beasy/utilities/widgets/rental_home_widgets/product_card.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_section_widget.dart';
 import 'package:beasy/utilities/widgets/search_widget.dart';
 import 'package:beasy/views/rental/product_screen.dart';
+import 'package:beasy/views/rental/search_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -76,7 +77,22 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
           ],
         ),
       ),
-      mediumWidget: const SearchWidget(hintText: "Search Vechile"),
+      mediumWidget: SearchWidget(
+        hintText: AppStrings.searchVechile,
+        onSubmitted: (str) => NavigationService.go(
+            context,
+            SearchProductScreen(
+              searchText: str,
+            )),
+        shadows: <BoxShadow>[
+          BoxShadow(
+            offset: const Offset(0, 4),
+            blurRadius: 4,
+            color: Colors.black.withAlpha(25),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
       outerWidget: SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: Padding(

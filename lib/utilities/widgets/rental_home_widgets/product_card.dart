@@ -32,7 +32,7 @@ class _ProductCardState extends State<ProductCard> {
       height: widget.height,
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(
-        color: Color(0xFFF5F6FB),
+        color: StyleGuide.backgroundColor2,
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: LayoutBuilder(

@@ -13,6 +13,7 @@ class SearchWidget extends StatelessWidget {
     this.onCompleted,
     this.controller,
     this.horizontalPadding = 8,
+    this.shadows,
   });
 
   final String hintText;
@@ -21,6 +22,8 @@ class SearchWidget extends StatelessWidget {
   final Function()? onCompleted;
   final TextEditingController? controller;
   final double horizontalPadding;
+  final List<BoxShadow>? shadows;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,14 +34,15 @@ class SearchWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.all(Radius.circular(54)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              offset: const Offset(7, 7),
-              blurRadius: 36.3,
-              color: Colors.black.withAlpha(10),
-              spreadRadius: 0,
-            ),
-          ],
+          boxShadow: shadows ??
+              <BoxShadow>[
+                BoxShadow(
+                  offset: const Offset(7, 7),
+                  blurRadius: 36.3,
+                  color: Colors.black.withAlpha(10),
+                  spreadRadius: 0,
+                ),
+              ],
         ),
         child: Center(
           child: TextField(

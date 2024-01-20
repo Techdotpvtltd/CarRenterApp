@@ -16,6 +16,9 @@ class StyleGuide {
   /// Use For Screen Background,
   static const Color backgroundColor = Colors.white;
 
+  /// User For Card Background, Value: F5F6FB
+  static const Color backgroundColor2 = Color(0xFFF5F6FB);
+
   /// User For Button Title, Black or other background's widget
   static const Color textColor1 = Colors.white;
 
@@ -52,5 +55,11 @@ class StyleGuide {
     fontFamily: Assets.plusJakartaFont,
     fontSize: 12,
     fontWeight: FontWeight.w400,
+  );
+
+  /// User for Product Card Texts
+  static const TextStyle productCardStyle1 = TextStyle(
+    fontFamily: Assets.plusJakartaFont,
+    fontWeight: FontWeight.w700,
   );
 }
