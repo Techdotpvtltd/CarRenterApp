@@ -1,5 +1,5 @@
-import 'package:beasy/bloc/auth/auth_bloc.dart';
-import 'package:beasy/bloc/auth/auth_event.dart';
+import 'package:beasy/blocs/auth/auth_bloc.dart';
+import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -20,7 +20,7 @@ class EnableNotificationScreen extends StatelessWidget {
           padding: EdgeInsets.only(
               left: 24, right: 24, top: screenHeight * 0.1, bottom: 20),
           child: OnBoardingCenteredWidget(
-            iconPath: Assets.bellIcon,
+            iconPath: Assets.bigBellIcon,
             title: AppStrings.enableNotificationAccess,
             subtitle: AppStrings.noticationAccessDescription,
             bottomWidget: Column(

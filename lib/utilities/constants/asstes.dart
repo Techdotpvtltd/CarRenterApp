@@ -13,7 +13,7 @@ class Assets {
   static const String googleIcon = "assets/icons/google-ic.svg";
   static const String appleIcon = "assets/icons/apple-ic.svg";
   static const String fbIcon = "assets/icons/fb-ic.svg";
-  static const String bellIcon = "assets/icons/bell_ic.png";
+  static const String bigBellIcon = "assets/icons/bell_ic.png";
   static const String emailSent = "assets/icons/mail_sent.png";
   static const String lockIcon = "assets/icons/lock_ic.png";
   static const String locationIcon = "assets/icons/location_ic.png";
@@ -30,6 +30,13 @@ class Assets {
   static const String magnifier = "assets/icons/magnifier-ic.svg";
   static const String doubleCheckIc = "assets/icons/double-check-ic.svg";
   static const String clipBoardIcon = "assets/icons/clip_board_ic.svg";
+  static const String bellDotIcon = "assets/icons/bell_ic_dot.svg";
+  static const String bellIcon = "assets/icons/bell_ic.svg";
+  static const String chatIcon = "assets/icons/chat_ic.svg";
+  static const String messageIcon = "assets/icons/message_ic.png";
+  static const String miniCarIcon = "assets/icons/mini_car_ic.png";
+  static const String rotatedUpWardIcon = "assets/icons/rotated_upward_ic.svg";
+  static const String roundPlusIcon = "assets/icons/round_plus_ic.png";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";

@@ -1,7 +1,7 @@
-import 'package:beasy/bloc/drawer/drawer_cubit.dart';
-import 'package:beasy/bloc/drawer/drawer_screen_state.dart';
-import 'package:beasy/bloc/rental/rental_product_bloc.dart';
-import 'package:beasy/bloc/rental/rental_product_event.dart';
+import 'package:beasy/blocs/drawer/drawer_cubit.dart';
+import 'package:beasy/blocs/drawer/drawer_screen_state.dart';
+import 'package:beasy/blocs/rental/rental_product_bloc.dart';
+import 'package:beasy/blocs/rental/rental_product_event.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/views/common/profile_screen.dart';

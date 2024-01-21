@@ -1,4 +1,4 @@
-import 'package:beasy/bloc/drawer/drawer_cubit.dart';
+import 'package:beasy/blocs/drawer/drawer_cubit.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';

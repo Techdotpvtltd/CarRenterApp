@@ -1,6 +1,6 @@
-import 'package:beasy/bloc/auth/auth_bloc.dart';
-import 'package:beasy/bloc/auth/auth_event.dart';
-import 'package:beasy/bloc/auth/auth_state.dart';
+import 'package:beasy/blocs/auth/auth_bloc.dart';
+import 'package:beasy/blocs/auth/auth_event.dart';
+import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -132,7 +132,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     RoundedButton(
                       title: AppStrings.siginIn,
                       onPressed: () {
-                        context.read<AuthBloc>().add(AuthEventRegistered());
+                        context
+                            .read<AuthBloc>()
+                            .add(AuthEventNeedsToSetUserType());
                       },
                     ),
                     gapH20,

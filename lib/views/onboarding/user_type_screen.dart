@@ -1,6 +1,6 @@
-import 'package:beasy/bloc/auth/auth_bloc.dart';
-import 'package:beasy/bloc/auth/auth_event.dart';
-import 'package:beasy/bloc/auth/auth_state.dart';
+import 'package:beasy/blocs/auth/auth_bloc.dart';
+import 'package:beasy/blocs/auth/auth_event.dart';
+import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -51,9 +51,11 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                             value: 0,
                             groupValue: _value,
                             onChanged: (value) {
-                              setState(() {
-                                _value = value as int;
-                              });
+                              setState(
+                                () {
+                                  _value = value as int;
+                                },
+                              );
                             },
                             visualDensity: VisualDensity.compact,
                             fillColor: const MaterialStatePropertyAll(
@@ -148,12 +150,13 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     const Spacer(),
                     gapH24,
                     RoundedButton(
-                        title: AppStrings.next,
-                        onPressed: () {
-                          context
-                              .read<AuthBloc>()
-                              .add(AuthEventNeedsToEnableNotification());
-                        }),
+                      title: AppStrings.next,
+                      onPressed: () {
+                        context
+                            .read<AuthBloc>()
+                            .add(AuthEventUserTypeSet(selectedIndex: _value));
+                      },
+                    ),
                   ],
                 ),
               )

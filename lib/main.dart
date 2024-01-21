@@ -1,6 +1,7 @@
-import 'package:beasy/bloc/auth/auth_bloc.dart';
-import 'package:beasy/bloc/auth/auth_state.dart';
-import 'package:beasy/bloc/rental/rental_product_bloc.dart';
+import 'package:beasy/blocs/auth/auth_bloc.dart';
+import 'package:beasy/blocs/auth/auth_state.dart';
+import 'package:beasy/blocs/rental/rental_product_bloc.dart';
+import 'package:beasy/blocs/service_provider/sp_bloc.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/views/onboarding/enable_notification_screen.dart';
 import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
@@ -13,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'observers/app_bloc_observer.dart';
+import 'app_manager/app_bloc_observer.dart';
 import 'views/menu/drawer_screen.dart';
 
 void main() {
@@ -49,6 +50,7 @@ class _BeasyApp extends StatelessWidget {
           BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
           BlocProvider<RentalProductBloc>(
               create: (context) => RentalProductBloc()),
+          BlocProvider<SPBloc>(create: (context) => SPBloc()),
         ],
         child: const _BeasyPage(),
       ),
@@ -90,6 +92,7 @@ class _BeasyPage extends StatelessWidget {
         if (state is AuthStateNeedToAllowLocation) {
           return const EnableLocationAccessScreen();
         }
+
         if (state is AuthStateRegistered) {
           return const HomeDrawer();
         }

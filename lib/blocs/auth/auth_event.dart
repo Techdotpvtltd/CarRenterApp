@@ -21,7 +21,12 @@ class AuthEventRegistered extends AuthEvent {}
 ///  User Type Events
 class AuthEventNeedsToSetUserType extends AuthEvent {}
 
-class AuthEventSetUserType extends AuthEvent {}
+/// User Type Event
+class AuthEventUserTypeSet extends AuthEvent {
+  final int selectedIndex;
+
+  AuthEventUserTypeSet({required this.selectedIndex});
+}
 
 /// Enable Notification Events
 class AuthEventNeedsToEnableNotification extends AuthEvent {}

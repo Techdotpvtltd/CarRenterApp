@@ -1,4 +1,5 @@
 import 'package:beasy/utilities/constants/asstes.dart';
+import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:flutter/material.dart';
 
 import '../navigation_service.dart';
@@ -9,22 +10,26 @@ class CustomAppBar extends StatelessWidget {
     this.title,
     this.actions,
     this.isShodowApply = true,
-    this.onPressed,
-    this.suffixIcon,
+    this.onPressedPrefix,
+    this.prefixWidet,
     this.isBackButtonVisible = true,
     this.isBackButtonBackgroundVisible = true,
     this.titleSpace = 12,
     this.isVisible = true,
+    this.isCenteredTitle = false,
+    this.titleColor,
   });
   final String? title;
   final List<Widget>? actions;
   final bool isShodowApply;
-  final VoidCallback? onPressed;
-  final Widget? suffixIcon;
+  final VoidCallback? onPressedPrefix;
+  final Widget? prefixWidet;
   final bool isBackButtonVisible;
   final bool isBackButtonBackgroundVisible;
   final double titleSpace;
   final bool isVisible;
+  final bool isCenteredTitle;
+  final Color? titleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +40,20 @@ class CustomAppBar extends StatelessWidget {
         child: AppBar(
           backgroundColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
+          centerTitle: isCenteredTitle,
           leading: isBackButtonVisible
               ? Center(
                   child: InkWell(
-                    onTap: onPressed ?? () => NavigationService.back(context),
+                    onTap: onPressedPrefix ??
+                        () => NavigationService.back(context),
                     borderRadius: const BorderRadius.all(Radius.circular(40)),
                     child: Container(
                       padding: const EdgeInsets.all(11),
                       decoration: BoxDecoration(
-                        color:
-                            suffixIcon != null || !isBackButtonBackgroundVisible
-                                ? Colors.transparent
-                                : Colors.white,
+                        color: prefixWidet != null ||
+                                !isBackButtonBackgroundVisible
+                            ? Colors.transparent
+                            : Colors.white,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(40)),
                         boxShadow: isShodowApply
@@ -59,7 +66,7 @@ class CustomAppBar extends StatelessWidget {
                               ]
                             : [],
                       ),
-                      child: suffixIcon ??
+                      child: prefixWidet ??
                           const Icon(
                             Icons.arrow_back,
                             size: 20,
@@ -73,13 +80,13 @@ class CustomAppBar extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Text(
             title ?? "",
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: Assets.poppinsFont,
               fontWeight: FontWeight.w500,
               fontSize: 18,
+              color: titleColor ?? StyleGuide.textColor2,
             ),
           ),
-          centerTitle: false,
           actions: actions,
         ),
       ),

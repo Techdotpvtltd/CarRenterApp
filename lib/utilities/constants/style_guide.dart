@@ -63,4 +63,12 @@ class StyleGuide {
     fontWeight: FontWeight.w700,
     fontSize: 12,
   );
+
+  /// User for Product Card Texts for Service Provider
+  static const TextStyle productCardStyle2 = TextStyle(
+    color: StyleGuide.textColor2,
+    fontFamily: Assets.poppinsFont,
+    fontSize: 12,
+    fontWeight: FontWeight.w700,
+  );
 }

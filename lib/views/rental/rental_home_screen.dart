@@ -1,4 +1,4 @@
-import 'package:beasy/bloc/drawer/drawer_cubit.dart';
+import 'package:beasy/blocs/drawer/drawer_cubit.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -36,13 +36,14 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
             Row(
               children: [
                 InkWell(
-                    onTap: () {
-                      context.read<DrawerCubit>().openDrawer();
-                    },
-                    child: Image.asset(
-                      "assets/icons/draw.png",
-                      height: 16,
-                    )),
+                  onTap: () {
+                    context.read<DrawerCubit>().openDrawer();
+                  },
+                  child: Image.asset(
+                    "assets/icons/draw.png",
+                    height: 16,
+                  ),
+                ),
                 const Spacer(),
                 Image.asset(
                   "assets/icons/pin2.png",

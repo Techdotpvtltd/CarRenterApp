@@ -1,6 +1,6 @@
-import 'package:beasy/bloc/auth/auth_bloc.dart';
-import 'package:beasy/bloc/auth/auth_event.dart';
-import 'package:beasy/bloc/auth/auth_state.dart';
+import 'package:beasy/blocs/auth/auth_bloc.dart';
+import 'package:beasy/blocs/auth/auth_event.dart';
+import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';

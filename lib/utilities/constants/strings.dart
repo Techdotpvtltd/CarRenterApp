@@ -81,4 +81,10 @@ class AppStrings {
   static const String changeLocation = "Change Location";
   static const String choose = "Choose";
   static const String bookingZone = "Booking Zone:";
+  // ServiceProviderHome  ========================================
+  static const String createService = "Create Service";
+  static const String addNew = "Add new";
+  static const String myService = "My Service";
+  static const String newMessage = " New Message";
+  static const String quickNotification = " Quick notification";
 }

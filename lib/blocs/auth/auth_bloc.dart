@@ -1,5 +1,7 @@
-import 'package:beasy/bloc/auth/auth_event.dart';
-import 'package:beasy/bloc/auth/auth_state.dart';
+import 'package:beasy/app_manager/app_manager.dart';
+import 'package:beasy/blocs/auth/auth_event.dart';
+import 'package:beasy/blocs/auth/auth_state.dart';
+import 'package:beasy/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -18,11 +20,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLoadedSignup>(
       (event, emit) => emit(AuthStateLoadedSignup()),
     );
+
     // Show UserType Screen  ========================================
     on<AuthEventNeedsToSetUserType>(
       (event, emit) => emit(AuthStateNeedsToSetUserType()),
     );
 
+    on<AuthEventUserTypeSet>((event, emit) {
+      AppManager().setUser = UserModel(
+          userType: event.selectedIndex == 0
+              ? UserType.rentalUser
+              : UserType.serviceProvider);
+      emit(AuthStateUserTypeSet(isLoading: false));
+      emit(AuthStateRegistered());
+    });
     // Show Noticiation Enabled Screen  ========================================
     on<AuthEventNeedsToEnableNotification>(
       (event, emit) => emit(AuthStateNeedsToEnableNotification()),

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:beasy/bloc/rental/rental_product_event.dart';
-import 'package:beasy/bloc/rental/rental_product_state.dart';
+import 'package:beasy/blocs/rental/rental_product_event.dart';
+import 'package:beasy/blocs/rental/rental_product_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

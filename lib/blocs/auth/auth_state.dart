@@ -61,6 +61,11 @@ class AuthStateNeedsToSetUserType extends AuthState {
   AuthStateNeedsToSetUserType({super.isLoading});
 }
 
+// AuthStateUserTypeSet State  ========================================
+class AuthStateUserTypeSet extends AuthState {
+  AuthStateUserTypeSet({super.isLoading, super.loadingText});
+}
+
 // EnabledNotificationState  ========================================
 class AuthStateEnabledNotification extends AuthState {
   AuthStateEnabledNotification({super.isLoading});

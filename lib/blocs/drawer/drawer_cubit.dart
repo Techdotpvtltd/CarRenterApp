@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:beasy/bloc/drawer/drawer_screen_state.dart';
+import 'package:beasy/blocs/drawer/drawer_screen_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 

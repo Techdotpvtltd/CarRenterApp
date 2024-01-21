@@ -1,19 +1,22 @@
 import 'dart:developer';
 
-import 'package:beasy/bloc/auth/auth_bloc.dart';
-import 'package:beasy/bloc/auth/auth_event.dart';
-import 'package:beasy/bloc/drawer/drawer_cubit.dart';
+import 'package:beasy/app_manager/app_manager.dart';
+import 'package:beasy/blocs/auth/auth_bloc.dart';
+import 'package:beasy/blocs/auth/auth_event.dart';
+import 'package:beasy/blocs/drawer/drawer_cubit.dart';
+import 'package:beasy/models/user_model.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/views/menu/all_booking.dart';
+import 'package:beasy/views/service_provider/sp_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
-import '../../bloc/drawer/drawer_screen_state.dart';
+import '../../blocs/drawer/drawer_screen_state.dart';
 import '../rental/bottom_navi.dart';
-import 'notification_screen.dart';
+import '../common/notification_screen.dart';
 
 List titles = [
   "Home",
@@ -79,7 +82,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   bloc.setOpen = false;
                                 }),
                                 mainScreen: Builder(builder: (context) {
-                                  return currentScreen(bloc.currentIndex);
+                                  return AppManager().user.userType ==
+                                          UserType.rentalUser
+                                      ? currentRentalScreen(bloc.currentIndex)
+                                      : currentServiceProviderScreen(
+                                          bloc.currentIndex);
                                 }),
                                 borderRadius: 30,
                                 showShadow: false,
@@ -209,7 +216,18 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
-  Widget currentScreen(int currentIndex) {
+  Widget currentServiceProviderScreen(int currentIndex) {
+    switch (currentIndex) {
+      case 0:
+        return const SPHomeScreen();
+      case 2:
+        return const NotificationScreen();
+      default:
+        return const SPHomeScreen();
+    }
+  }
+
+  Widget currentRentalScreen(int currentIndex) {
     switch (currentIndex) {
       case 0:
         return const BottomNavUser();
