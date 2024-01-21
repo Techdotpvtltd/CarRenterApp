@@ -40,6 +40,9 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   responsive_sizer: ^3.2.0
   flutter_zoom_drawer: ^3.0.3
+  smooth_page_indicator: ^1.1.0
+  dotted_border: ^2.1.0
+  readmore: ^2.2.0
 
   # google_maps_flutter:
 

@@ -71,4 +71,14 @@ class AppStrings {
   // AllBrandScreen  ========================================
   static const String allBrand = "All Brand";
   static const String searchVehicleOrBrands = "Search Vehicle or Brands";
+  // ProductDetailScreen  ========================================
+  static const String bookingHours = "Booking hours";
+  static const String specification = "Specification:";
+  static const String readMore = "Read More";
+  static const String model = "Model:";
+  static const String year = "Year:";
+  static const String zoneLocation = "Zone Location";
+  static const String changeLocation = "Change Location";
+  static const String choose = "Choose";
+  static const String bookingZone = "Booking Zone:";
 }

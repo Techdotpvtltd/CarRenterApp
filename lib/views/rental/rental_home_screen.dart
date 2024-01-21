@@ -9,6 +9,7 @@ import 'package:beasy/utilities/widgets/rental_home_widgets/product_card.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_section_widget.dart';
 import 'package:beasy/utilities/widgets/search_widget.dart';
 import 'package:beasy/views/rental/all_brand_screen.dart';
+import 'package:beasy/views/rental/product_detail_screen.dart';
 import 'package:beasy/views/rental/product_screen.dart';
 import 'package:beasy/views/rental/search_product_screen.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +123,7 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
                         : Colors.white,
                     border: Border.all(
                       color: _selectedBrand == index
-                          ? StyleGuide.primaryColor
+                          ? StyleGuide.primaryColor2
                           : const Color(0xFFBFBFBF),
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(78)),
@@ -155,7 +156,9 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
                   NavigationService.go(context, const ProductScreen());
                 },
                 itemCount: 5,
-                onPressedProduct: (index) {},
+                onPressedProduct: (index) {
+                  NavigationService.go(context, const ProductDetailScreen());
+                },
                 builder: (index) => const ProductCard(
                   width: 167,
                 ),
@@ -168,7 +171,9 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
                   NavigationService.go(context, const ProductScreen());
                 },
                 itemCount: 5,
-                onPressedProduct: (index) {},
+                onPressedProduct: (index) {
+                  NavigationService.go(context, const ProductDetailScreen());
+                },
                 builder: (index) => const ProductCard(
                   width: 167,
                 ),
