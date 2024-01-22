@@ -1,6 +1,5 @@
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
-import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,21 +12,23 @@ class ImageCollectionWidget extends StatelessWidget {
       this.onClickDeleteButton,
       this.onClickCard,
       required this.onClickUploadCard,
-      this.isShowUploadButton = true});
+      this.isShowUploadButton = true,
+      required this.title});
   final double? height;
   final List<String> images;
   final Function(int index)? onClickDeleteButton;
   final Function(int index)? onClickCard;
   final Function(int index) onClickUploadCard;
   final bool isShowUploadButton;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          AppStrings.addImages,
+        Text(
+          title,
           style: StyleGuide.serviceProviderStyle2,
         ),
         gapH16,

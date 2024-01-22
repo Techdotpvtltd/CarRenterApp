@@ -58,6 +58,7 @@ class CreateServiceScreen extends StatelessWidget {
                       width: screenWidth,
                       height: screenHeight * 0.45,
                       child: ImageCollectionWidget(
+                        title: AppStrings.addImages,
                         height: screenHeight * 0.35,
                         images: const [
                           Assets.demoCar,

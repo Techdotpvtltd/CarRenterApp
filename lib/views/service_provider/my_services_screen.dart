@@ -6,6 +6,7 @@ import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/views/service_provider/create_services_screen.dart';
+import 'package:beasy/views/service_provider/detail_service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -35,8 +36,10 @@ class MyServicesScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: _MyServicesCard(
                         onDeletePressed: () {},
-                        onEditPressed: () {},
-                        onCardPressed: () {},
+                        onEditPressed: () => NavigationService.go(context,
+                            const DetailServiceScreen(isEditable: true)),
+                        onCardPressed: () => NavigationService.go(
+                            context, const DetailServiceScreen()),
                       ),
                     );
                   },
@@ -68,7 +71,7 @@ class _MyServicesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onCardPressed,
+      onTap: onCardPressed,
       child: Container(
         height: 214,
         clipBehavior: Clip.antiAlias,
@@ -98,7 +101,7 @@ class _MyServicesCard extends StatelessWidget {
                           width: 25,
                           height: 25,
                           child: IconButton(
-                            onPressed: () => onDeletePressed,
+                            onPressed: onDeletePressed,
                             style: const ButtonStyle(
                                 backgroundColor: MaterialStatePropertyAll(
                               StyleGuide.primaryColor2,
@@ -111,7 +114,7 @@ class _MyServicesCard extends StatelessWidget {
                           width: 25,
                           height: 25,
                           child: IconButton(
-                            onPressed: () => onEditPressed,
+                            onPressed: onEditPressed,
                             style: const ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
                                 Colors.white,
