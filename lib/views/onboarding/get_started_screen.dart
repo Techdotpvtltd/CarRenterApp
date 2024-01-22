@@ -1,11 +1,12 @@
+import 'package:beasy/blocs/auth/auth_bloc.dart';
+import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
-import 'package:beasy/views/onboarding/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -44,7 +45,7 @@ class GetStartedScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: RoundedButton(
                     onPressed: () {
-                      NavigationService.go(context, const LoginScreen());
+                      context.read<AuthBloc>().add(AuthEventLoadedLogin());
                     },
                     title: AppStrings.letsGo,
                     width: 165,

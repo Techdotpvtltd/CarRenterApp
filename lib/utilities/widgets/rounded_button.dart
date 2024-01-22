@@ -10,13 +10,16 @@ class RoundedButton extends StatelessWidget {
     this.height,
     required this.title,
     required this.onPressed,
+    this.textSize,
+    this.withBorderOnly = false,
   });
 
   final double? width;
   final double? height;
   final String title;
   final Function() onPressed;
-
+  final double? textSize;
+  final bool withBorderOnly;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -28,16 +31,22 @@ class RoundedButton extends StatelessWidget {
             height ?? 60,
           ),
         ),
-        backgroundColor:
-            const MaterialStatePropertyAll(StyleGuide.primaryColor),
+        shadowColor: const MaterialStatePropertyAll(Colors.transparent),
+        surfaceTintColor: const MaterialStatePropertyAll(Colors.transparent),
+        side: MaterialStatePropertyAll(BorderSide(
+            color:
+                withBorderOnly ? StyleGuide.primaryColor : Colors.transparent)),
+        backgroundColor: MaterialStatePropertyAll(
+            withBorderOnly ? Colors.transparent : StyleGuide.primaryColor),
       ),
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: Assets.plusJakartaFont,
           fontWeight: FontWeight.w700,
-          fontSize: 16,
-          color: StyleGuide.textColor1,
+          fontSize: textSize ?? 16,
+          color:
+              withBorderOnly ? StyleGuide.primaryColor : StyleGuide.textColor1,
         ),
       ),
     );

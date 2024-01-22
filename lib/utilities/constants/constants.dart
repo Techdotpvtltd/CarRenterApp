@@ -1,4 +1,6 @@
 // Gap Height  ========================================
+
+import 'package:beasy/main.dart';
 import 'package:flutter/widgets.dart';
 
 const SizedBox gapH2 = SizedBox(height: 2);
@@ -25,6 +27,7 @@ const SizedBox gapH42 = SizedBox(height: 42);
 const SizedBox gapH44 = SizedBox(height: 44);
 const SizedBox gapH46 = SizedBox(height: 46);
 const SizedBox gapH48 = SizedBox(height: 48);
+const SizedBox gapH50 = SizedBox(height: 50);
 
 // Gap Weight  ========================================
 const SizedBox gapW2 = SizedBox(width: 2);
@@ -51,3 +54,11 @@ const SizedBox gapW42 = SizedBox(width: 42);
 const SizedBox gapW44 = SizedBox(width: 44);
 const SizedBox gapW46 = SizedBox(width: 46);
 const SizedBox gapW48 = SizedBox(width: 48);
+
+SizedBox gapSreenHeight(double value) =>
+    SizedBox(height: MediaQuery.of(navKey.currentContext!).size.height * value);
+SizedBox gapSreenWidth(double value) =>
+    SizedBox(width: MediaQuery.of(navKey.currentContext!).size.width * value);
+
+final double screenWidth = MediaQuery.of(navKey.currentContext!).size.width;
+final double screenHeight = MediaQuery.of(navKey.currentContext!).size.height;
