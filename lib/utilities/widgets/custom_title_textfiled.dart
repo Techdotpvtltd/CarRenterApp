@@ -16,6 +16,8 @@ class CustomTitleTextField extends StatelessWidget {
     this.isReadyOnly = false,
     this.keyboardType,
     this.prefixWidget,
+    this.maxLines = 1,
+    this.minLines,
   });
   final String fieldText;
   final String hintText;
@@ -27,6 +29,9 @@ class CustomTitleTextField extends StatelessWidget {
   final String? errorText;
   final bool isReadyOnly;
   final TextInputType? keyboardType;
+  final int maxLines;
+  final int? minLines;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,25 +53,44 @@ class CustomTitleTextField extends StatelessWidget {
           onTap: onTFTap,
           keyboardType: keyboardType,
           readOnly: isReadyOnly,
+          maxLines: maxLines,
+          minLines: minLines,
           style: StyleGuide.textStyle3.copyWith(color: const Color(0xFF2C2C2C)),
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 23, vertical: 14),
-            enabledBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(124)),
-              borderSide: BorderSide(color: Colors.transparent, width: 0),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  (maxLines > 1) ? 12 : 124,
+                ),
+              ),
+              borderSide: const BorderSide(color: Colors.transparent, width: 0),
             ),
-            focusedBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(124)),
-              borderSide: BorderSide(color: StyleGuide.primaryColor, width: 2),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  (maxLines > 1) ? 12 : 124,
+                ),
+              ),
+              borderSide:
+                  const BorderSide(color: StyleGuide.primaryColor, width: 2),
             ),
-            errorBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(124)),
-              borderSide: BorderSide(color: Colors.red, width: 2),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  (maxLines > 1) ? 12 : 124,
+                ),
+              ),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
-            focusedErrorBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(124)),
-              borderSide: BorderSide(color: Colors.red, width: 2),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  (maxLines > 1) ? 12 : 124,
+                ),
+              ),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
             filled: true,
             fillColor: const Color(0xFFF7F7F7),

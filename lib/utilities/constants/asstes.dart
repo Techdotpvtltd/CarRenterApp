@@ -37,6 +37,8 @@ class Assets {
   static const String miniCarIcon = "assets/icons/mini_car_ic.png";
   static const String rotatedUpWardIcon = "assets/icons/rotated_upward_ic.svg";
   static const String roundPlusIcon = "assets/icons/round_plus_ic.png";
+  static const String uploadIcon = "assets/icons/upload_ic.svg";
+  static const String dustBinIcon = "assets/icons/dust_bin_ic.svg";
 
   // Images  ========================================
   static const String splashBackground = "assets/images/start_background.png";

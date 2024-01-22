@@ -10,6 +10,8 @@ import 'package:beasy/utilities/widgets/custom_app_bar.dart';
 import 'package:beasy/utilities/widgets/notification_card.dart';
 import 'package:beasy/views/conversations/chat_screen.dart';
 import 'package:beasy/views/common/notification_screen.dart';
+import 'package:beasy/views/service_provider/create_services_screen.dart';
+import 'package:beasy/views/service_provider/my_services_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,9 +82,7 @@ class SPHomeScreen extends StatelessWidget {
                     isSelected: false,
                     onPressed: () => NavigationService.go(
                       context,
-                      const NotificationScreen(
-                        isEnableBackButton: true,
-                      ),
+                      const CreateServiceScreen(),
                     ),
                   ),
                   _SPHomeCard(
@@ -92,9 +92,7 @@ class SPHomeScreen extends StatelessWidget {
                     isSelected: true,
                     onPressed: () => NavigationService.go(
                       context,
-                      const NotificationScreen(
-                        isEnableBackButton: true,
-                      ),
+                      const MyServicesScreen(),
                     ),
                   ),
                   _SPHomeCard(
@@ -104,8 +102,8 @@ class SPHomeScreen extends StatelessWidget {
                     isSelected: false,
                     onPressed: () => NavigationService.go(
                       context,
-                      const NotificationScreen(
-                        isEnableBackButton: true,
+                      const ChatScreen(
+                        isShowAppBar: true,
                       ),
                     ),
                   ),
@@ -117,7 +115,7 @@ class SPHomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     AppStrings.quickNotification,
-                    style: StyleGuide.productCardStyle2.copyWith(
+                    style: StyleGuide.serviceProviderStyle1.copyWith(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
                     ),
@@ -133,7 +131,7 @@ class SPHomeScreen extends StatelessWidget {
                     },
                     child: Text(
                       AppStrings.seeAll,
-                      style: StyleGuide.productCardStyle2.copyWith(
+                      style: StyleGuide.serviceProviderStyle1.copyWith(
                         fontWeight: FontWeight.w500,
                         color: StyleGuide.primaryColor,
                         fontSize: 12,

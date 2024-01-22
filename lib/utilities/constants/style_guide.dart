@@ -64,11 +64,19 @@ class StyleGuide {
     fontSize: 12,
   );
 
-  /// User for Product Card Texts for Service Provider
-  static const TextStyle productCardStyle2 = TextStyle(
+  /// User for Service Provider Titles Text
+  static const TextStyle serviceProviderStyle1 = TextStyle(
     color: StyleGuide.textColor2,
     fontFamily: Assets.poppinsFont,
     fontSize: 12,
     fontWeight: FontWeight.w700,
+  );
+
+  /// User for Service Provider Texts
+  static const TextStyle serviceProviderStyle2 = TextStyle(
+    color: StyleGuide.textColor2,
+    fontFamily: Assets.poppinsFont,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
   );
 }
