@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "861185321003",
+    "project_id": "beasy-2e75f",
+    "storage_bucket": "beasy-2e75f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861185321003:android:8909265d0031ce0036a26e",
+        "android_client_info": {
+          "package_name": "com.techdot.beasy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfHNkI_p_TLfD5OXrRR-_6o4wo3_ysWJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
