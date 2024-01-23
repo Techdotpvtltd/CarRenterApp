@@ -1,7 +1,9 @@
+import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
+
 abstract class AuthState {
   final bool isLoading;
   final String loadingText;
-  AuthState({this.isLoading = false, this.loadingText = ""});
+  AuthState({this.isLoading = false, this.loadingText = "Please wait."});
 }
 
 // AuthStateUnitialize ========================================
@@ -47,6 +49,12 @@ class AuthStateLoadedSignup extends AuthState {
 }
 
 // Registered State  ========================================
+class AuthStateRegistering extends AuthState {
+  final BeasyException? exception;
+  AuthStateRegistering({this.exception, super.isLoading, super.loadingText});
+}
+
+// Registered State  ========================================
 class AuthStateRegistered extends AuthState {
   AuthStateRegistered({super.isLoading});
 }
@@ -56,9 +64,17 @@ class AuthStateSetUserType extends AuthState {
   AuthStateSetUserType({super.isLoading});
 }
 
+class AuthStateSettingUserType extends AuthState {
+  final BeasyException? exception;
+  AuthStateSettingUserType(
+      {super.isLoading, this.exception, super.loadingText});
+}
+
 // UserTypeSet State  ========================================
 class AuthStateNeedsToSetUserType extends AuthState {
-  AuthStateNeedsToSetUserType({super.isLoading});
+  final bool isComingFromSignup;
+  AuthStateNeedsToSetUserType(
+      {super.isLoading, required this.isComingFromSignup});
 }
 
 // AuthStateUserTypeSet State  ========================================

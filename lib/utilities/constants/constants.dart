@@ -1,5 +1,7 @@
 // Gap Height  ========================================
 
+// ignore_for_file: constant_identifier_names
+
 import 'package:beasy/main.dart';
 import 'package:flutter/widgets.dart';
 
@@ -62,3 +64,6 @@ SizedBox gapSreenWidth(double value) =>
 
 final double screenWidth = MediaQuery.of(navKey.currentContext!).size.width;
 final double screenHeight = MediaQuery.of(navKey.currentContext!).size.height;
+
+//  Firebase Collection Path ====================================
+const FIREBASE_COLLECTION_USER = "users";

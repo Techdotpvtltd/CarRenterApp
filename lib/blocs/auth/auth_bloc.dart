@@ -1,7 +1,9 @@
-import 'package:beasy/app_manager/app_manager.dart';
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
-import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
+import 'package:beasy/repositories/exceptions/data_exceptions.dart';
+import 'package:beasy/repositories/repos/aut_repo.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -22,17 +24,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     // Show UserType Screen  ========================================
-    on<AuthEventNeedsToSetUserType>(
-      (event, emit) => emit(AuthStateNeedsToSetUserType()),
-    );
-
-    on<AuthEventUserTypeSet>((event, emit) {
-      AppManager().setUser = UserModel(
-          userType: event.selectedIndex == 0
-              ? UserType.rentalUser
-              : UserType.serviceProvider);
-      emit(AuthStateUserTypeSet(isLoading: false));
-      emit(AuthStateRegistered());
+    on<AuthEventUserTypeSet>((event, emit) async {
+      emit(AuthStateSettingUserType(
+          isLoading: true, loadingText: "Setting user role..."));
+      try {
+        await AuthRepo().setUserType(index: event.selectedIndex);
+        emit(AuthStateSetUserType(isLoading: false));
+      } on BeasyException catch (e) {
+        emit(AuthStateSettingUserType(isLoading: false, exception: e));
+      } on Exception catch (e) {
+        debugPrint(e.toString());
+        emit(AuthStateSettingUserType(
+            isLoading: false, exception: DataExceptionUnknown()));
+      }
     });
     // Show Noticiation Enabled Screen  ========================================
     on<AuthEventNeedsToEnableNotification>(
@@ -45,8 +49,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     // Show Next Screens  ============================================
-    on<AuthEventRegistered>(
-      (event, emit) => emit(AuthStateRegistered()),
+    on<AuthEventRegistering>(
+      (event, emit) async {
+        emit(AuthStateRegistering(
+            isLoading: true, loadingText: "Creating user."));
+
+        try {
+          await AuthRepo().registeredUser(
+            firstName: event.firstName,
+            lastName: event.lastName,
+            email: event.email,
+            password: event.password,
+            confirmPassword: event.confirmPassword,
+            location: event.location,
+          );
+          emit(AuthStateNeedsToSetUserType(
+              isLoading: false, isComingFromSignup: true));
+          return;
+        } on BeasyException catch (e) {
+          emit(AuthStateRegistering(isLoading: false, exception: e));
+        } on Exception catch (e) {
+          debugPrint(e.toString());
+          emit(AuthStateRegistering(
+              isLoading: false, exception: DataExceptionUnknown()));
+        }
+      },
     );
   }
 }

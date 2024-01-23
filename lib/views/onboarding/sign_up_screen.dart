@@ -4,6 +4,8 @@ import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
+import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
+import 'package:beasy/utilities/widgets/dialogs/loaders.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +28,48 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isObscureTextForPassword = true;
   bool _isObscureTextForConfirmPassword = true;
+  final TextEditingController _fnController = TextEditingController();
+  final TextEditingController _lnController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  String? errorMessage;
+  int? errorCode;
+
+  void _onSignupPressed() {
+    context.read<AuthBloc>().add(
+          AuthEventRegistering(
+            firstName: _fnController.text,
+            lastName: _lnController.text,
+            email: _emailController.text,
+            password: _passwordController.text,
+            confirmPassword: _confirmPassController.text,
+            location: _locationController.text,
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: ((context, state) {}),
+      listener: ((context, state) {
+        state.isLoading
+            ? Loader().show(withText: state.loadingText)
+            : Loader().hide();
+        if (state is AuthStateRegistering) {
+          if (state.exception != null) {
+            if (state.exception?.errorCode != null) {
+              setState(() {
+                errorMessage = state.exception!.message;
+                errorCode = state.exception!.errorCode;
+              });
+            } else {
+              CustomDilaogs().errorBox(message: state.exception?.message ?? "");
+            }
+          }
+        }
+      }),
       child: BackgroundWidget(
         topWidget: const Padding(
           padding: EdgeInsets.fromLTRB(33, 25, 33, 45),
@@ -49,21 +88,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     top: 40, left: 33, right: 33, bottom: 30),
                 child: Column(
                   children: [
-                    const CustomTitleTextField(
-                        fieldText: AppStrings.firstName,
-                        hintText: AppStrings.firstName),
-                    gapH22,
-                    const CustomTitleTextField(
-                      hintText: AppStrings.enterYourEmail,
-                      fieldText: AppStrings.emailAddress,
-                      keyboardType: TextInputType.emailAddress,
+                    CustomTitleTextField(
+                      fieldText: AppStrings.firstName,
+                      hintText: AppStrings.firstName,
+                      controller: _fnController,
+                      errorText: errorMessage,
+                      filedId: 3,
+                      errorCode: errorCode,
                     ),
                     gapH22,
                     CustomTitleTextField(
+                      fieldText: "Last Name",
+                      hintText: "Last Name",
+                      controller: _lnController,
+                      errorText: errorMessage,
+                      filedId: 4,
+                      errorCode: errorCode,
+                    ),
+                    gapH22,
+                    CustomTitleTextField(
+                      hintText: AppStrings.enterYourEmail,
+                      fieldText: AppStrings.emailAddress,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _emailController,
+                      errorText: errorMessage,
+                      filedId: 1,
+                      errorCode: errorCode,
+                    ),
+                    gapH22,
+                    CustomTitleTextField(
+                      controller: _passwordController,
                       fieldText: AppStrings.password,
                       hintText: AppStrings.enterYourPassword,
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: _isObscureTextForPassword,
+                      errorText: errorMessage,
+                      filedId: 2,
+                      errorCode: errorCode,
                       suffixWidget: IconButton(
                         onPressed: () {
                           setState(() {
@@ -78,10 +139,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     gapH22,
                     CustomTitleTextField(
+                      controller: _confirmPassController,
                       fieldText: AppStrings.confirmPassword,
                       hintText: AppStrings.enterYourPassword,
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: _isObscureTextForConfirmPassword,
+                      errorText: errorMessage,
+                      filedId: 5,
+                      errorCode: errorCode,
                       suffixWidget: IconButton(
                         onPressed: () {
                           setState(() {
@@ -95,10 +160,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     gapH22,
-                    const CustomTitleTextField(
+                    CustomTitleTextField(
+                      controller: _locationController,
                       hintText: AppStrings.addLocation,
                       fieldText: AppStrings.addLocation,
                       keyboardType: TextInputType.streetAddress,
+                      errorText: errorMessage,
+                      filedId: 6,
+                      errorCode: errorCode,
                     ),
                     gapH26,
                     Image.asset('assets/images/demo_map.png'),
@@ -106,9 +175,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     RoundedButton(
                         title: AppStrings.signUp,
                         onPressed: () {
-                          context
-                              .read<AuthBloc>()
-                              .add(AuthEventNeedsToSetUserType());
+                          setState(() {
+                            errorMessage = null;
+                            errorCode = null;
+                          });
+                          _onSignupPressed();
                         }),
                     gapH26,
                     Text.rich(

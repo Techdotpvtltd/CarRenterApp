@@ -15,6 +15,24 @@ class AuthEventLoadedGetStarted extends AuthEvent {}
 /// Loaded Signup Screen Event
 class AuthEventLoadedSignup extends AuthEvent {}
 
+/// Registering Event
+class AuthEventRegistering extends AuthEvent {
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String password;
+  final String confirmPassword;
+  final String location;
+
+  AuthEventRegistering(
+      {required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.password,
+      required this.confirmPassword,
+      required this.location});
+}
+
 /// Registered Event
 class AuthEventRegistered extends AuthEvent {}
 

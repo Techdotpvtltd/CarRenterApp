@@ -6,24 +6,43 @@ import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
+import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
+import 'package:beasy/utilities/widgets/dialogs/loaders.dart';
 import 'package:beasy/utilities/widgets/onboarding_text_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserTypeScreen extends StatefulWidget {
-  const UserTypeScreen({super.key});
-
+  const UserTypeScreen({super.key, this.isFromSignUpScreen = false});
+  final bool isFromSignUpScreen;
   @override
   State<UserTypeScreen> createState() => _UserTypeScreenState();
 }
 
 class _UserTypeScreenState extends State<UserTypeScreen> {
   int _value = 0;
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        state.isLoading ? Loader().show() : Loader().hide();
+
+        if (state is AuthStateSetUserType) {
+          CustomDilaogs().successBox(
+              message: "Your profile has updated. Please login to continue.",
+              positiveTitle: "Go to Login",
+              onPositivePressed: () {
+                context.read<AuthBloc>().add(AuthEventLoadedLogin());
+              });
+        }
+        if (state is AuthStateSettingUserType) {
+          if (state.exception != null) {
+            CustomDilaogs().errorBox(message: state.exception?.message);
+          }
+        }
+      },
       child: BackgroundWidget(
         topWidget: const Padding(
           padding: EdgeInsets.only(top: 0, left: 33, right: 33, bottom: 25),
@@ -150,7 +169,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     const Spacer(),
                     gapH24,
                     RoundedButton(
-                      title: AppStrings.next,
+                      title: "Update",
                       onPressed: () {
                         context
                             .read<AuthBloc>()

@@ -10,16 +10,22 @@ import 'package:beasy/views/onboarding/login_screen.dart';
 import 'package:beasy/views/onboarding/sign_up_screen.dart';
 import 'package:beasy/views/onboarding/splash_screen.dart';
 import 'package:beasy/views/onboarding/user_type_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'app_manager/app_bloc_observer.dart';
-import 'views/menu/drawer_screen.dart';
+import 'app_manager/firebase_options.dart';
 
-void main() {
-  Bloc.observer = AppBlocObserver();
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Bloc.observer = AppBlocObserver();
+  //  1 - Ensure firebase app is initialized if starting from background/terminated state
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const _BeasyApp());
 }
 
@@ -94,17 +100,20 @@ class _BeasyPage extends StatelessWidget {
         }
 
         if (state is AuthStateRegistered) {
-          return const HomeDrawer();
+          return const LoginScreen();
         }
-
-        // if (state is AuthStateLoadedForgotPassword) {
-        //   return const ForgotScreen();
-        // }
 
         return const SplashScreen();
       },
       buildWhen: (previous, current) {
-        return true;
+        /// If these states are emitted then rebuild the widget, otherwise not.
+        return current is AuthStateStartup ||
+            current is AuthStateLoadedGetStarted ||
+            current is AuthStateLoadedLogin ||
+            current is AuthStateLoadedSignup ||
+            current is AuthStateNeedsToSetUserType ||
+            current is AuthStateNeedsToEnableNotification ||
+            current is AuthStateNeedToAllowLocation;
       },
     );
   }
