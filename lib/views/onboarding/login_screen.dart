@@ -8,6 +8,8 @@ import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
+import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
+import 'package:beasy/utilities/widgets/dialogs/loaders.dart';
 import 'package:beasy/utilities/widgets/onboarding_text_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/utilities/widgets/social_icon_button.dart';
@@ -28,6 +30,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isObscureText = true;
   bool _isRememberMeChecked = false;
+  String? _errorMessage;
+  int? _errorCode;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _loginUser() {
+    context.read<AuthBloc>().add(AuthEventPerformLogin(
+        email: _emailController.text, password: _passwordController.text));
+  }
 
   @override
   void initState() {
@@ -37,7 +48,24 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        state.isLoading
+            ? Loader().show(withText: state.loadingText)
+            : Loader().hide();
+
+        if (state is AuthStateLoging) {
+          if (state.exception != null) {
+            if (state.exception?.errorCode != null) {
+              setState(() {
+                _errorCode = state.exception?.errorCode;
+                _errorMessage = state.exception?.message;
+              });
+            } else {
+              CustomDilaogs().errorBox(message: state.exception?.message);
+            }
+          }
+        }
+      },
       child: BackgroundWidget(
         topWidget: const Padding(
           padding: EdgeInsets.fromLTRB(33, 25, 33, 45),
@@ -57,17 +85,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const CustomTitleTextField(
+                    CustomTitleTextField(
+                      controller: _emailController,
                       hintText: AppStrings.enterYourEmail,
                       fieldText: AppStrings.emailAddress,
+                      errorCode: _errorCode,
+                      errorText: _errorMessage,
+                      filedId: 1,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     gapH22,
                     CustomTitleTextField(
+                      controller: _passwordController,
                       fieldText: AppStrings.password,
                       hintText: AppStrings.enterYourPassword,
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: _isObscureText,
+                      errorCode: _errorCode,
+                      errorText: _errorMessage,
+                      filedId: 2,
                       suffixWidget: IconButton(
                         onPressed: () {
                           setState(() {
@@ -132,9 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     RoundedButton(
                       title: AppStrings.siginIn,
                       onPressed: () {
-                        context
-                            .read<AuthBloc>()
-                            .add(AuthEventNeedsToSetUserType());
+                        _loginUser();
                       },
                     ),
                     gapH20,

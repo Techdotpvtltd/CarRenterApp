@@ -12,7 +12,8 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isRentalUser = AppManager().user.userType == UserType.rentalUser;
+    final bool isRentalUser =
+        AppManager().user?.userType == UserType.rentalUser;
     return Container(
       decoration: BoxDecoration(
           color: const Color(0xffF3F4F9),

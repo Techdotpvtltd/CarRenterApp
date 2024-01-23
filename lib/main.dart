@@ -3,6 +3,7 @@ import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/blocs/rental/rental_product_bloc.dart';
 import 'package:beasy/blocs/service_provider/sp_bloc.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/views/menu/drawer_screen.dart';
 import 'package:beasy/views/onboarding/enable_notification_screen.dart';
 import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
 import 'package:beasy/views/onboarding/get_started_screen.dart';
@@ -84,6 +85,10 @@ class _BeasyPage extends StatelessWidget {
           return const LoginScreen();
         }
 
+        if (state is AuthStateLoggedIn) {
+          return const HomeDrawer();
+        }
+
         if (state is AuthStateLoadedSignup) {
           return const SignUpScreen();
         }
@@ -103,6 +108,10 @@ class _BeasyPage extends StatelessWidget {
           return const LoginScreen();
         }
 
+        if (state is AuthStateSplashActionDone) {
+          return const HomeDrawer();
+        }
+
         return const SplashScreen();
       },
       buildWhen: (previous, current) {
@@ -113,7 +122,10 @@ class _BeasyPage extends StatelessWidget {
             current is AuthStateLoadedSignup ||
             current is AuthStateNeedsToSetUserType ||
             current is AuthStateNeedsToEnableNotification ||
-            current is AuthStateNeedToAllowLocation;
+            current is AuthStateNeedToAllowLocation ||
+            current is AuthStateLoggedIn ||
+            current is AuthStateSplashActionDone ||
+            current is AuthStateInitialize;
       },
     );
   }

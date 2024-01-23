@@ -82,7 +82,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   bloc.setOpen = false;
                                 }),
                                 mainScreen: Builder(builder: (context) {
-                                  return AppManager().user.userType ==
+                                  return AppManager().user?.userType ==
                                           UserType.rentalUser
                                       ? currentRentalScreen(bloc.currentIndex)
                                       : currentServiceProviderScreen(
@@ -186,9 +186,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                               horizontal: 38.0, vertical: 20),
                                           child: InkWell(
                                             onTap: () {
-                                              context
-                                                  .read<AuthBloc>()
-                                                  .add(AuthEventInitialize());
+                                              context.read<AuthBloc>().add(
+                                                  AuthEventPerformLogout());
                                             },
                                             child: const Text(
                                               "Sign Out",

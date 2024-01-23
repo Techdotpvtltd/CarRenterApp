@@ -2,6 +2,20 @@ import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
 import 'package:beasy/utilities/utils.dart';
 
 class DataValidation {
+  static Future<void> loginUser({String? email, String? password}) async {
+    if (email == null || email == "") {
+      throw AuthExceptionEmailRequired();
+    }
+
+    if (!Util.isValidEmail(email: email)) {
+      throw AuthExceptionInvalidEmail();
+    }
+
+    if (password == null || password == "") {
+      throw AuthExceptionPasswordRequired();
+    }
+  }
+
   static Future<void> createUser(
       {String? firstName,
       String? lastName,
@@ -29,7 +43,7 @@ class DataValidation {
       throw AuthExceptionPasswordRequired();
     }
 
-    if (password.length <= 6) {
+    if (password.length < 6) {
       throw AuthExceptionWeekPassword();
     }
 

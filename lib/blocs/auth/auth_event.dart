@@ -3,10 +3,23 @@ abstract class AuthEvent {}
 // AuthEventUninitialize  ========================================
 class AuthEventUninitialize extends AuthEvent {}
 
+class AuthEventSplashActionDone extends AuthEvent {}
+
+// AuthEventNeedsToSetProfile
+class AuthEventNeedsToSetProfile extends AuthEvent {}
+
 // AuthEventInitialize  ========================================
 class AuthEventInitialize extends AuthEvent {}
 
 /// Loading LoginScreen
+class AuthEventPerformLogin extends AuthEvent {
+  final String email;
+  final String password;
+
+  AuthEventPerformLogin({required this.email, required this.password});
+}
+
+/// Loaded Login Screen
 class AuthEventLoadedLogin extends AuthEvent {}
 
 /// Loading GetStarted Screen
@@ -55,3 +68,6 @@ class AuthEventNeedsSetNotification extends AuthEvent {}
 class AuthEventNeedsToAllowLocationAccess extends AuthEvent {}
 
 class AuthEventSetLocationAccess extends AuthEvent {}
+
+/// Logout User Event
+class AuthEventPerformLogout extends AuthEvent {}

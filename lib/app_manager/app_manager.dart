@@ -11,12 +11,13 @@ class AppManager {
   }
 
   UserModel? _userModel;
-  UserModel get user {
-    if (_userModel == null) {
-      throw Exception("User is empty");
-    }
+  UserModel? get user {
     return _userModel!;
   }
 
   set setUser(UserModel userModel) => _userModel = userModel;
+
+  void clearData() {
+    _userModel = null;
+  }
 }

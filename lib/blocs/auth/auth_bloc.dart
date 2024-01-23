@@ -2,7 +2,7 @@ import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
 import 'package:beasy/repositories/exceptions/data_exceptions.dart';
-import 'package:beasy/repositories/repos/aut_repo.dart';
+import 'package:beasy/repositories/repos/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,8 +13,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateStartup(isLoading: false));
     });
 
-    // Show Login Screen Event  ========================================
+    //  Login Screen Event  ========================================
     on<AuthEventLoadedLogin>((event, emit) => emit(AuthStateLoadedLogin()));
+
+    // On Logout Request  ============================================
+    on<AuthEventPerformLogout>(
+      (event, emit) async {
+        await AuthRepo().performLogout();
+        emit(AuthStateInitialize());
+      },
+    );
+    // Splash Process completed  ============================================
+    on<AuthEventSplashActionDone>(
+        (event, emit) => emit(AuthStateSplashActionDone()));
+
+    on<AuthEventPerformLogin>((event, emit) async {
+      emit(AuthStateLoging(
+        isLoading: true,
+        loadingText: "Login...",
+      ));
+
+      try {
+        await AuthRepo()
+            .loginUser(withEmail: event.email, withPassword: event.password);
+        emit(AuthStateLoggedIn(isLoading: false));
+      } on BeasyException catch (e) {
+        emit(AuthStateLoging(
+          isLoading: false,
+          exception: e,
+        ));
+      } on Exception catch (e) {
+        emit(AuthStateLoging(
+          isLoading: false,
+          exception: DataExceptionUnknown(message: e.toString()),
+        ));
+      }
+    });
+
     // Show GetStarted Screen Event  ========================================
     on<AuthEventLoadedGetStarted>(
         (event, emit) => emit(AuthStateLoadedGetStarted()));

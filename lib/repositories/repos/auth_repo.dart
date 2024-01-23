@@ -7,9 +7,28 @@ import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/web_services/firebase_auth_serivces.dart';
 import 'package:beasy/web_services/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class AuthRepo {
   AuthRepo();
+
+  //  LoginUser ====================================
+  Future<void> loginUser(
+      {required String withEmail, required String withPassword}) async {
+    try {
+      // Make Validation
+      await DataValidation.loginUser(email: withEmail, password: withPassword);
+      final _ = await FirebaseAuthService()
+          .login(withEmail: withEmail, withPassword: withPassword);
+      await fetchUser();
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.toString());
+      throw throwAuthException(errorCode: e.code, message: e.message);
+    } on FirebaseException catch (e) {
+      debugPrint(e.toString());
+      throw throwDataException(errorCode: e.code, message: e.message);
+    }
+  }
 
   //  RegisteredAUser ====================================
   Future<void> registeredUser(
@@ -60,7 +79,7 @@ class AuthRepo {
       final userModel = AppManager().user;
       final UserType userType =
           UserType.values.firstWhere((element) => element.index == index);
-      final UserModel updatedUser = userModel.copyWith(userType: userType);
+      final UserModel updatedUser = userModel!.copyWith(userType: userType);
       final _ = await FirestoreService().updateWithDocId(
           path: FIREBASE_COLLECTION_USER,
           docId: userModel.uid,
@@ -69,5 +88,31 @@ class AuthRepo {
     } on FirebaseException catch (e) {
       throw throwDataException(errorCode: e.code);
     }
+  }
+
+  /// Fetch user
+
+  Future<void> fetchUser() async {
+    try {
+      final String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
+      final data = await FirestoreService().fetchSingleRecord(
+              path: FIREBASE_COLLECTION_USER, docId: userId) ??
+          <String, dynamic>{};
+      final UserModel userModel = UserModel.fromMap(data);
+      AppManager().setUser = userModel;
+    } on FirebaseException catch (e) {
+      throw throwDataException(errorCode: e.code, message: e.message);
+    }
+  }
+
+  /// Return Login user object
+  User? currentUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
+
+  /// Perform Logout
+  Future<void> performLogout() async {
+    await FirebaseAuthService().logoutUser();
+    AppManager().clearData();
   }
 }

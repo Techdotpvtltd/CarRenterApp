@@ -33,6 +33,14 @@ class AuthStateLoggedIn extends AuthState {
   AuthStateLoggedIn({super.isLoading});
 }
 
+/// AuthStateSplashActionDone
+class AuthStateSplashActionDone extends AuthState {}
+
+class AuthStateLoging extends AuthState {
+  final BeasyException? exception;
+  AuthStateLoging({super.isLoading, this.exception, super.loadingText});
+}
+
 // Loading Login Screen State  ========================================
 class AuthStateLoadedLogin extends AuthState {
   AuthStateLoadedLogin({super.isLoading});

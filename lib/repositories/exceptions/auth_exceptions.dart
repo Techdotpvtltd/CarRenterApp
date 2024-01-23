@@ -12,6 +12,27 @@ class AuthExceptionEmailAlreadyInUse extends AuthException {
   });
 }
 
+//  Email Already in Used ====================================
+class AuthExceptionInvalidUserCredentials extends AuthException {
+  AuthExceptionInvalidUserCredentials(
+      {super.message = "Invalid email or password."});
+}
+
+/// when calling signInWithCredential with a credential that asserts an email address in use by another account.
+/// This error will only be thrown if the "One account per email address" setting is enabled in the Firebase console (recommended).
+class AuthExceptionAccountAlreadyExists extends AuthException {
+  AuthExceptionAccountAlreadyExists(
+      {super.message =
+          "Anoother account is already existed with this credential."});
+}
+
+/// when trying to link a user with an corresponding to another account already in use.
+class AuthExceptionAccountAlreadyLinked extends AuthException {
+  AuthExceptionAccountAlreadyLinked(
+      {super.message =
+          "Anoother account is already linked with this credential"});
+}
+
 //  InValid Email ====================================
 class AuthExceptionInvalidEmail extends AuthException {
   AuthExceptionInvalidEmail(
@@ -29,11 +50,11 @@ class AuthExceptionOperationNotAllow extends AuthException {
 //  Week Password ====================================
 class AuthExceptionWeekPassword extends AuthException {
   AuthExceptionWeekPassword(
-      {super.message = "Password must be greater then 6 characters.",
+      {super.message = "Password must be greater then 5 characters.",
       super.errorCode = 2});
 }
 
-//  Disabled User ====================================
+/// if the user has been disabled (for example, in the Firebase console)
 class AuthExceptionDisabledUser extends AuthException {
   AuthExceptionDisabledUser({
     super.message = "You're not allow to login with this email.",
@@ -44,6 +65,17 @@ class AuthExceptionDisabledUser extends AuthException {
 class AuthExceptionUserNotFound extends AuthException {
   AuthExceptionUserNotFound(
       {super.message = "User not found with this email."});
+}
+
+/// if the user's token has been revoked in the backend.
+///  This happens automatically if the user's credentials change in another device (for example, on a password change event).
+class AuthExceptionUserTokenExpired extends AuthException {
+  AuthExceptionUserTokenExpired({super.message = "Session expired."});
+}
+
+/// if the user's token is malformed. This should not happen under normal circumstances.
+class AuthExceptionInvalidToken extends AuthException {
+  AuthExceptionInvalidToken({super.message = "Invalid session."});
 }
 
 //  Wrong Password ====================================
@@ -101,6 +133,16 @@ class AuthExceptionUnknown extends AuthException {
 
 AuthException throwAuthException({required String errorCode, String? message}) {
   switch (errorCode.toLowerCase()) {
+    case 'invalid_login_credentials':
+      return AuthExceptionInvalidUserCredentials();
+    case 'user-not-found':
+      return AuthExceptionUserNotFound();
+    case 'user-disabled':
+      return AuthExceptionDisabledUser();
+    case 'error-user-token-expired' || 'user-token-expired':
+      return AuthExceptionUserTokenExpired();
+    case 'error-invalid-user-token' || 'invalid-user-token':
+      return AuthExceptionInvalidToken();
     case "email-already-in-use":
       return AuthExceptionEmailAlreadyInUse();
     case 'invalid-email':
@@ -109,6 +151,10 @@ AuthException throwAuthException({required String errorCode, String? message}) {
       return AuthExceptionOperationNotAllow();
     case 'weak-password':
       return AuthExceptionWeekPassword();
+    case 'error-account-exists-with-different-credential':
+      return AuthExceptionAccountAlreadyExists();
+    case 'error-credential-already-in-use':
+      return AuthExceptionAccountAlreadyLinked();
     default:
       return AuthExceptionUnknown(message: message ?? "Something went wrong!");
   }
