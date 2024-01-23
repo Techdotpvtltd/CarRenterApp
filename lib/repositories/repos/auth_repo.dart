@@ -115,4 +115,9 @@ class AuthRepo {
     await FirebaseAuthService().logoutUser();
     AppManager().clearData();
   }
+
+  /// Perform Logout
+  Future<void> sendForgotPasswordEmail({required String atMail}) async {
+    await FirebaseAuthService().resetPassword(email: atMail);
+  }
 }
