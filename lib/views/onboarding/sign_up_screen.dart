@@ -1,6 +1,7 @@
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
+import 'package:beasy/models/user_model.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utilities/constants/asstes.dart';
 import '../../utilities/constants/constants.dart';
 import '../../utilities/constants/strings.dart';
+import '../../utilities/widgets/map_with_text_filed.dart';
 import '../../utilities/widgets/onboarding_text_widget.dart';
 import '../../utilities/widgets/term_condition_widget.dart';
 
@@ -34,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  UserLocation? _userLocation;
   String? errorMessage;
   int? errorCode;
 
@@ -45,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             email: _emailController.text,
             password: _passwordController.text,
             confirmPassword: _confirmPassController.text,
-            location: _locationController.text,
+            location: _userLocation,
           ),
         );
   }
@@ -160,17 +163,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     gapH22,
-                    CustomTitleTextField(
+                    MapWithTextField(
                       controller: _locationController,
                       hintText: AppStrings.addLocation,
                       fieldText: AppStrings.addLocation,
-                      keyboardType: TextInputType.streetAddress,
                       errorText: errorMessage,
                       filedId: 6,
                       errorCode: errorCode,
+                      mapHeight: 176,
+                      onLocationFetched: (location) {
+                        setState(() {
+                          _userLocation = location;
+                        });
+                      },
                     ),
-                    gapH26,
-                    Image.asset('assets/images/demo_map.png'),
                     gapH26,
                     RoundedButton(
                         title: AppStrings.signUp,

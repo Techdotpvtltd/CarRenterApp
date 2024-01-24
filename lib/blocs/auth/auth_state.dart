@@ -36,9 +36,9 @@ class AuthStateLoggedIn extends AuthState {
 /// AuthStateSplashActionDone
 class AuthStateSplashActionDone extends AuthState {}
 
-class AuthStateLoging extends AuthState {
+class AuthStateLogging extends AuthState {
   final BeasyException? exception;
-  AuthStateLoging({super.isLoading, this.exception, super.loadingText});
+  AuthStateLogging({super.isLoading, this.exception, super.loadingText});
 }
 
 // Loading Login Screen State  ========================================
@@ -62,6 +62,18 @@ class AuthStateRegistering extends AuthState {
   AuthStateRegistering({this.exception, super.isLoading, super.loadingText});
 }
 
+// User Profile Updating States
+class AuthStateUpdatingUserProfile extends AuthState {
+  final BeasyException? exception;
+
+  AuthStateUpdatingUserProfile(
+      {super.isLoading, super.loadingText, this.exception});
+}
+
+class AuthStateUpdatedUserProfile extends AuthState {
+  AuthStateUpdatedUserProfile({super.isLoading});
+}
+
 // Registered State  ========================================
 class AuthStateRegistered extends AuthState {
   AuthStateRegistered({super.isLoading});
@@ -80,9 +92,7 @@ class AuthStateSettingUserType extends AuthState {
 
 // UserTypeSet State  ========================================
 class AuthStateNeedsToSetUserType extends AuthState {
-  final bool isComingFromSignup;
-  AuthStateNeedsToSetUserType(
-      {super.isLoading, required this.isComingFromSignup});
+  AuthStateNeedsToSetUserType({super.isLoading});
 }
 
 // AuthStateUserTypeSet State  ========================================

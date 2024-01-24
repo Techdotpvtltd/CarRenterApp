@@ -20,7 +20,7 @@ class CustomDilaogs {
       builder: (context) => AlertDialog(
         surfaceTintColor: Colors.transparent,
         content: Container(
-          height: screenHeight * 0.33,
+          height: screenHeight * 0.40,
           width: screenWidth,
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -51,7 +51,7 @@ class CustomDilaogs {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: StyleGuide.serviceProviderStyle2.copyWith(
                     fontSize: 18,
@@ -111,31 +111,30 @@ class CustomDilaogs {
       icon: icon ?? Icons.warning,
       title: title ?? "Alert!",
       message: message ?? "Alet",
-      bottomWidget: Row(
+      bottomWidget: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          RoundedButton(
-            title: negativeTitle ?? "Cancel",
-            withBorderOnly: true,
-            height: 44,
-            textSize: 12,
-            width: 120,
-            onPressed: onNegativePressed ??
-                () {
-                  NavigationService.back(navKey.currentContext!);
-                },
-          ),
           RoundedButton(
             title: positiveTitle ?? "Done",
             height: 44,
             textSize: 12,
-            width: 120,
             onPressed: () {
               NavigationService.back(navKey.currentContext!);
               if (onPositivePressed != null) {
                 onPositivePressed();
               }
             },
+          ),
+          gapH6,
+          RoundedButton(
+            title: negativeTitle ?? "Cancel",
+            withBorderOnly: true,
+            height: 44,
+            textSize: 12,
+            onPressed: onNegativePressed ??
+                () {
+                  NavigationService.back(navKey.currentContext!);
+                },
           ),
         ],
       ),

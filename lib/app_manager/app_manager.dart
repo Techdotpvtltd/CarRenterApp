@@ -12,7 +12,7 @@ class AppManager {
 
   UserModel? _userModel;
   UserModel? get user {
-    return _userModel!;
+    return _userModel;
   }
 
   set setUser(UserModel userModel) => _userModel = userModel;

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
@@ -6,6 +8,7 @@ import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/shared_preferences.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
@@ -15,10 +18,12 @@ import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/utilities/widgets/social_icon_button.dart';
 import 'package:beasy/utilities/widgets/term_condition_widget.dart';
 import 'package:beasy/utilities/widgets/text_button_child_widget.dart';
+import 'package:beasy/views/onboarding/enable_notification_screen.dart';
 import 'package:beasy/views/onboarding/forgot_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -48,12 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         state.isLoading
             ? Loader().show(withText: state.loadingText)
             : Loader().hide();
 
-        if (state is AuthStateLoging) {
+        if (state is AuthStateLogging) {
           if (state.exception != null) {
             if (state.exception?.errorCode != null) {
               setState(() {
@@ -63,6 +68,16 @@ class _LoginScreenState extends State<LoginScreen> {
             } else {
               CustomDilaogs().errorBox(message: state.exception?.message);
             }
+          }
+        }
+
+        if (state is AuthStateLoggedIn) {
+          // Check for permissions
+          if (!await Permission.notification.isGranted &&
+              await LocalPreferences.getLaterNotificationPermission() ==
+                  false) {
+            await NavigationService.go(
+                context, const EnableNotificationScreen());
           }
         }
       },

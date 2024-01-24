@@ -50,8 +50,7 @@ class DataExceptionUnAuthenticated extends DataException {
 }
 
 class DataExceptionUnknown extends DataException {
-  DataExceptionUnknown(
-      {super.message = "Oops! we're facing some interal errors."});
+  DataExceptionUnknown({required super.message});
 }
 
 DataException throwDataException({required String errorCode, String? message}) {

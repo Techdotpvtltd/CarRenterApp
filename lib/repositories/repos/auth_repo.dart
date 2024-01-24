@@ -4,6 +4,7 @@ import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
 import 'package:beasy/repositories/exceptions/data_exceptions.dart';
 import 'package:beasy/repositories/validations/data_validations.dart';
 import 'package:beasy/utilities/constants/constants.dart';
+import 'package:beasy/utilities/shared_preferences.dart';
 import 'package:beasy/web_services/firebase_auth_serivces.dart';
 import 'package:beasy/web_services/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,7 +38,7 @@ class AuthRepo {
       required String email,
       required String password,
       required String confirmPassword,
-      required String location}) async {
+      UserLocation? location}) async {
     try {
       /// Make validation
       await DataValidation.createUser(
@@ -57,7 +58,7 @@ class AuthRepo {
         lastName: lastName,
         email: email,
         createAt: DateTime.now(),
-        location: UserLocation(attitude: 10.1, lattitude: 20.1),
+        location: location!,
       );
 
       final _ = await FirestoreService().saveWithDocId(
@@ -90,18 +91,82 @@ class AuthRepo {
     }
   }
 
-  /// Fetch user
+  //  Set user type ====================================
+  Future<void> updateUser({
+    required String firstName,
+    required String lastName,
+    required String email,
+    String? imagePath,
+    String? phoneNumber,
+    UserLocation? userLocation,
+  }) async {
+    try {
+      await DataValidation.updateUser(
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        location: userLocation,
+      );
 
+      final UserModel? userModel = AppManager().user;
+      if (userModel == null) {
+        /// If user profile is deleted
+        debugPrint("userModel is empty");
+        final UserModel model = UserModel(
+          uid: FirebaseAuth.instance.currentUser?.uid ?? "",
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          location: userLocation!,
+          createAt: DateTime.now(),
+          phoneNumber: phoneNumber,
+          imageUrl: imagePath,
+        );
+        await FirestoreService().saveWithDocId(
+            path: FIREBASE_COLLECTION_USER,
+            docId: model.uid,
+            data: model.toMap());
+        AppManager().setUser = model;
+        return;
+      }
+      final UserModel updatedModel = AppManager().user!.copyWith(
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            imageUrl: imagePath,
+            location: userLocation,
+            phoneNumber: phoneNumber,
+          );
+
+      await FirestoreService().updateWithDocId(
+          path: FIREBASE_COLLECTION_USER,
+          docId: updatedModel.uid,
+          data: updatedModel.toMap());
+      AppManager().setUser = updatedModel;
+    } on FirebaseAuthException catch (e) {
+      throw throwAuthException(errorCode: e.code, message: e.message);
+    } on FirebaseException catch (e) {
+      throw throwDataException(errorCode: e.code);
+    }
+  }
+
+  /// Fetch user
   Future<void> fetchUser() async {
     try {
       final String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
-      final data = await FirestoreService().fetchSingleRecord(
-              path: FIREBASE_COLLECTION_USER, docId: userId) ??
-          <String, dynamic>{};
-      final UserModel userModel = UserModel.fromMap(data);
+      final data = await FirestoreService()
+          .fetchSingleRecord(path: FIREBASE_COLLECTION_USER, docId: userId);
+
+      if (data == null) {
+        throw DataExceptionNotFound();
+      }
+
+      final UserModel userModel = await UserModel.fromMap(data);
       AppManager().setUser = userModel;
     } on FirebaseException catch (e) {
       throw throwDataException(errorCode: e.code, message: e.message);
+    } on Error catch (e) {
+      throw DataExceptionUnknown(message: e.toString());
     }
   }
 
@@ -114,6 +179,7 @@ class AuthRepo {
   Future<void> performLogout() async {
     await FirebaseAuthService().logoutUser();
     AppManager().clearData();
+    LocalPreferences.clearAll();
   }
 
   /// Perform Logout

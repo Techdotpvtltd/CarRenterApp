@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need location access to show you the nearest services.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need location access to show you the nearest services.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need location access to show you the nearest services.</string>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>Hi! we need notification access to send you instance messages and booking request.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>

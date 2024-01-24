@@ -45,7 +45,9 @@ class GetStartedScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: RoundedButton(
                     onPressed: () {
-                      context.read<AuthBloc>().add(AuthEventLoadedLogin());
+                      context
+                          .read<AuthBloc>()
+                          .add(AuthEventNeedsToSetUserType());
                     },
                     title: AppStrings.letsGo,
                     width: 165,

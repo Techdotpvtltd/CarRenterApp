@@ -22,6 +22,7 @@ class CustomTitleTextField extends StatefulWidget {
     this.isShowEdiatbleButton = false,
     this.filedId,
     this.errorCode,
+    this.onSubmitted,
   });
   final String fieldText;
   final String hintText;
@@ -38,6 +39,7 @@ class CustomTitleTextField extends StatefulWidget {
   final bool isShowEdiatbleButton;
   final int? filedId;
   final int? errorCode;
+  final Function(String)? onSubmitted;
 
   @override
   State<CustomTitleTextField> createState() => _CustomTitleTextFieldState();
@@ -74,6 +76,9 @@ class _CustomTitleTextFieldState extends State<CustomTitleTextField> {
           readOnly: _isReadOnly,
           maxLines: widget.maxLines,
           minLines: widget.minLines,
+          onSubmitted: widget.onSubmitted != null
+              ? (value) => widget.onSubmitted!(value)
+              : null,
           style: StyleGuide.textStyle3.copyWith(color: const Color(0xFF2C2C2C)),
           decoration: InputDecoration(
             contentPadding:

@@ -1,13 +1,15 @@
-import 'package:beasy/blocs/auth/auth_bloc.dart';
-import 'package:beasy/blocs/auth/auth_event.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
+import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/shared_preferences.dart';
 import 'package:beasy/utilities/widgets/onboarding_centered_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/utilities/widgets/text_button_child_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EnableNotificationScreen extends StatelessWidget {
   const EnableNotificationScreen({super.key});
@@ -27,17 +29,15 @@ class EnableNotificationScreen extends StatelessWidget {
               children: [
                 RoundedButton(
                     title: AppStrings.allowNotification,
-                    onPressed: () {
-                      context
-                          .read<AuthBloc>()
-                          .add(AuthEventNeedsToAllowLocationAccess());
+                    onPressed: () async {
+                      await Permission.notification.request();
+                      NavigationService.back(context);
                     }),
                 gapH18,
                 TextButton(
                   onPressed: () {
-                    context
-                        .read<AuthBloc>()
-                        .add(AuthEventNeedsToAllowLocationAccess());
+                    LocalPreferences.storeLaterNotificationPermission();
+                    NavigationService.back(context);
                   },
                   child:
                       const TextButtonChildWidget2(text: AppStrings.maybeLater),

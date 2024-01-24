@@ -1,3 +1,5 @@
+import 'package:beasy/models/user_model.dart';
+
 abstract class AuthEvent {}
 
 // AuthEventUninitialize  ========================================
@@ -35,7 +37,7 @@ class AuthEventRegistering extends AuthEvent {
   final String email;
   final String password;
   final String confirmPassword;
-  final String location;
+  final UserLocation? location;
 
   AuthEventRegistering(
       {required this.firstName,
@@ -43,7 +45,26 @@ class AuthEventRegistering extends AuthEvent {
       required this.email,
       required this.password,
       required this.confirmPassword,
-      required this.location});
+      this.location});
+}
+
+/// Update User Profile
+class AuthEventUpdateUserProfile extends AuthEvent {
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String? phoneNumber;
+  final String? imagePath;
+  final UserLocation? location;
+
+  AuthEventUpdateUserProfile({
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    this.phoneNumber,
+    this.imagePath,
+    this.location,
+  });
 }
 
 /// Registered Event

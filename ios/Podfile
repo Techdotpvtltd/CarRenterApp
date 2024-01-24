@@ -40,7 +40,10 @@ ENV['COCOAPODS_DISABLE_STATS'] = 'true'
      target.build_configurations.each do |config|
      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
      '$(inherited)',
-     'PERMISSION_NOTIFICATION=1'
+      ## dart: PermissionGroup.notification
+     'PERMISSION_NOTIFICATIONS=1',
+      ## dart: PermissionGroup.location
+     'PERMISSION_LOCATION=1'
      ]
      end
    end

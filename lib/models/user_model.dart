@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:beasy/utilities/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -60,7 +61,6 @@ class UserModel {
       'lastName': lastName,
       'email': email,
       'location': location.toMap(),
-      'userType': userType?.index,
       'imageUrl': imageUrl,
       'countryCode': countryCode,
       'phoneNumber': phoneNumber,
@@ -68,15 +68,14 @@ class UserModel {
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  static Future<UserModel> fromMap(Map<String, dynamic> map) async {
     return UserModel(
       uid: map['uid'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       email: map['email'] as String,
       location: UserLocation.fromMap(map['location'] as Map<String, dynamic>),
-      userType: UserType.values.firstWhere(
-          (element) => element.index == (map['userType'] as int? ?? 0)),
+      userType: await LocalPreferences.getUserType(),
       imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
       countryCode:
           map['countryCode'] != null ? map['countryCode'] as int : null,
@@ -87,9 +86,6 @@ class UserModel {
   }
 
   String toJson() => json.encode(toMap());
-
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

@@ -54,25 +54,24 @@ class _ForgotScreenState extends State<ForgotScreen> {
         child: CustomAppBar(),
       ),
       body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: OnBoardingCenteredWidget(
-              iconPath: Assets.lockIcon,
-              title: AppStrings.forgotPassword,
-              subtitle: AppStrings.pleaseEnterEmailForForgotPassword,
-              centeredWidget: CustomTitleTextField(
-                controller: _emailController,
-                errorText: _errorMessage,
-                fieldText: AppStrings.email,
-                hintText: AppStrings.enterYourEmail,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              bottomWidget: RoundedButton(
-                  title: AppStrings.next,
-                  onPressed: () {
-                    _sendEmail();
-                  }),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: OnBoardingCenteredWidget(
+            iconPath: Assets.lockIcon,
+            title: AppStrings.forgotPassword,
+            subtitle: AppStrings.pleaseEnterEmailForForgotPassword,
+            centeredWidget: CustomTitleTextField(
+              controller: _emailController,
+              errorText: _errorMessage,
+              fieldText: AppStrings.email,
+              hintText: AppStrings.enterYourEmail,
+              keyboardType: TextInputType.emailAddress,
+            ),
+            bottomWidget: RoundedButton(
+              title: AppStrings.next,
+              onPressed: () {
+                _sendEmail();
+              },
             ),
           ),
         ),

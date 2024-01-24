@@ -1,8 +1,12 @@
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
+import 'package:beasy/main.dart';
 import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
 import 'package:beasy/repositories/exceptions/data_exceptions.dart';
 import 'package:beasy/repositories/repos/auth_repo.dart';
+import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/views/common/profile_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +20,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //  Login Screen Event  ========================================
     on<AuthEventLoadedLogin>((event, emit) => emit(AuthStateLoadedLogin()));
 
+    // Display User Type Screen
+    on<AuthEventNeedsToSetUserType>(
+      (event, emit) => emit(AuthStateNeedsToSetUserType()),
+    );
     // On Logout Request  ============================================
     on<AuthEventPerformLogout>(
       (event, emit) async {
@@ -28,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         (event, emit) => emit(AuthStateSplashActionDone()));
 
     on<AuthEventPerformLogin>((event, emit) async {
-      emit(AuthStateLoging(
+      emit(AuthStateLogging(
         isLoading: true,
         loadingText: "Login...",
       ));
@@ -38,12 +46,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             .loginUser(withEmail: event.email, withPassword: event.password);
         emit(AuthStateLoggedIn(isLoading: false));
       } on BeasyException catch (e) {
-        emit(AuthStateLoging(
+        if (e is DataExceptionNotFound) {
+          emit(AuthStateLoggedIn(isLoading: false));
+          await NavigationService.go(
+            navKey.currentContext!,
+            const ProfileScreen(
+              isEditingEnabled: true,
+              isShowBack: false,
+              isCommingFromLogin: true,
+            ),
+          );
+          return;
+        }
+
+        emit(AuthStateLogging(
           isLoading: false,
           exception: e,
         ));
-      } on Exception catch (e) {
-        emit(AuthStateLoging(
+      } on FirebaseException catch (e) {
+        emit(AuthStateLogging(
           isLoading: false,
           exception: DataExceptionUnknown(message: e.toString()),
         ));
@@ -70,7 +91,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } on Exception catch (e) {
         debugPrint(e.toString());
         emit(AuthStateSettingUserType(
-            isLoading: false, exception: DataExceptionUnknown()));
+            isLoading: false,
+            exception: DataExceptionUnknown(message: e.toString())));
       }
     });
     // Show Noticiation Enabled Screen  ========================================
@@ -83,6 +105,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) => emit(AuthStateNeedToAllowLocation()),
     );
 
+    /// Updating User Profile
+    on<AuthEventUpdateUserProfile>(
+      (event, emit) async {
+        emit(AuthStateUpdatingUserProfile(
+          isLoading: true,
+          loadingText: "Updating..",
+        ));
+
+        try {
+          await AuthRepo().updateUser(
+            firstName: event.firstName,
+            lastName: event.lastName,
+            email: event.email,
+            userLocation: event.location,
+            phoneNumber: event.phoneNumber,
+            imagePath: event.imagePath,
+          );
+          emit(AuthStateUpdatedUserProfile(isLoading: false));
+        } on BeasyException catch (e) {
+          emit(AuthStateUpdatingUserProfile(
+            isLoading: false,
+            exception: e,
+          ));
+        } on Exception catch (e) {
+          emit(AuthStateUpdatingUserProfile(
+            isLoading: false,
+            exception: DataExceptionUnknown(message: e.toString()),
+          ));
+        }
+      },
+    );
     // Show Next Screens  ============================================
     on<AuthEventRegistering>(
       (event, emit) async {
@@ -98,15 +151,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             confirmPassword: event.confirmPassword,
             location: event.location,
           );
-          emit(AuthStateNeedsToSetUserType(
-              isLoading: false, isComingFromSignup: true));
           return;
         } on BeasyException catch (e) {
           emit(AuthStateRegistering(isLoading: false, exception: e));
         } on Exception catch (e) {
           debugPrint(e.toString());
           emit(AuthStateRegistering(
-              isLoading: false, exception: DataExceptionUnknown()));
+              isLoading: false,
+              exception: DataExceptionUnknown(message: e.toString())));
         }
       },
     );

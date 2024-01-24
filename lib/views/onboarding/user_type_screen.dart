@@ -5,9 +5,8 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/utilities/shared_preferences.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
-import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
-import 'package:beasy/utilities/widgets/dialogs/loaders.dart';
 import 'package:beasy/utilities/widgets/onboarding_text_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -26,23 +25,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        state.isLoading ? Loader().show() : Loader().hide();
-
-        if (state is AuthStateSetUserType) {
-          CustomDilaogs().successBox(
-              message: "Your profile has updated. Please login to continue.",
-              positiveTitle: "Go to Login",
-              onPositivePressed: () {
-                context.read<AuthBloc>().add(AuthEventLoadedLogin());
-              });
-        }
-        if (state is AuthStateSettingUserType) {
-          if (state.exception != null) {
-            CustomDilaogs().errorBox(message: state.exception?.message);
-          }
-        }
-      },
+      listener: (context, state) {},
       child: BackgroundWidget(
         topWidget: const Padding(
           padding: EdgeInsets.only(top: 0, left: 33, right: 33, bottom: 25),
@@ -95,17 +78,26 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       ],
                     ),
                     gapH20,
-                    Container(
-                      padding: const EdgeInsets.all(40),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF6F8FE),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        Assets.userIcon,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.contain,
+                    InkWell(
+                      onTap: () {
+                        setState(
+                          () {
+                            _value = 0;
+                          },
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(40),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFF6F8FE),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.asset(
+                          Assets.userIcon,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                     gapH38,
@@ -153,27 +145,35 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       ],
                     ),
                     gapH20,
-                    Container(
-                      padding: const EdgeInsets.all(40),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF6F8FE),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        Assets.vanIcon,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.contain,
+                    InkWell(
+                      onTap: () {
+                        setState(
+                          () {
+                            _value = 1;
+                          },
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(40),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFF6F8FE),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.asset(
+                          Assets.vanIcon,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                     const Spacer(),
                     gapH24,
                     RoundedButton(
-                      title: "Update",
-                      onPressed: () {
-                        context
-                            .read<AuthBloc>()
-                            .add(AuthEventUserTypeSet(selectedIndex: _value));
+                      title: "Next",
+                      onPressed: () async {
+                        LocalPreferences.setUserType(index: _value);
+                        context.read<AuthBloc>().add(AuthEventLoadedLogin());
                       },
                     ),
                   ],

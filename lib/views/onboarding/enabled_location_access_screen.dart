@@ -1,11 +1,12 @@
+import 'package:beasy/utilities/shared_preferences.dart';
+import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../blocs/auth/auth_bloc.dart';
-import '../../blocs/auth/auth_event.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../utilities/constants/asstes.dart';
 import '../../utilities/constants/constants.dart';
 import '../../utilities/constants/strings.dart';
+import '../../utilities/navigation_service.dart';
 import '../../utilities/widgets/onboarding_centered_widget.dart';
 import '../../utilities/widgets/rounded_button.dart';
 import '../../utilities/widgets/text_button_child_widget.dart';
@@ -27,17 +28,37 @@ class EnableLocationAccessScreen extends StatelessWidget {
             bottomWidget: Column(
               children: [
                 RoundedButton(
-                    title: AppStrings.allowLocationAccess,
-                    onPressed: () {
-                      context.read<AuthBloc>().add(AuthEventRegistered());
-                    }),
+                  title: AppStrings.allowLocationAccess,
+                  onPressed: () async {
+                    final status = await Permission.location.request();
+                    if (status.isPermanentlyDenied) {
+                      CustomDilaogs().alertBox(
+                        title: "Location Permission Required",
+                        message:
+                            "Please allow location permission in the setting.",
+                        negativeTitle: "Close",
+                        positiveTitle: "Open Setting",
+                        onPositivePressed: () async {
+                          await Geolocator.openLocationSettings();
+                        },
+                        icon: Icons.pin,
+                      );
+                    }
+                    if (status.isGranted) {
+                      // ignore: use_build_context_synchronously
+                      NavigationService.back(context);
+                    }
+                  },
+                ),
                 gapH18,
                 TextButton(
                   onPressed: () {
-                    context.read<AuthBloc>().add(AuthEventRegistered());
+                    LocalPreferences.storeLaterLocationPermission();
+                    NavigationService.back(context);
                   },
                   child: const TextButtonChildWidget2(
-                      text: AppStrings.enterLocationManully),
+                    text: AppStrings.enterLocationManully,
+                  ),
                 )
               ],
             ),
