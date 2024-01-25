@@ -7,6 +7,7 @@ import 'package:beasy/repositories/validations/data_validations.dart';
 import 'package:beasy/utilities/shared_preferences.dart';
 import 'package:beasy/web_services/firebase_auth_serivces.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthRepo {
@@ -32,10 +33,16 @@ class AuthRepo {
 
   Future<void> loginWithApple() async {
     try {
-      final credential = await SignInWithApple.getAppleIDCredential(scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ]);
+      final credential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+          webAuthenticationOptions: WebAuthenticationOptions(
+              clientId:
+                  "861185321003-an9rs7qk0ni6mpj1onvpf7vnu9pboc5m.apps.googleusercontent.com",
+              redirectUri: Uri.parse(
+                  "https://beasy-2e75f.firebaseapp.com/__/auth/handler")));
 
       AuthCredential authCredential = OAuthProvider("apple.com").credential(
           accessToken: credential.authorizationCode,
@@ -49,6 +56,8 @@ class AuthRepo {
       throw throwDataException(errorCode: e.code);
     } on AuthException catch (_) {
       rethrow;
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
