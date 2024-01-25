@@ -59,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
           emit(AuthStateLogging(isLoading: false));
           if (!UserRepo().isUserNull) {
-            emit(AuthStateLoggedIn());
+            emit(AuthStateLoggedIn(isLoading: false));
           } else {
             emit(AuthStateLogging(
               isLoading: false,
@@ -103,7 +103,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         emit(AuthStateUpdatingUserProfile(
           isLoading: true,
-          loadingText: "Updating..",
+          loadingText: "Updating Profile..",
         ));
 
         try {
@@ -118,13 +118,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthStateUpdatedUserProfile(isLoading: false));
         } on BeasyException catch (e) {
           emit(AuthStateUpdatingUserProfile(
-            isLoading: false,
-            exception: e,
-          ));
+              isLoading: false,
+              exception: e,
+              loadingText: "Updating Profile Error..."));
         } on Exception catch (e) {
           emit(AuthStateUpdatingUserProfile(
             isLoading: false,
             exception: DataExceptionUnknown(message: e.toString()),
+            loadingText: "Updating Profile Error...",
           ));
         }
       },
@@ -144,7 +145,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             confirmPassword: event.confirmPassword,
             location: event.location,
           );
-          return;
+          emit(AuthStateRegistered(isLoading: false));
         } on BeasyException catch (e) {
           emit(AuthStateRegistering(isLoading: false, exception: e));
         } on Exception catch (e) {
@@ -155,5 +156,42 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+
+    // Apple Login Event
+    on<AuthEventAppleLogin>((event, emit) async {
+      try {
+        emit(AuthStateLogging(
+            isLoading: true, loadingText: "Signing with apple."));
+        await AuthRepo().loginWithApple();
+        emit(AuthStateLoggedIn(isLoading: false));
+      } on BeasyException catch (e) {
+        if (e is AuthExceptionUserNotFound || e is DataExceptionNotFound) {
+          await NavigationService.go(
+            navKey.currentContext!,
+            const ProfileScreen(
+              isEditingEnabled: true,
+              isShowBack: false,
+              isCommingFromLogin: true,
+            ),
+          );
+
+          if (UserRepo().isUserNull) {
+            emit(AuthStateLogging(
+                isLoading: false, exception: AuthExceptionUnAuthorized()));
+          }
+          emit(AuthStateLoggedIn(isLoading: false));
+          return;
+        }
+        emit(AuthStateAppleLogging(isLoading: false, exception: e));
+      } on Exception catch (e) {
+        emit(AuthStateLogging(
+          isLoading: false,
+          exception: AuthExceptionUnknown(message: e.toString()),
+        ));
+      }
+    });
+
+    // Google Login Event
+    on<AuthEventGoogleLogin>((event, emit) {});
   }
 }

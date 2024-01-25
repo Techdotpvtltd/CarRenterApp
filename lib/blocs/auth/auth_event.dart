@@ -85,3 +85,9 @@ class AuthEventSetLocationAccess extends AuthEvent {}
 
 /// Logout User Event
 class AuthEventPerformLogout extends AuthEvent {}
+
+// Apple Login Event
+class AuthEventAppleLogin extends AuthEvent {}
+
+// Google Login Event
+class AuthEventGoogleLogin extends AuthEvent {}

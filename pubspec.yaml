@@ -54,6 +54,10 @@ dependencies:
   geolocator: ^10.1.0
   geocoding: ^2.1.1
   cached_network_image: ^3.3.1
+  flutter_native_image: ^0.0.6+1
+  image_picker: ^1.0.7
+  bottom_sheet_scaffold: ^0.1.9
+  sign_in_with_apple: ^5.0.0
 
   # google_maps_flutter:
 

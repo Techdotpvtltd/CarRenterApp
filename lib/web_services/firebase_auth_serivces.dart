@@ -23,6 +23,12 @@ class FirebaseAuthService {
         email: withEmail, password: withPassword);
   }
 
+  // Login User With Credentials ====================================
+  Future<UserCredential> loginWithCredentials(
+      {required AuthCredential credential}) async {
+    return await _auth.signInWithCredential(credential);
+  }
+
 // Send Reset Password Mail ====================================
   Future<void> resetPassword({required String email}) async {
     await _auth.sendPasswordResetEmail(email: email);

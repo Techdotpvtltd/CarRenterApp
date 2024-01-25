@@ -227,18 +227,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SocialIconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context
+                                .read<AuthBloc>()
+                                .add(AuthEventGoogleLogin());
+                          },
                           icon: Assets.googleIcon,
                         ),
                         gapW24,
                         SocialIconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<AuthBloc>().add(AuthEventAppleLogin());
+                          },
                           icon: Assets.appleIcon,
-                        ),
-                        gapW24,
-                        SocialIconButton(
-                          onPressed: () {},
-                          icon: Assets.fbIcon,
                         ),
                       ],
                     ),

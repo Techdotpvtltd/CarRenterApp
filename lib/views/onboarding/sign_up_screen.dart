@@ -72,6 +72,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             }
           }
         }
+
+        if (state is AuthStateRegistered) {
+          CustomDilaogs().successBox(
+            message:
+                "Your account has been created. Please click on Go to Login button.",
+            positiveTitle: "Go to Login",
+            onPositivePressed: () {
+              context.read<AuthBloc>().add(AuthEventLoadedLogin());
+            },
+          );
+        }
       }),
       child: BackgroundWidget(
         topWidget: const Padding(

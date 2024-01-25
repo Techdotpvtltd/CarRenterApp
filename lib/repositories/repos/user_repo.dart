@@ -1,6 +1,7 @@
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 import '../../utilities/constants/constants.dart';
 import '../../web_services/firestore_services.dart';
@@ -34,6 +35,7 @@ class UserRepo {
   Future<void> fetch() async {
     try {
       final String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
+      debugPrint("usrr id = $userId");
       final data = await FirestoreService()
           .fetchSingleRecord(path: FIREBASE_COLLECTION_USER, docId: userId);
 
@@ -77,7 +79,6 @@ class UserRepo {
         docId: user.uid,
         data: user.toMap(),
       );
-      _userModel = user;
     } on FirebaseAuthException catch (e) {
       throw throwAuthException(errorCode: e.code, message: e.message);
     } on FirebaseException catch (e) {

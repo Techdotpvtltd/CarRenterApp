@@ -28,6 +28,26 @@ class AuthStateRegisterring extends AuthState {
   AuthStateRegisterring({this.exception, super.isLoading});
 }
 
+// Auth State Loging with apple
+class AuthStateAppleLogging extends AuthState {
+  final BeasyException? exception;
+  AuthStateAppleLogging({super.isLoading, super.loadingText, this.exception});
+}
+
+class AuthStateAppleLoggedIn extends AuthState {
+  AuthStateAppleLoggedIn({super.isLoading});
+}
+
+// Auth State Loging with google
+class AuthStateGoogleLogging extends AuthState {
+  final BeasyException? exception;
+  AuthStateGoogleLogging({super.isLoading, super.loadingText, this.exception});
+}
+
+class AuthStateGoogleLoggedIn extends AuthState {
+  AuthStateGoogleLoggedIn({super.isLoading});
+}
+
 // AuthStateLoggedIn  ========================================
 class AuthStateLoggedIn extends AuthState {
   AuthStateLoggedIn({super.isLoading});

@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:861185321003:android:8909265d0031ce0036a26e",
+        "mobilesdk_app_id": "1:861185321003:android:18d504e63b4d7d0d36a26e",
         "android_client_info": {
-          "package_name": "com.techdot.beasy"
+          "package_name": "com.techdot.beasyapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "861185321003-an9rs7qk0ni6mpj1onvpf7vnu9pboc5m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDfHNkI_p_TLfD5OXrRR-_6o4wo3_ysWJQ"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861185321003-an9rs7qk0ni6mpj1onvpf7vnu9pboc5m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "861185321003-08ivr9misab0mgs3v8nrqun1tvj0edeq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.techdot.beasyapp"
+              }
+            }
+          ]
         }
       }
     }

@@ -91,10 +91,6 @@ class _BeasyPage extends StatelessWidget {
           return const LoginScreen();
         }
 
-        if (state is AuthStateLoggedIn) {
-          return const HomeDrawer();
-        }
-
         if (state is AuthStateLoadedSignup) {
           return const SignUpScreen();
         }
@@ -110,11 +106,9 @@ class _BeasyPage extends StatelessWidget {
           return const EnableLocationAccessScreen();
         }
 
-        if (state is AuthStateRegistered) {
-          return const LoginScreen();
-        }
-
-        if (state is AuthStateSplashActionDone) {
+        if (state is AuthStateSplashActionDone ||
+            state is AuthStateAppleLoggedIn ||
+            state is AuthStateLoggedIn) {
           return const HomeDrawer();
         }
 
@@ -131,7 +125,8 @@ class _BeasyPage extends StatelessWidget {
             current is AuthStateNeedToAllowLocation ||
             current is AuthStateLoggedIn ||
             current is AuthStateSplashActionDone ||
-            current is AuthStateInitialize;
+            current is AuthStateInitialize ||
+            current is AuthStateAppleLoggedIn;
       },
     );
   }

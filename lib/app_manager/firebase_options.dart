@@ -61,7 +61,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDfHNkI_p_TLfD5OXrRR-_6o4wo3_ysWJQ',
-    appId: '1:861185321003:android:8909265d0031ce0036a26e',
+    appId: '1:861185321003:android:18d504e63b4d7d0d36a26e',
     messagingSenderId: '861185321003',
     projectId: 'beasy-2e75f',
     storageBucket: 'beasy-2e75f.appspot.com',
@@ -69,7 +69,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDDH76bJ-Mog_3dZWp3X37iASTM851keXo',
-    appId: '1:861185321003:ios:6db7fe39c437e0a436a26e',
+    appId: '1:861185321003:ios:b756bd350b908e1336a26e',
     messagingSenderId: '861185321003',
     projectId: 'beasy-2e75f',
     storageBucket: 'beasy-2e75f.appspot.com',

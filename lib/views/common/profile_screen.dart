@@ -1,4 +1,3 @@
-import 'package:beasy/app_manager/app_bloc_manager.dart';
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
@@ -65,6 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _isEditingEnabled = widget.isEditingEnabled;
       if (!UserRepo().isUserNull) {
         final user = UserRepo().user;
+
         _fnController.text = user.firstName;
         _emailController.text = user.email;
         _lnController.text = user.lastName;
@@ -78,10 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: AppBlocManager().authBloc,
-      child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-        return BlocListener<AuthBloc, AuthState>(
+    return BlocProvider<AuthBloc>(
+      create: (context) => AuthBloc(),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) => BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             state.isLoading
                 ? Loader().show(withText: state.loadingText)
@@ -284,8 +284,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             )),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }
