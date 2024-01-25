@@ -4,6 +4,7 @@ import 'package:beasy/main.dart';
 import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
 import 'package:beasy/repositories/exceptions/data_exceptions.dart';
 import 'package:beasy/repositories/repos/auth_repo.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/views/common/profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -79,22 +80,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) => emit(AuthStateLoadedSignup()),
     );
 
-    // Show UserType Screen  ========================================
-    on<AuthEventUserTypeSet>((event, emit) async {
-      emit(AuthStateSettingUserType(
-          isLoading: true, loadingText: "Setting user role..."));
-      try {
-        await AuthRepo().setUserType(index: event.selectedIndex);
-        emit(AuthStateSetUserType(isLoading: false));
-      } on BeasyException catch (e) {
-        emit(AuthStateSettingUserType(isLoading: false, exception: e));
-      } on Exception catch (e) {
-        debugPrint(e.toString());
-        emit(AuthStateSettingUserType(
-            isLoading: false,
-            exception: DataExceptionUnknown(message: e.toString())));
-      }
-    });
+    // // Show UserType Screen  ========================================
+    // on<AuthEventUserTypeSet>((event, emit) async {
+    //   emit(AuthStateSettingUserType(
+    //       isLoading: true, loadingText: "Setting user role..."));
+    //   try {
+    //     await AuthRepo().setUserType(index: event.selectedIndex);
+    //     emit(AuthStateSetUserType(isLoading: false));
+    //   } on BeasyException catch (e) {
+    //     emit(AuthStateSettingUserType(isLoading: false, exception: e));
+    //   } on Exception catch (e) {
+    //     debugPrint(e.toString());
+    //     emit(AuthStateSettingUserType(
+    //         isLoading: false,
+    //         exception: DataExceptionUnknown(message: e.toString())));
+    //   }
+    // });
     // Show Noticiation Enabled Screen  ========================================
     on<AuthEventNeedsToEnableNotification>(
       (event, emit) => emit(AuthStateNeedsToEnableNotification()),
@@ -114,7 +115,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ));
 
         try {
-          await AuthRepo().updateUser(
+          await UserRepo().update(
             firstName: event.firstName,
             lastName: event.lastName,
             email: event.email,

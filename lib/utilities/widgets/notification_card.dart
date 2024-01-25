@@ -1,5 +1,5 @@
-import 'package:beasy/app_manager/app_manager.dart';
 import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/asstes.dart';
@@ -12,8 +12,7 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isRentalUser =
-        AppManager().user?.userType == UserType.rentalUser;
+    final bool isRentalUser = UserRepo().user.userType == UserType.rentalUser;
     return Container(
       decoration: BoxDecoration(
           color: const Color(0xffF3F4F9),

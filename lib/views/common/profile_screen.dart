@@ -1,6 +1,6 @@
-import 'package:beasy/app_manager/app_manager.dart';
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
@@ -62,8 +62,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     setState(() {
       _isEditingEnabled = widget.isEditingEnabled;
-      final user = AppManager().user;
-      if (user != null) {
+      final user = UserRepo().user;
+      if (!widget.isCommingFromLogin) {
         _fnController.text = user.firstName;
         _emailController.text = user.email;
         _lnController.text = user.lastName;

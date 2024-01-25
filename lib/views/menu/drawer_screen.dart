@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:beasy/app_manager/app_manager.dart';
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/drawer/drawer_cubit.dart';
 import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
@@ -82,7 +82,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   bloc.setOpen = false;
                                 }),
                                 mainScreen: Builder(builder: (context) {
-                                  return AppManager().user?.userType ==
+                                  return UserRepo().user.userType ==
                                           UserType.rentalUser
                                       ? currentRentalScreen(bloc.currentIndex)
                                       : currentServiceProviderScreen(

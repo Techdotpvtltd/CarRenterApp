@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:beasy/app_manager/app_manager.dart';
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
 import 'package:beasy/repositories/repos/auth_repo.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/utilities/shared_preferences.dart';
@@ -27,11 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       final currentUser = AuthRepo().currentUser();
       if (currentUser != null) {
-        await AuthRepo().fetchUser();
-        if (AppManager().user == null) {
-          bloc.add(AuthEventNeedsToSetProfile());
-          return;
-        }
+        await UserRepo().fetch();
 
         // Check for permissions
         if (!await Permission.notification.isGranted &&

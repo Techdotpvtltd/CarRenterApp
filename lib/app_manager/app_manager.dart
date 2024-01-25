@@ -1,4 +1,4 @@
-import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:flutter/material.dart';
 
 class AppManager {
@@ -10,14 +10,7 @@ class AppManager {
     return _instance;
   }
 
-  UserModel? _userModel;
-  UserModel? get user {
-    return _userModel;
-  }
-
-  set setUser(UserModel userModel) => _userModel = userModel;
-
   void clearData() {
-    _userModel = null;
+    UserRepo().clearAll();
   }
 }

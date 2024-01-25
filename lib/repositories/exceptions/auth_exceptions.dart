@@ -12,6 +12,10 @@ class AuthExceptionEmailAlreadyInUse extends AuthException {
   });
 }
 
+class AuthExceptionUnAuthorized extends AuthException {
+  AuthExceptionUnAuthorized({super.message = "Please login again."});
+}
+
 //  Email Already in Used ====================================
 class AuthExceptionInvalidUserCredentials extends AuthException {
   AuthExceptionInvalidUserCredentials(

@@ -84,12 +84,6 @@ class AuthStateSetUserType extends AuthState {
   AuthStateSetUserType({super.isLoading});
 }
 
-class AuthStateSettingUserType extends AuthState {
-  final BeasyException? exception;
-  AuthStateSettingUserType(
-      {super.isLoading, this.exception, super.loadingText});
-}
-
 // UserTypeSet State  ========================================
 class AuthStateNeedsToSetUserType extends AuthState {
   AuthStateNeedsToSetUserType({super.isLoading});
