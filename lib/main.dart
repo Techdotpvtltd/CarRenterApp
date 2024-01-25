@@ -1,5 +1,7 @@
+import 'package:beasy/app_manager/app_bloc_manager.dart';
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
+import 'package:beasy/blocs/drawer/drawer_cubit.dart';
 import 'package:beasy/blocs/rental/rental_product_bloc.dart';
 import 'package:beasy/blocs/service_provider/sp_bloc.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
@@ -54,10 +56,14 @@ class _BeasyApp extends StatelessWidget {
       ),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+          BlocProvider<AuthBloc>(
+              create: (context) => AppBlocManager().authBloc),
           BlocProvider<RentalProductBloc>(
-              create: (context) => RentalProductBloc()),
-          BlocProvider<SPBloc>(create: (context) => SPBloc()),
+              create: (context) => AppBlocManager().rentalBloc),
+          BlocProvider<SPBloc>(create: (context) => AppBlocManager().spBloc),
+          BlocProvider(
+            create: (context) => DrawerCubit(),
+          )
         ],
         child: const _BeasyPage(),
       ),

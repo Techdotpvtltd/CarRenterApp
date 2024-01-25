@@ -7,7 +7,6 @@ import 'package:beasy/repositories/validations/data_validations.dart';
 import 'package:beasy/utilities/shared_preferences.dart';
 import 'package:beasy/web_services/firebase_auth_serivces.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class AuthRepo {
   AuthRepo();
@@ -22,10 +21,8 @@ class AuthRepo {
           .login(withEmail: withEmail, withPassword: withPassword);
       await UserRepo().fetch();
     } on FirebaseAuthException catch (e) {
-      debugPrint(e.toString());
       throw throwAuthException(errorCode: e.code, message: e.message);
     } on FirebaseException catch (e) {
-      debugPrint(e.toString());
       throw throwDataException(errorCode: e.code, message: e.message);
     }
   }

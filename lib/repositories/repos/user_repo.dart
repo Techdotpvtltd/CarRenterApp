@@ -18,6 +18,7 @@ class UserRepo {
   UserModel? _userModel;
   UserModel get user =>
       _userModel == null ? throw AuthExceptionUserNotFound() : _userModel!;
+  bool get isUserNull => _userModel == null;
 
   UserRepo._internal();
 

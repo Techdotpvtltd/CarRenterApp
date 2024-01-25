@@ -8,12 +8,16 @@ import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/widgets/network_image_widget.dart';
+import 'package:beasy/views/common/profile_screen.dart';
 import 'package:beasy/views/menu/all_booking.dart';
 import 'package:beasy/views/service_provider/sp_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
+import '../../blocs/auth/auth_state.dart';
 import '../../blocs/drawer/drawer_screen_state.dart';
 import '../rental/bottom_navi.dart';
 import '../common/notification_screen.dart';
@@ -48,171 +52,186 @@ class HomeDrawer extends StatefulWidget {
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
+  UserModel _user = UserRepo().user;
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<DrawerCubit>(
-      create: (context) => DrawerCubit(),
-      child: BlocBuilder<DrawerCubit, DrawerScreenState>(
-        builder: (context, state) {
-          final bloc = context.read<DrawerCubit>();
+    final bloc = context.read<DrawerCubit>();
 
-          return BlocListener<DrawerCubit, DrawerScreenState>(
-            listener: (context, state) {
-              if (state is DrawerStateToggled) {}
-            },
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: Stack(
-                children: [
-                  Positioned.fill(
-                      child: Container(
-                    color: Colors.white,
-                  )),
-                  Positioned.fill(
-                    child: Builder(
-                      builder: (context) {
-                        return Stack(
-                          children: [
-                            ZoomDrawer(
-                                disableDragGesture: true,
-                                style: DrawerStyle.defaultStyle,
-                                controller: bloc.zoomDrawerController,
-                                menuScreen: DrawerScreen(setIndex: (index) {
-                                  bloc.setIndex = index;
-                                  bloc.setOpen = false;
-                                }),
-                                mainScreen: Builder(builder: (context) {
-                                  return UserRepo().user.userType ==
-                                          UserType.rentalUser
-                                      ? currentRentalScreen(bloc.currentIndex)
-                                      : currentServiceProviderScreen(
-                                          bloc.currentIndex);
-                                }),
-                                borderRadius: 30,
-                                showShadow: false,
-                                angle: -10.0,
-                                slideWidth: screenWidth * 0.55,
-                                menuBackgroundColor: Colors.transparent),
-                            bloc.open
-                                ? Positioned.fill(
-                                    child: SafeArea(
-                                      child: Padding(
+    return BlocBuilder<DrawerCubit, DrawerScreenState>(
+        builder: (context, state) {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            Positioned.fill(
+                child: Container(
+              color: Colors.white,
+            )),
+            Positioned.fill(
+              child: Builder(
+                builder: (context) {
+                  return Stack(
+                    children: [
+                      ZoomDrawer(
+                          disableDragGesture: true,
+                          style: DrawerStyle.defaultStyle,
+                          controller: bloc.zoomDrawerController,
+                          menuScreen: DrawerScreen(setIndex: (index) {
+                            bloc.setIndex = index;
+                            bloc.setOpen = false;
+                          }),
+                          mainScreen: Builder(builder: (context) {
+                            return UserRepo().user.userType ==
+                                    UserType.rentalUser
+                                ? currentRentalScreen(bloc.currentIndex)
+                                : currentServiceProviderScreen(
+                                    bloc.currentIndex);
+                          }),
+                          borderRadius: 30,
+                          showShadow: false,
+                          angle: -10.0,
+                          slideWidth: screenWidth * 0.55,
+                          menuBackgroundColor: Colors.transparent),
+                      bloc.open
+                          ? Positioned.fill(
+                              child: SafeArea(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(children: [
+                                        InkWell(
+                                          onTap: () {
+                                            bloc.closeDrawer();
+                                          },
+                                          child: const Icon(Icons.arrow_back,
+                                              color: Colors.black),
+                                        ),
+                                        const Spacer(),
+                                      ]),
+                                      gapH10,
+                                      Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 24.0),
+                                            horizontal: 12.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Row(children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  bloc.closeDrawer();
-                                                },
-                                                child: const Icon(
-                                                    Icons.arrow_back,
-                                                    color: Colors.black),
-                                              ),
-                                              const Spacer(),
-                                            ]),
-                                            gapH10,
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(
-                                                    width: 76,
-                                                    height: 76,
-                                                    child: CircleAvatar(
-                                                      radius: 100,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      backgroundImage: AssetImage(
-                                                          "assets/images/boy.png"),
-                                                    ),
+                                            SizedBox(
+                                              width: 76,
+                                              height: 76,
+                                              child: Container(
+                                                clipBehavior: Clip.hardEdge,
+                                                decoration: const BoxDecoration(
+                                                  color:
+                                                      StyleGuide.primaryColor2,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(300),
                                                   ),
-                                                  gapH10,
-                                                  const Text(
-                                                    "Hey, 👋",
-                                                    style: TextStyle(
-                                                      color:
-                                                          StyleGuide.textColor2,
-                                                      fontFamily: Assets
-                                                          .plusJakartaFont,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 18.78,
-                                                    ),
-                                                  ),
-                                                  gapH4,
-                                                  SizedBox(
-                                                    width: screenWidth * 0.36,
-                                                    child: const Text(
-                                                      "Alisson becker",
-                                                      maxLines: 2,
-                                                      style: TextStyle(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        color: StyleGuide
-                                                            .textColor2,
-                                                        fontFamily: Assets
-                                                            .plusJakartaFont,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 18.78,
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
+                                                ),
+                                                child: NetworkImageWidget(
+                                                  url: _user.imageUrl ?? "",
+                                                  onTapImage: () {
+                                                    bloc.closeDrawer();
+                                                    NavigationService.go(
+                                                      context,
+                                                      const ProfileScreen(
+                                                          isShowBack: true),
+                                                    );
+                                                    context
+                                                        .read<AuthBloc>()
+                                                        .stream
+                                                        .listen((state) {
+                                                      if (state
+                                                          is AuthStateUpdatedUserProfile) {
+                                                        setState(() {
+                                                          _user =
+                                                              UserRepo().user;
+                                                        });
+                                                      }
+                                                    });
+                                                  },
+                                                ),
                                               ),
                                             ),
+                                            gapH10,
+                                            const Text(
+                                              "Hey, 👋",
+                                              style: TextStyle(
+                                                color: StyleGuide.textColor2,
+                                                fontFamily:
+                                                    Assets.plusJakartaFont,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18.78,
+                                              ),
+                                            ),
+                                            gapH4,
+                                            SizedBox(
+                                              width: screenWidth * 0.36,
+                                              child: Text(
+                                                "${_user.firstName} ${_user.lastName}",
+                                                maxLines: 2,
+                                                style: const TextStyle(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: StyleGuide.textColor2,
+                                                  fontFamily:
+                                                      Assets.plusJakartaFont,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 18.78,
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  )
-                                : const SizedBox(),
-                            bloc.open
-                                ? Positioned.fill(
-                                    child: Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: SafeArea(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 38.0, vertical: 20),
-                                          child: InkWell(
-                                            onTap: () {
-                                              context.read<AuthBloc>().add(
-                                                  AuthEventPerformLogout());
-                                            },
-                                            child: const Text(
-                                              "Sign Out",
-                                              style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 16),
-                                            ),
-                                          ),
-                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      bloc.open
+                          ? Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: SafeArea(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 38.0, vertical: 20),
+                                    child: InkWell(
+                                      onTap: () {
+                                        bloc.closeDrawer();
+                                        context
+                                            .read<AuthBloc>()
+                                            .add(AuthEventPerformLogout());
+                                      },
+                                      child: const Text(
+                                        "Sign Out",
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 16),
                                       ),
                                     ),
-                                  )
-                                : const SizedBox()
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox()
+                    ],
+                  );
+                },
               ),
             ),
-          );
-        },
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 
   Widget currentServiceProviderScreen(int currentIndex) {
