@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:io' show Platform;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,7 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         state.isLoading
-            ? Loader().show(withText: state.loadingText)
+            ? Loader()
+                .show(withText: state.loadingText, barrierDismissible: true)
             : Loader().hide();
 
         if (state is AuthStateLogging) {
@@ -234,12 +236,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           icon: Assets.googleIcon,
                         ),
-                        gapW24,
-                        SocialIconButton(
-                          onPressed: () {
-                            context.read<AuthBloc>().add(AuthEventAppleLogin());
-                          },
-                          icon: Assets.appleIcon,
+                        Visibility(
+                          visible: Platform.isIOS,
+                          child: Row(
+                            children: [
+                              gapW24,
+                              SocialIconButton(
+                                onPressed: () {
+                                  context
+                                      .read<AuthBloc>()
+                                      .add(AuthEventAppleLogin());
+                                },
+                                icon: Assets.appleIcon,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

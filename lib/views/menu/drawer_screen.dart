@@ -52,7 +52,17 @@ class HomeDrawer extends StatefulWidget {
 }
 
 class _HomeDrawerState extends State<HomeDrawer> {
-  UserModel _user = UserRepo().user;
+  UserModel? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!UserRepo().isUserNull) {
+      setState(() {
+        _user = UserRepo().user;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,39 +135,27 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                             SizedBox(
                                               width: 76,
                                               height: 76,
-                                              child: Container(
-                                                clipBehavior: Clip.hardEdge,
-                                                decoration: const BoxDecoration(
-                                                  color:
-                                                      StyleGuide.primaryColor2,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(300),
-                                                  ),
-                                                ),
-                                                child: NetworkImageWidget(
-                                                  url: _user.imageUrl ?? "",
-                                                  onTapImage: () {
-                                                    bloc.closeDrawer();
-                                                    NavigationService.go(
-                                                      context,
-                                                      const ProfileScreen(
-                                                          isShowBack: true),
-                                                    );
-                                                    context
-                                                        .read<AuthBloc>()
-                                                        .stream
-                                                        .listen((state) {
-                                                      if (state
-                                                          is AuthStateUpdatedUserProfile) {
-                                                        setState(() {
-                                                          _user =
-                                                              UserRepo().user;
-                                                        });
-                                                      }
-                                                    });
-                                                  },
-                                                ),
+                                              child: NetworkImageWidget(
+                                                url: _user?.imageUrl ?? "",
+                                                onTapImage: () {
+                                                  bloc.closeDrawer();
+                                                  NavigationService.go(
+                                                    context,
+                                                    const ProfileScreen(
+                                                        isShowBack: true),
+                                                  );
+                                                  context
+                                                      .read<AuthBloc>()
+                                                      .stream
+                                                      .listen((state) {
+                                                    if (state
+                                                        is AuthStateUpdatedUserProfile) {
+                                                      setState(() {
+                                                        _user = UserRepo().user;
+                                                      });
+                                                    }
+                                                  });
+                                                },
                                               ),
                                             ),
                                             gapH10,
@@ -175,7 +173,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                             SizedBox(
                                               width: screenWidth * 0.36,
                                               child: Text(
-                                                "${_user.firstName} ${_user.lastName}",
+                                                "${_user?.firstName} ${_user?.lastName}",
                                                 maxLines: 2,
                                                 style: const TextStyle(
                                                   overflow:

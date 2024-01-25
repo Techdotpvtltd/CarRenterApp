@@ -58,6 +58,7 @@ dependencies:
   image_picker: ^1.0.7
   bottom_sheet_scaffold: ^0.1.9
   sign_in_with_apple: ^5.0.0
+  google_sign_in: ^6.2.1
 
   # google_maps_flutter:
 

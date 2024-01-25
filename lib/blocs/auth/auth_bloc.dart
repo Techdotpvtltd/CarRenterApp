@@ -161,7 +161,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventAppleLogin>((event, emit) async {
       try {
         emit(AuthStateLogging(
-            isLoading: true, loadingText: "Signing with apple."));
+            isLoading: true, loadingText: "Signing with Apple."));
         await AuthRepo().loginWithApple();
         emit(AuthStateLoggedIn(isLoading: false));
       } on BeasyException catch (e) {
@@ -192,6 +192,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     // Google Login Event
-    on<AuthEventGoogleLogin>((event, emit) {});
+    on<AuthEventGoogleLogin>((event, emit) async {
+      emit(AuthStateLogging(
+          isLoading: true, loadingText: "Signing with Google."));
+      try {
+        await AuthRepo().loginWithGoogle();
+        emit(AuthStateLoggedIn(isLoading: false));
+      } on BeasyException catch (e) {
+        if (e is AuthExceptionUserNotFound || e is DataExceptionNotFound) {
+          await NavigationService.go(
+            navKey.currentContext!,
+            const ProfileScreen(
+              isEditingEnabled: true,
+              isShowBack: false,
+              isCommingFromLogin: true,
+            ),
+          );
+
+          if (UserRepo().isUserNull) {
+            emit(AuthStateLogging(
+                isLoading: false, exception: AuthExceptionUnAuthorized()));
+          }
+          emit(AuthStateLoggedIn(isLoading: false));
+          return;
+        }
+        emit(AuthStateAppleLogging(isLoading: false, exception: e));
+      } on Exception catch (e) {
+        emit(AuthStateLogging(
+          isLoading: false,
+          exception: AuthExceptionUnknown(message: e.toString()),
+        ));
+      }
+    });
   }
 }

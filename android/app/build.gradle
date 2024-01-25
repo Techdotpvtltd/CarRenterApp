@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
 }
 
 def localProperties = new Properties()
@@ -63,7 +64,7 @@ android {
 
   dependencies {
     implementation 'com.android.support:multidex:latest'
-      implementation "androidx.activity:activity:latest"
+    implementation "androidx.activity:activity:latest"
   }
 }
 
@@ -71,4 +72,5 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+}

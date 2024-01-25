@@ -1,10 +1,13 @@
 import 'package:beasy/blocs/drawer/drawer_cubit.dart';
+import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/navigation_service.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
+import 'package:beasy/utilities/widgets/network_image_widget.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_card.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_section_widget.dart';
 import 'package:beasy/utilities/widgets/search_widget.dart';
@@ -24,6 +27,15 @@ class RentalHomeScreen extends StatefulWidget {
 
 class _RentalHomeScreenState extends State<RentalHomeScreen> {
   int _selectedBrand = 0;
+  UserModel? _userModel;
+
+  @override
+  void initState() {
+    if (!UserRepo().isUserNull) {
+      _userModel = UserRepo().user;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +62,9 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
                   height: 16,
                 ),
                 gapW10,
-                const Text(
-                  "Ngangklik,Sleman",
-                  style: TextStyle(
+                Text(
+                  "${_userModel?.location.city}, ${_userModel?.location.country}",
+                  style: const TextStyle(
                     fontFamily: Assets.plusJakartaFont,
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
@@ -60,10 +72,10 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
                   ),
                 ),
                 const Spacer(),
-                const CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage("assets/images/boy.png"),
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: NetworkImageWidget(url: _userModel?.imageUrl ?? ""),
                 ),
               ],
             ),
