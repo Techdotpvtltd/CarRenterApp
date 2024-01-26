@@ -3,8 +3,8 @@
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
-import 'package:beasy/utilities/navigation_service.dart';
-import 'package:beasy/utilities/shared_preferences.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
+import 'package:beasy/utilities/extensions/shared_preferences.dart';
 import 'package:beasy/utilities/widgets/onboarding_centered_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/utilities/widgets/text_button_child_widget.dart';

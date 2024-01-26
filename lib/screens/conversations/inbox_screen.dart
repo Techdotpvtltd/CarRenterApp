@@ -4,7 +4,7 @@ import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
-import 'package:beasy/views/conversations/bubble_widget.dart';
+import 'package:beasy/screens/conversations/bubble_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

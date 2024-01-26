@@ -8,11 +8,11 @@ import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/network_image_widget.dart';
-import 'package:beasy/views/common/profile_screen.dart';
-import 'package:beasy/views/menu/all_booking.dart';
-import 'package:beasy/views/service_provider/sp_home_screen.dart';
+import 'package:beasy/screens/common/profile_screen.dart';
+import 'package:beasy/screens/menu/all_booking.dart';
+import 'package:beasy/screens/service_provider/sp_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -135,7 +135,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                             SizedBox(
                                               width: 76,
                                               height: 76,
-                                              child: NetworkImageWidget(
+                                              child: CircleNetworkImage(
                                                 url: _user?.imageUrl ?? "",
                                                 onTapImage: () {
                                                   bloc.closeDrawer();

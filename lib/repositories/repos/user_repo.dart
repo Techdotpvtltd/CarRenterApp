@@ -1,6 +1,8 @@
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import '../../utilities/constants/constants.dart';
@@ -140,6 +142,19 @@ class UserRepo {
       throw throwAuthException(errorCode: e.code, message: e.message);
     } on FirebaseException catch (e) {
       throw throwDataException(errorCode: e.code);
+    }
+  }
+
+  /// Upload User Profile
+  Future<String> uploadProfile({required String path}) async {
+    try {
+      return "";
+    } on FirebaseException catch (e) {
+      throw e is FirebaseAuthException
+          ? throwAuthException(errorCode: e.code)
+          : throwDataException(errorCode: e.code);
+    } catch (e) {
+      throw DataExceptionUnknown(message: e.toString());
     }
   }
 }

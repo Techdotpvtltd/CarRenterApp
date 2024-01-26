@@ -1,9 +1,9 @@
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
-import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
+import 'package:beasy/screens/onboarding/enabled_location_access_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,6 +27,7 @@ class MapWithTextField extends StatefulWidget {
     this.mapHeight,
     required this.onLocationFetched,
     this.isLocationEnabled = true,
+    this.latLng,
   });
 
   final String fieldText;
@@ -41,6 +42,7 @@ class MapWithTextField extends StatefulWidget {
   final double? mapHeight;
   final Function(UserLocation? location) onLocationFetched;
   final bool isLocationEnabled;
+  final LatLng? latLng;
 
   @override
   State<MapWithTextField> createState() => _MapWithTextFieldState();
@@ -49,13 +51,12 @@ class MapWithTextField extends StatefulWidget {
 class _MapWithTextFieldState extends State<MapWithTextField> {
   bool _isLoadingLocation = false;
   LatLng? _latLng;
-  bool _isEditing = true;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      _isEditing = !_isLoadingLocation;
+      _latLng = widget.latLng;
     });
   }
 
@@ -129,8 +130,8 @@ class _MapWithTextFieldState extends State<MapWithTextField> {
     final mark = marks.firstOrNull;
     widget.onLocationFetched(
       UserLocation(
-        attitude: latitude ?? 0,
-        lattitude: longitude ?? 0,
+        latitude: latitude ?? 0,
+        longitude: longitude ?? 0,
         address: "${mark?.street}, ${mark?.locality}, ${mark?.country}",
         city: mark?.locality,
         country: mark?.country,
@@ -154,7 +155,6 @@ class _MapWithTextFieldState extends State<MapWithTextField> {
           keyboardType: TextInputType.streetAddress,
           errorText: widget.errorText,
           filedId: widget.filedId,
-          isReadyOnly: _isEditing,
           onSubmitted: (str) => _parseLocationFromAddress(str),
           errorCode: widget.errorCode,
           suffixWidget: _isLoadingLocation

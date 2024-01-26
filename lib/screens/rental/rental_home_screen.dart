@@ -5,16 +5,16 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/network_image_widget.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_card.dart';
 import 'package:beasy/utilities/widgets/rental_home_widgets/product_section_widget.dart';
 import 'package:beasy/utilities/widgets/search_widget.dart';
-import 'package:beasy/views/rental/all_brand_screen.dart';
-import 'package:beasy/views/rental/product_detail_screen.dart';
-import 'package:beasy/views/rental/product_screen.dart';
-import 'package:beasy/views/rental/search_product_screen.dart';
+import 'package:beasy/screens/rental/all_brand_screen.dart';
+import 'package:beasy/screens/rental/product_detail_screen.dart';
+import 'package:beasy/screens/rental/product_screen.dart';
+import 'package:beasy/screens/rental/search_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -75,7 +75,7 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
                 SizedBox(
                   width: 30,
                   height: 30,
-                  child: NetworkImageWidget(url: _userModel?.imageUrl ?? ""),
+                  child: CircleNetworkImage(url: _userModel?.imageUrl ?? ""),
                 ),
               ],
             ),

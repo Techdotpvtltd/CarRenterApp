@@ -49,6 +49,15 @@ class DataExceptionUnAuthenticated extends DataException {
           "The request does not have valid authentication credentials for the operation."});
 }
 
+/// No default storage bucket could be found.
+///  Ensure you have correctly followed the Getting Started guide.
+///
+/// No storage bucket could be found for the app '${app.name}'.
+///  Ensure you have set the [storageBucket] on [FirebaseOptions] whilst initializing the secondary Firebase app.
+class DataExceptionNoBucket extends DataException {
+  DataExceptionNoBucket({super.message = "Something went wrong."});
+}
+
 class DataExceptionUnknown extends DataException {
   DataExceptionUnknown({required super.message});
 }
@@ -71,6 +80,8 @@ DataException throwDataException({required String errorCode, String? message}) {
       return DataExceptionUnavailable();
     case 'UNAUTHENTICATED':
       return DataExceptionUnAuthenticated();
+    case 'NO-BUCKET':
+      return DataExceptionNoBucket();
     default:
       return DataExceptionUnknown(message: message ?? "Something went wrong.");
   }

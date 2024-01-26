@@ -2,11 +2,11 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
-import 'package:beasy/views/service_provider/create_services_screen.dart';
-import 'package:beasy/views/service_provider/detail_service_screen.dart';
+import 'package:beasy/screens/service_provider/create_services_screen.dart';
+import 'package:beasy/screens/service_provider/detail_service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

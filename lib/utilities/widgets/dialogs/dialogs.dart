@@ -1,6 +1,6 @@
 import 'package:beasy/main.dart';
 import 'package:beasy/utilities/constants/constants.dart';
-import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 

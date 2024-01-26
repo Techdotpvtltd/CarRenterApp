@@ -2,7 +2,7 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:flutter/material.dart';
 
-import '../navigation_service.dart';
+import '../extensions/navigation_service.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({

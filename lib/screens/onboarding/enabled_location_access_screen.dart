@@ -1,4 +1,4 @@
-import 'package:beasy/utilities/shared_preferences.dart';
+import 'package:beasy/utilities/extensions/shared_preferences.dart';
 import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../utilities/constants/asstes.dart';
 import '../../utilities/constants/constants.dart';
 import '../../utilities/constants/strings.dart';
-import '../../utilities/navigation_service.dart';
+import '../../utilities/extensions/navigation_service.dart';
 import '../../utilities/widgets/onboarding_centered_widget.dart';
 import '../../utilities/widgets/rounded_button.dart';
 import '../../utilities/widgets/text_button_child_widget.dart';

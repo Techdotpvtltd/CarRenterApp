@@ -4,15 +4,18 @@ import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/utilities/navigation_service.dart';
+import 'package:beasy/utilities/extensions/my_image_picker.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
 import 'package:beasy/utilities/widgets/dialogs/loaders.dart';
 import 'package:beasy/utilities/widgets/map_with_text_filed.dart';
+import 'package:beasy/utilities/widgets/network_image_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../blocs/auth/auth_event.dart';
 import '../../blocs/auth/auth_state.dart';
@@ -64,7 +67,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _isEditingEnabled = widget.isEditingEnabled;
       if (!UserRepo().isUserNull) {
         final user = UserRepo().user;
-
         _fnController.text = user.firstName;
         _emailController.text = user.email;
         _lnController.text = user.lastName;
@@ -166,19 +168,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Stack(
                           children: [
-                            const SizedBox(
+                            SizedBox(
                               width: 110,
                               height: 110,
                               child: Center(
                                 child: SizedBox(
                                   width: 99,
                                   height: 99,
-                                  child: CircleAvatar(
-                                    radius: 100,
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage:
-                                        AssetImage("assets/images/boy.png"),
-                                  ),
+                                  child:
+                                      CircleNetworkImage(url: _imagePath ?? ""),
                                 ),
                               ),
                             ),
@@ -186,16 +184,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               visible: _isEditingEnabled,
                               child: Positioned(
                                 right: 0,
-                                bottom: 25,
-                                child: Container(
-                                  width: 23,
-                                  height: 23,
-                                  decoration: const BoxDecoration(
-                                    color: StyleGuide.primaryColor2,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Center(
-                                    child: SvgPicture.asset(Assets.cameraIcon),
+                                bottom: 15,
+                                child: InkWell(
+                                  onTap: () async {
+                                    final path = await MyImagePicker().pick();
+                                    setState(() {
+                                      _imagePath = path;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: const BoxDecoration(
+                                      color: StyleGuide.primaryColor2,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        Assets.cameraIcon,
+                                        width: 15,
+                                        height: 15,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -204,9 +214,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         gapH18,
                         CustomTitleTextField(
-                          controller: _fnController,
+                          controller: _isEditingEnabled ? _fnController : null,
                           fieldText: "First Name",
-                          hintText: "Jenifer",
+                          hintText:
+                              _isEditingEnabled || _fnController.text == ""
+                                  ? "Enter your first name"
+                                  : _fnController.text,
                           isShowEdiatbleButton: _isEditingEnabled,
                           isReadyOnly: true,
                           filedId: 3,
@@ -215,9 +228,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         gapH24,
                         CustomTitleTextField(
-                          controller: _lnController,
+                          controller: _isEditingEnabled ? _lnController : null,
                           fieldText: "Last Name",
-                          hintText: "Alex",
+                          hintText:
+                              _isEditingEnabled || _lnController.text == ""
+                                  ? "Enter your last name"
+                                  : _lnController.text,
                           isShowEdiatbleButton: _isEditingEnabled,
                           isReadyOnly: true,
                           filedId: 4,
@@ -226,9 +242,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         gapH24,
                         CustomTitleTextField(
-                          controller: _phoneController,
+                          controller:
+                              _isEditingEnabled ? _phoneController : null,
                           fieldText: "Phone Number",
-                          hintText: "+1 64 012 3456",
+                          hintText:
+                              _isEditingEnabled || _phoneController.text == ""
+                                  ? "+1 xx xxx xxxx"
+                                  : _phoneController.text,
                           keyboardType: TextInputType.phone,
                           isReadyOnly: true,
                           prefixWidget: IconButton(
@@ -242,9 +262,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         gapH24,
                         CustomTitleTextField(
-                          controller: _emailController,
+                          controller:
+                              _isEditingEnabled ? _emailController : null,
                           fieldText: "Email",
-                          hintText: "gdauflck@gmailcom",
+                          hintText:
+                              _isEditingEnabled || _emailController.text == ""
+                                  ? "Enter email"
+                                  : _emailController.text,
                           keyboardType: TextInputType.emailAddress,
                           isShowEdiatbleButton: _isEditingEnabled,
                           isReadyOnly: true,
@@ -254,13 +278,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         gapH20,
                         MapWithTextField(
-                          controller: _locationController,
+                          controller:
+                              _isEditingEnabled ? _locationController : null,
                           fieldText: "Change Location",
-                          hintText: "Select or Add Location",
+                          hintText: _isEditingEnabled ||
+                                  _locationController.text == ""
+                              ? "Select or Add Location"
+                              : _locationController.text,
                           onLocationFetched: (location) {
-                            _userLocation = location;
+                            if (_isEditingEnabled) {
+                              _userLocation = location;
+                            }
                           },
-                          isLocationEnabled: _isEditingEnabled,
+                          isLocationEnabled: _locationController.text != "" &&
+                              _isEditingEnabled,
+                          latLng: !UserRepo().isUserNull
+                              ? LatLng(UserRepo().user.location.latitude,
+                                  UserRepo().user.location.longitude)
+                              : null,
                           filedId: 6,
                           errorCode: _errorCode,
                           errorText: _errorMessage,

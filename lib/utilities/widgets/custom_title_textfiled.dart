@@ -79,7 +79,10 @@ class _CustomTitleTextFieldState extends State<CustomTitleTextField> {
           onSubmitted: widget.onSubmitted != null
               ? (value) => widget.onSubmitted!(value)
               : null,
-          style: StyleGuide.textStyle3.copyWith(color: const Color(0xFF2C2C2C)),
+          style: StyleGuide.textStyle3.copyWith(
+            color: const Color(0xFF2C2C2C),
+            fontWeight: FontWeight.w600,
+          ),
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 23, vertical: 14),

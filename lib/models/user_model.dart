@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:beasy/utilities/shared_preferences.dart';
+import 'package:beasy/utilities/extensions/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -62,7 +62,7 @@ class UserModel {
       'email': email,
       'location': location.toMap(),
       'imageUrl': imageUrl,
-      'countryCode': countryCode,
+      // 'countryCode': countryCode,
       'phoneNumber': phoneNumber,
       'createdAt': Timestamp.fromDate(createAt),
     };
@@ -71,16 +71,15 @@ class UserModel {
   static Future<UserModel> fromMap(Map<String, dynamic> map) async {
     return UserModel(
       uid: map['uid'] as String,
-      firstName: map['firstName'] as String,
-      lastName: map['lastName'] as String,
-      email: map['email'] as String,
-      location: UserLocation.fromMap(map['location'] as Map<String, dynamic>),
+      firstName: map['firstName'] as String? ?? "",
+      lastName: map['lastName'] as String? ?? "",
+      email: map['email'] as String? ?? "",
+      location: UserLocation.fromMap(
+          map['location'] as Map<String, dynamic>? ?? <String, dynamic>{}),
       userType: await LocalPreferences.getUserType(),
-      imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
-      countryCode:
-          map['countryCode'] != null ? map['countryCode'] as int : null,
-      phoneNumber:
-          map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
+      imageUrl: map['imageUrl'] as String?,
+      // countryCode: map['countryCode'] as int?,
+      phoneNumber: map['phoneNumber'] as String?,
       createAt: (map['createdAt'] as Timestamp).toDate(),
     );
   }
@@ -123,15 +122,15 @@ class UserModel {
 }
 
 class UserLocation {
-  final double attitude;
-  final double lattitude;
+  final double latitude;
+  final double longitude;
   final String? country;
   final String? city;
   final String? streat;
   final String? address;
   UserLocation({
-    required this.attitude,
-    required this.lattitude,
+    required this.latitude,
+    required this.longitude,
     this.country,
     this.city,
     this.streat,
@@ -147,8 +146,8 @@ class UserLocation {
     String? address,
   }) {
     return UserLocation(
-      attitude: attitude ?? this.attitude,
-      lattitude: lattitude ?? this.lattitude,
+      latitude: attitude ?? latitude,
+      longitude: lattitude ?? longitude,
       country: country ?? this.country,
       city: city ?? this.city,
       streat: streat ?? this.streat,
@@ -158,8 +157,8 @@ class UserLocation {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'attitude': attitude,
-      'lattitude': lattitude,
+      'latitude': latitude,
+      'longitude': longitude,
       'country': country,
       'city': city,
       'streat': streat,
@@ -169,12 +168,12 @@ class UserLocation {
 
   factory UserLocation.fromMap(Map<String, dynamic> map) {
     return UserLocation(
-      attitude: map['attitude'] as double,
-      lattitude: map['lattitude'] as double,
-      country: map['country'] != null ? map['country'] as String : null,
-      city: map['city'] != null ? map['city'] as String : null,
-      streat: map['streat'] != null ? map['streat'] as String : null,
-      address: map['address'] != null ? map['address'] as String : null,
+      latitude: map['latitude'] as double? ?? 0,
+      longitude: map['longitude'] as double? ?? 0,
+      country: map['country'] as String? ?? "",
+      city: map['city'] as String?,
+      streat: map['streat'] as String?,
+      address: map['address'] as String?,
     );
   }
 
@@ -185,15 +184,15 @@ class UserLocation {
 
   @override
   String toString() {
-    return 'UserLocation(attitude: $attitude, lattitude: $lattitude, country: $country, city: $city, streat: $streat, address: $address)';
+    return 'UserLocation(attitude: $latitude, lattitude: $longitude, country: $country, city: $city, streat: $streat, address: $address)';
   }
 
   @override
   bool operator ==(covariant UserLocation other) {
     if (identical(this, other)) return true;
 
-    return other.attitude == attitude &&
-        other.lattitude == lattitude &&
+    return other.latitude == latitude &&
+        other.longitude == longitude &&
         other.country == country &&
         other.city == city &&
         other.streat == streat &&
@@ -202,8 +201,8 @@ class UserLocation {
 
   @override
   int get hashCode {
-    return attitude.hashCode ^
-        lattitude.hashCode ^
+    return latitude.hashCode ^
+        longitude.hashCode ^
         country.hashCode ^
         city.hashCode ^
         streat.hashCode ^
