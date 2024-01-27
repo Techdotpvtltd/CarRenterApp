@@ -101,19 +101,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     /// Updating User Profile
     on<AuthEventUpdateUserProfile>(
       (event, emit) async {
-        emit(AuthStateUpdatingUserProfile(
-          isLoading: true,
-          loadingText: "Updating Profile..",
-        ));
-
+        String? imagePath = event.imagePath;
         try {
+          if (imagePath != null && Uri.parse(imagePath).host.isEmpty) {
+            emit(AuthStateUpdatingUserProfile(
+              isLoading: true,
+              loadingText: "Uploading..",
+            ));
+            imagePath = await UserRepo().uploadProfile(path: imagePath);
+          }
+          emit(AuthStateUpdatingUserProfile(
+            isLoading: true,
+            loadingText: "Uploading...",
+          ));
           await UserRepo().update(
             firstName: event.firstName,
             lastName: event.lastName,
             email: event.email,
             userLocation: event.location,
             phoneNumber: event.phoneNumber,
-            imagePath: event.imagePath,
+            imagePath: imagePath,
           );
           emit(AuthStateUpdatedUserProfile(isLoading: false));
         } on BeasyException catch (e) {

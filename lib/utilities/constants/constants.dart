@@ -67,3 +67,4 @@ final double screenHeight = MediaQuery.of(navKey.currentContext!).size.height;
 
 //  Firebase Collection Path ====================================
 const FIREBASE_COLLECTION_USER = "users";
+const FIREBASE_COLLECTION_USER_PROFILES = "profiles";

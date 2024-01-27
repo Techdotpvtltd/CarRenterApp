@@ -6,16 +6,16 @@ class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   StorageService();
 
-  Future<String> uploadImage(
-      {required String? withImagePath,
-      required String collectionPath,
-      required File file}) async {
+  Future<String> uploadImage({
+    required File withFile,
+    required String collectionPath,
+  }) async {
     final metadata = SettableMetadata(
       contentType: 'image/jpeg',
-      customMetadata: {'picked-file-path': file.path},
+      customMetadata: {'picked-file-path': withFile.path},
     );
     final Reference ref = _storage.ref().child(collectionPath);
-    final UploadTask uploadTask = ref.putFile(file, metadata);
-    return await uploadTask.snapshot.ref.getDownloadURL();
+    final TaskSnapshot taskSnapshot = await ref.putFile(withFile, metadata);
+    return await taskSnapshot.ref.getDownloadURL();
   }
 }

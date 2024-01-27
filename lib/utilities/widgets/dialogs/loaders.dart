@@ -5,18 +5,26 @@ import 'package:flutter/material.dart';
 class Loader {
   static final Loader _intsance = Loader._internal();
   Loader._internal();
-  bool _isLoading = false;
   factory Loader() {
     return _intsance;
   }
 
-  void show({String? withText, bool barrierDismissible = false}) {
-    _isLoading = true;
+  final List<GlobalKey> _alertKeys = [];
+
+  void show(
+      {String? withText,
+      bool barrierDismissible = false,
+      GlobalKey? alertKey}) {
+    hide(); // Remove If any existed
+    final key = alertKey ?? GlobalKey();
+    _alertKeys.add(key);
+
     showDialog(
       context: navKey.currentContext!,
       barrierDismissible: barrierDismissible,
       builder: (alertContext) {
         return AlertDialog(
+          key: key,
           contentPadding: EdgeInsets.zero,
           insetPadding: const EdgeInsets.symmetric(horizontal: 100),
           backgroundColor: Colors.transparent,
@@ -55,9 +63,10 @@ class Loader {
   }
 
   void hide() {
-    if (_isLoading) {
-      Navigator.of(navKey.currentContext!).pop();
-      _isLoading = false;
+    for (GlobalKey key in _alertKeys) {
+      if (key.currentContext != null) {
+        Navigator.pop(key.currentContext!);
+      }
     }
   }
 }

@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:beasy/web_services/storage_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import '../../utilities/constants/constants.dart';
@@ -148,12 +149,17 @@ class UserRepo {
   /// Upload User Profile
   Future<String> uploadProfile({required String path}) async {
     try {
-      return "";
+      final String collectionPath =
+          "$FIREBASE_COLLECTION_USER_PROFILES/${UserRepo().user.uid}/${DateTime.now().microsecondsSinceEpoch}";
+      return await StorageService()
+          .uploadImage(withFile: File(path), collectionPath: collectionPath);
     } on FirebaseException catch (e) {
+      debugPrint(e.toString());
       throw e is FirebaseAuthException
           ? throwAuthException(errorCode: e.code)
           : throwDataException(errorCode: e.code);
     } catch (e) {
+      debugPrint(e.toString());
       throw DataExceptionUnknown(message: e.toString());
     }
   }
