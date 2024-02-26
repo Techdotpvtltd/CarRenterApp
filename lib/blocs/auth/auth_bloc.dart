@@ -33,6 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthStateInitialize());
       },
     );
+
     // Splash Process completed  ============================================
     on<AuthEventSplashActionDone>(
         (event, emit) => emit(AuthStateSplashActionDone()));

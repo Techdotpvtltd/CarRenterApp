@@ -43,29 +43,28 @@ class _BeasyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navKey,
-      title: 'Beasy',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor).copyWith(
-                // background: Colors.white,
-                ),
-      ),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthBloc>(
-              create: (context) => AppBlocManager().authBloc),
-          BlocProvider<RentalProductBloc>(
-              create: (context) => AppBlocManager().rentalBloc),
-          BlocProvider<SPBloc>(create: (context) => AppBlocManager().spBloc),
-          BlocProvider(
-            create: (context) => DrawerCubit(),
-          )
-        ],
-        child: const _BeasyPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(create: (context) => AppBlocManager().authBloc),
+        BlocProvider<RentalProductBloc>(
+            create: (context) => AppBlocManager().rentalBloc),
+        BlocProvider<SPBloc>(create: (context) => AppBlocManager().spBloc),
+        BlocProvider(
+          create: (context) => DrawerCubit(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navKey,
+        title: 'Beasy',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor).copyWith(
+                  // background: Colors.white,
+                  ),
+        ),
+        home: const _BeasyPage(),
       ),
     );
   }
