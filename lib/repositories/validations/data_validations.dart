@@ -1,3 +1,5 @@
+import 'package:beasy/exceptions/data_exceptions.dart';
+import 'package:beasy/models/product_model.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/exceptions/auth_exceptions.dart';
 import 'package:beasy/utilities/utils.dart';
@@ -83,6 +85,28 @@ class DataValidation {
 
     if (location == null) {
       throw AuthExceptionLocationRequired();
+    }
+  }
+
+  static Future<void> createProduct(
+      {required ProductModel productModel}) async {
+    if (productModel.images.isEmpty) {
+      throw DataExceptionUnknown(message: "Please upload at least one image.");
+    }
+
+    if (productModel.name.isEmpty) {
+      throw DataExceptionRequiredField(errorCode: 11);
+    }
+
+    if (productModel.model.isEmpty) {
+      throw DataExceptionRequiredField(errorCode: 12);
+    }
+    if (productModel.year == 0) {
+      throw DataExceptionRequiredField(errorCode: 13);
+    }
+
+    if (productModel.price == 0) {
+      throw DataExceptionRequiredField(errorCode: 14);
     }
   }
 }

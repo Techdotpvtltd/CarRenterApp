@@ -154,7 +154,7 @@ class _MapWithTextFieldState extends State<MapWithTextField> {
           fieldText: widget.fieldText,
           keyboardType: TextInputType.streetAddress,
           errorText: widget.errorText,
-          filedId: widget.filedId,
+          fieldId: widget.filedId,
           onSubmitted: (str) => _parseLocationFromAddress(str),
           errorCode: widget.errorCode,
           suffixWidget: _isLoadingLocation

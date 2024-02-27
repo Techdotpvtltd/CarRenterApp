@@ -20,7 +20,7 @@ class CustomTitleTextField extends StatefulWidget {
     this.maxLines = 1,
     this.minLines,
     this.isShowEdiatbleButton = false,
-    this.filedId,
+    this.fieldId,
     this.errorCode,
     this.onSubmitted,
   });
@@ -37,7 +37,7 @@ class CustomTitleTextField extends StatefulWidget {
   final int maxLines;
   final int? minLines;
   final bool isShowEdiatbleButton;
-  final int? filedId;
+  final int? fieldId;
   final int? errorCode;
   final Function(String)? onSubmitted;
 
@@ -126,7 +126,7 @@ class _CustomTitleTextFieldState extends State<CustomTitleTextField> {
               color: const Color(0xFF6B6B6B),
             ),
             errorText:
-                (widget.filedId == widget.errorCode && widget.errorText != null)
+                (widget.fieldId == widget.errorCode && widget.errorText != null)
                     ? widget.errorText
                     : null,
             errorStyle: StyleGuide.textStyle3.copyWith(color: Colors.red),

@@ -107,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: AppStrings.firstName,
                       controller: _fnController,
                       errorText: errorMessage,
-                      filedId: 3,
+                      fieldId: 3,
                       errorCode: errorCode,
                     ),
                     gapH22,
@@ -116,7 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: "Last Name",
                       controller: _lnController,
                       errorText: errorMessage,
-                      filedId: 4,
+                      fieldId: 4,
                       errorCode: errorCode,
                     ),
                     gapH22,
@@ -126,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.emailAddress,
                       controller: _emailController,
                       errorText: errorMessage,
-                      filedId: 1,
+                      fieldId: 1,
                       errorCode: errorCode,
                     ),
                     gapH22,
@@ -137,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: _isObscureTextForPassword,
                       errorText: errorMessage,
-                      filedId: 2,
+                      fieldId: 2,
                       errorCode: errorCode,
                       suffixWidget: IconButton(
                         onPressed: () {
@@ -159,7 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: _isObscureTextForConfirmPassword,
                       errorText: errorMessage,
-                      filedId: 5,
+                      fieldId: 5,
                       errorCode: errorCode,
                       suffixWidget: IconButton(
                         onPressed: () {

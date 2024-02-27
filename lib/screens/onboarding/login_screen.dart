@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fieldText: AppStrings.emailAddress,
                       errorCode: _errorCode,
                       errorText: _errorMessage,
-                      filedId: 1,
+                      fieldId: 1,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     gapH22,
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: _isObscureText,
                       errorCode: _errorCode,
                       errorText: _errorMessage,
-                      filedId: 2,
+                      fieldId: 2,
                       suffixWidget: IconButton(
                         onPressed: () {
                           setState(() {

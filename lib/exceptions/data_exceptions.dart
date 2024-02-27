@@ -1,7 +1,7 @@
 import 'package:beasy/exceptions/app_exceptions.dart';
 
 abstract class DataException extends AppException {
-  DataException({required super.message});
+  DataException({required super.message, super.errorCode});
 }
 
 /// Some document that we attempted to create already exists.
@@ -60,6 +60,11 @@ class DataExceptionNoBucket extends DataException {
 
 class DataExceptionUnknown extends DataException {
   DataExceptionUnknown({required super.message});
+}
+
+class DataExceptionRequiredField extends DataException {
+  DataExceptionRequiredField(
+      {super.message = "Field Required.", required super.errorCode});
 }
 
 DataException throwDataException({required String errorCode, String? message}) {

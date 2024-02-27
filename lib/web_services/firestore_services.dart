@@ -31,7 +31,6 @@ class FirestoreService {
   /// Save Data With DocumentId
   Future<Map<String, dynamic>> saveWithSpecificIdFiled(
       {required String path,
-      required String docId,
       required Map<String, dynamic> data,
       required String docIdFiled}) async {
     final doc = _firestore.collection(path).doc();
