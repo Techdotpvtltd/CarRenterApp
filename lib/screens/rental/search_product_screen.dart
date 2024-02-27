@@ -2,7 +2,7 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
-import 'package:beasy/utilities/widgets/rental_home_widgets/small_product_card.dart';
+import 'package:beasy/screens/rental/components/small_product_card.dart';
 import 'package:beasy/utilities/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 

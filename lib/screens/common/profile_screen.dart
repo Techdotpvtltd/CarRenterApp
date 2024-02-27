@@ -187,10 +187,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 bottom: 15,
                                 child: InkWell(
                                   onTap: () async {
-                                    final path = await MyImagePicker().pick();
-                                    setState(() {
-                                      _imagePath = path;
-                                    });
+                                    final imagePicker = MyImagePicker();
+                                    imagePicker.pick();
+                                    imagePicker.onSelection(
+                                      (exception, image) {
+                                        setState(() {
+                                          if (exception != null) {
+                                            debugPrint(exception.message);
+                                            return;
+                                          }
+                                          _imagePath = image?.path;
+                                        });
+                                      },
+                                    );
                                   },
                                   child: Container(
                                     width: 30,
