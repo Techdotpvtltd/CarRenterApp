@@ -1,4 +1,3 @@
-import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
@@ -11,9 +10,15 @@ import 'package:flutter/material.dart';
 
 import '../../utilities/widgets/image_collection_widget.dart';
 
-class CreateServiceScreen extends StatelessWidget {
+class CreateServiceScreen extends StatefulWidget {
   const CreateServiceScreen({super.key});
 
+  @override
+  State<CreateServiceScreen> createState() => _CreateServiceScreenState();
+}
+
+class _CreateServiceScreenState extends State<CreateServiceScreen> {
+  final List<String> images = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,16 +65,16 @@ class CreateServiceScreen extends StatelessWidget {
                       child: ImageCollectionWidget(
                         title: AppStrings.addImages,
                         height: screenHeight * 0.35,
-                        images: const [
-                          Assets.demoCar,
-                          Assets.demoCar,
-                          Assets.demoCar,
-                        ],
-                        onClickUploadCard: (index) {
-                          debugPrint("Upload Card Pressed $index");
+                        images: images,
+                        onClickUploadImage: (file) {
+                          setState(() {
+                            images.add(file.path);
+                          });
                         },
                         onClickDeleteButton: (index) {
-                          debugPrint("Delete Item at $index");
+                          setState(() {
+                            images.removeAt(index);
+                          });
                         },
                         onClickCard: (index) {
                           debugPrint("Pressed Image at $index");

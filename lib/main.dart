@@ -4,7 +4,6 @@ import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/blocs/drawer/drawer_cubit.dart';
 import 'package:beasy/blocs/rental/rental_product_bloc.dart';
 import 'package:beasy/blocs/service_provider/sp_bloc.dart';
-import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/screens/menu/drawer_screen.dart';
 import 'package:beasy/screens/onboarding/enable_notification_screen.dart';
 import 'package:beasy/screens/onboarding/enabled_location_access_screen.dart';
@@ -29,6 +28,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const _BeasyApp());
 }
 
@@ -59,10 +59,6 @@ class _BeasyApp extends StatelessWidget {
         title: 'Beasy',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor).copyWith(
-                  // background: Colors.white,
-                  ),
         ),
         home: const _BeasyPage(),
       ),

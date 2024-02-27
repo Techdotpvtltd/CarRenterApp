@@ -60,7 +60,7 @@ class _DetailServiceScreenState extends State<DetailServiceScreen> {
                           Assets.demoCar,
                         ],
                         isShowUploadButton: _isEdiatble,
-                        onClickUploadCard: (index) {
+                        onClickUploadImage: (index) {
                           debugPrint("Upload Card Pressed $index");
                         },
                         onClickDeleteButton: _isEdiatble

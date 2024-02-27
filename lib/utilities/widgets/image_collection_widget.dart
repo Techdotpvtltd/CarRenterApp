@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/utilities/extensions/my_image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageCollectionWidget extends StatelessWidget {
   const ImageCollectionWidget(
@@ -11,14 +16,14 @@ class ImageCollectionWidget extends StatelessWidget {
       required this.images,
       this.onClickDeleteButton,
       this.onClickCard,
-      required this.onClickUploadCard,
+      required this.onClickUploadImage,
       this.isShowUploadButton = true,
       required this.title});
   final double? height;
   final List<String> images;
   final Function(int index)? onClickDeleteButton;
   final Function(int index)? onClickCard;
-  final Function(int index) onClickUploadCard;
+  final Function(XFile file) onClickUploadImage;
   final bool isShowUploadButton;
   final String title;
 
@@ -56,14 +61,41 @@ class ImageCollectionWidget extends StatelessWidget {
                               : null,
                           child: Stack(
                             children: [
-                              ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                child: Image.asset(
-                                  images[index],
-                                  height: (height ?? constraints.maxHeight) / 2,
-                                  width: (constraints.maxWidth) / 2,
+                              Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: const BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: images[index],
+                                  errorListener: (value) {},
                                   fit: BoxFit.fill,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      url != "" &&
+                                              error.toString().contains(
+                                                  "No host specified in URI")
+                                          ? Image.file(
+                                              File(images[index]),
+                                              height: (height ??
+                                                      constraints.maxHeight) /
+                                                  2,
+                                              width: (constraints.maxWidth) / 2,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : const Center(
+                                              child: Icon(
+                                                Icons.image,
+                                                size: 32,
+                                              ),
+                                            ),
                                 ),
                               ),
                               Visibility(
@@ -92,7 +124,16 @@ class ImageCollectionWidget extends StatelessWidget {
                           ),
                         )
                       : InkWell(
-                          onTap: () => onClickUploadCard(index),
+                          onTap: () {
+                            final MyImagePicker imagePicker =
+                                MyImagePicker(imageQuality: 50);
+                            imagePicker.pick();
+                            imagePicker.onSelection((exception, data) {
+                              if (data != null) {
+                                onClickUploadImage(data);
+                              }
+                            });
+                          },
                           splashColor: Colors.transparent,
                           child: Container(
                             decoration: const BoxDecoration(
