@@ -1,9 +1,9 @@
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/main.dart';
-import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
-import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
-import 'package:beasy/repositories/exceptions/data_exceptions.dart';
+import 'package:beasy/exceptions/auth_exceptions.dart';
+import 'package:beasy/exceptions/app_exceptions.dart';
+import 'package:beasy/exceptions/data_exceptions.dart';
 import 'package:beasy/repositories/repos/auth_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/extensions/navigation_service.dart';
@@ -48,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await AuthRepo()
             .loginUser(withEmail: event.email, withPassword: event.password);
         emit(AuthStateLoggedIn(isLoading: false));
-      } on BeasyException catch (e) {
+      } on AppException catch (e) {
         if (e is DataExceptionNotFound || e is AuthExceptionUserNotFound) {
           await NavigationService.go(
             navKey.currentContext!,
@@ -124,7 +124,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             imagePath: imagePath,
           );
           emit(AuthStateUpdatedUserProfile(isLoading: false));
-        } on BeasyException catch (e) {
+        } on AppException catch (e) {
           emit(AuthStateUpdatingUserProfile(
               isLoading: false,
               exception: e,
@@ -154,7 +154,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             location: event.location,
           );
           emit(AuthStateRegistered(isLoading: false));
-        } on BeasyException catch (e) {
+        } on AppException catch (e) {
           emit(AuthStateRegistering(isLoading: false, exception: e));
         } on Exception catch (e) {
           debugPrint(e.toString());
@@ -172,7 +172,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             isLoading: true, loadingText: "Signing with Apple."));
         await AuthRepo().loginWithApple();
         emit(AuthStateLoggedIn(isLoading: false));
-      } on BeasyException catch (e) {
+      } on AppException catch (e) {
         if (e is AuthExceptionUserNotFound || e is DataExceptionNotFound) {
           await NavigationService.go(
             navKey.currentContext!,
@@ -206,7 +206,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         await AuthRepo().loginWithGoogle();
         emit(AuthStateLoggedIn(isLoading: false));
-      } on BeasyException catch (e) {
+      } on AppException catch (e) {
         if (e is AuthExceptionUserNotFound || e is DataExceptionNotFound) {
           await NavigationService.go(
             navKey.currentContext!,

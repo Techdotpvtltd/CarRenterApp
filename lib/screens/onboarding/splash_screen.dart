@@ -2,7 +2,7 @@
 
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_event.dart';
-import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
+import 'package:beasy/exceptions/app_exceptions.dart';
 import 'package:beasy/repositories/repos/auth_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
 
       bloc.add(AuthEventLoadedGetStarted());
-    } on BeasyException catch (_) {
+    } on AppException catch (_) {
       bloc.add(AuthEventLoadedGetStarted());
     }
   }

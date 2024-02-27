@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:beasy/models/user_model.dart';
-import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
+import 'package:beasy/exceptions/auth_exceptions.dart';
 import 'package:beasy/web_services/storage_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../utilities/constants/constants.dart';
 import '../../web_services/firestore_services.dart';
-import '../exceptions/data_exceptions.dart';
+import '../../exceptions/data_exceptions.dart';
 import '../validations/data_validations.dart';
 
 class UserRepo {

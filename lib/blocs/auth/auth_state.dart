@@ -1,4 +1,4 @@
-import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
+import 'package:beasy/exceptions/app_exceptions.dart';
 
 abstract class AuthState {
   final bool isLoading;
@@ -30,7 +30,7 @@ class AuthStateRegisterring extends AuthState {
 
 // Auth State Loging with apple
 class AuthStateAppleLogging extends AuthState {
-  final BeasyException? exception;
+  final AppException? exception;
   AuthStateAppleLogging({super.isLoading, super.loadingText, this.exception});
 }
 
@@ -40,7 +40,7 @@ class AuthStateAppleLoggedIn extends AuthState {
 
 // Auth State Loging with google
 class AuthStateGoogleLogging extends AuthState {
-  final BeasyException? exception;
+  final AppException? exception;
   AuthStateGoogleLogging({super.isLoading, super.loadingText, this.exception});
 }
 
@@ -57,7 +57,7 @@ class AuthStateLoggedIn extends AuthState {
 class AuthStateSplashActionDone extends AuthState {}
 
 class AuthStateLogging extends AuthState {
-  final BeasyException? exception;
+  final AppException? exception;
   AuthStateLogging({super.isLoading, this.exception, super.loadingText});
 }
 
@@ -78,13 +78,13 @@ class AuthStateLoadedSignup extends AuthState {
 
 // Registered State  ========================================
 class AuthStateRegistering extends AuthState {
-  final BeasyException? exception;
+  final AppException? exception;
   AuthStateRegistering({this.exception, super.isLoading, super.loadingText});
 }
 
 // User Profile Updating States
 class AuthStateUpdatingUserProfile extends AuthState {
-  final BeasyException? exception;
+  final AppException? exception;
 
   AuthStateUpdatingUserProfile(
       {super.isLoading, super.loadingText, this.exception});

@@ -1,7 +1,7 @@
 import 'package:beasy/app_manager/app_manager.dart';
 import 'package:beasy/models/user_model.dart';
-import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
-import 'package:beasy/repositories/exceptions/data_exceptions.dart';
+import 'package:beasy/exceptions/auth_exceptions.dart';
+import 'package:beasy/exceptions/data_exceptions.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/repositories/validations/data_validations.dart';
 import 'package:beasy/utilities/extensions/shared_preferences.dart';

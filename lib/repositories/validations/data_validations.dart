@@ -1,5 +1,5 @@
 import 'package:beasy/models/user_model.dart';
-import 'package:beasy/repositories/exceptions/auth_exceptions.dart';
+import 'package:beasy/exceptions/auth_exceptions.dart';
 import 'package:beasy/utilities/utils.dart';
 
 class DataValidation {

@@ -1,6 +1,6 @@
-import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
+import 'package:beasy/exceptions/app_exceptions.dart';
 
-abstract class AuthException extends BeasyException {
+abstract class AuthException extends AppException {
   AuthException({required super.message, super.errorCode});
 }
 

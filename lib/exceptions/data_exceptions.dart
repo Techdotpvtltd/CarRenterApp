@@ -1,6 +1,6 @@
-import 'package:beasy/repositories/exceptions/beasy_exceptions.dart';
+import 'package:beasy/exceptions/app_exceptions.dart';
 
-abstract class DataException extends BeasyException {
+abstract class DataException extends AppException {
   DataException({required super.message});
 }
 
