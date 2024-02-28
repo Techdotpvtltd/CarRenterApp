@@ -11,3 +11,13 @@ class SPEventCreateProduct extends SPEvent {
 
   SPEventCreateProduct({required this.model});
 }
+
+/// Fetch Products Event
+class SPEventFetchProducts extends SPEvent {}
+
+/// Product Update Event
+class SPEventUpdateProduct extends SPEvent {
+  final ProductModel product;
+
+  SPEventUpdateProduct({required this.product});
+}

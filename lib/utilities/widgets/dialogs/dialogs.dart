@@ -12,11 +12,13 @@ class CustomDilaogs {
     required String title,
     required String message,
     required Widget bottomWidget,
+    bool barrierDismissible = true,
     Color iconColor = StyleGuide.primaryColor2,
     Color titleColor = StyleGuide.textColor2,
   }) {
     showDialog(
       context: navKey.currentContext!,
+      barrierDismissible: barrierDismissible,
       builder: (context) => AlertDialog(
         surfaceTintColor: Colors.transparent,
         content: Container(
@@ -159,10 +161,12 @@ class CustomDilaogs {
     required String message,
     VoidCallback? onPositivePressed,
     String? positiveTitle,
+    bool barrierDismissible = true,
   }) {
     _genericDilaog(
       icon: Icons.check,
       title: title ?? "Success",
+      barrierDismissible: barrierDismissible,
       message: message,
       bottomWidget: RoundedButton(
         title: positiveTitle ?? "Done",

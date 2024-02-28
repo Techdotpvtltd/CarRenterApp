@@ -1,4 +1,5 @@
 import 'package:beasy/blocs/service_provider/sp_bloc.dart';
+import 'package:beasy/blocs/service_provider/sp_event.dart';
 import 'package:beasy/blocs/service_provider/sp_state.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
@@ -18,8 +19,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../blocs/drawer/drawer_cubit.dart';
 
-class SPHomeScreen extends StatelessWidget {
+class SPHomeScreen extends StatefulWidget {
   const SPHomeScreen({super.key});
+
+  @override
+  State<SPHomeScreen> createState() => _SPHomeScreenState();
+}
+
+class _SPHomeScreenState extends State<SPHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SPBloc>().add(SPEventFetchProducts()); // Fetch Products
+  }
 
   @override
   Widget build(BuildContext context) {

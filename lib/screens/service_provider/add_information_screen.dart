@@ -70,7 +70,8 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
 
           if (state is SPStateCreatedProduct) {
             CustomDilaogs().successBox(
-              message: "Your service is lived now.",
+              message: "Congratulation!\nYour service is live.",
+              barrierDismissible: false,
               onPositivePressed: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
               },

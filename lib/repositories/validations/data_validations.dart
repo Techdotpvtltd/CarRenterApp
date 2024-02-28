@@ -88,8 +88,7 @@ class DataValidation {
     }
   }
 
-  static Future<void> createProduct(
-      {required ProductModel productModel}) async {
+  static Future<void> product({required ProductModel productModel}) async {
     if (productModel.images.isEmpty) {
       throw DataExceptionUnknown(message: "Please upload at least one image.");
     }

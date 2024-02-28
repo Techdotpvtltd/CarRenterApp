@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/extensions/my_image_picker.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -69,33 +67,10 @@ class ImageCollectionWidget extends StatelessWidget {
                                     Radius.circular(15),
                                   ),
                                 ),
-                                child: CachedNetworkImage(
+                                child: CustomNetworkImage(
                                   imageUrl: images[index],
-                                  errorListener: (value) {},
-                                  fit: BoxFit.fill,
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      url != "" &&
-                                              error.toString().contains(
-                                                  "No host specified in URI")
-                                          ? Image.file(
-                                              File(images[index]),
-                                              height: (height ??
-                                                      constraints.maxHeight) /
-                                                  2,
-                                              width: (constraints.maxWidth) / 2,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : const Center(
-                                              child: Icon(
-                                                Icons.image,
-                                                size: 32,
-                                              ),
-                                            ),
+                                  width: constraints.maxWidth,
+                                  height: constraints.maxHeight,
                                 ),
                               ),
                               Visibility(
@@ -125,8 +100,7 @@ class ImageCollectionWidget extends StatelessWidget {
                         )
                       : InkWell(
                           onTap: () {
-                            final MyImagePicker imagePicker =
-                                MyImagePicker(imageQuality: 50);
+                            final MyImagePicker imagePicker = MyImagePicker();
                             imagePicker.pick();
                             imagePicker.onSelection((exception, data) {
                               if (data != null) {

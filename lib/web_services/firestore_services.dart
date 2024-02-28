@@ -59,4 +59,34 @@ class FirestoreService {
         await _firestore.collection(path).doc(docId).get();
     return reference.data();
   }
+
+  /// Mutliple records fetching method
+
+  Future<List<Map<String, dynamic>>> fetchRecords({
+    required String collection,
+  }) async {
+    final QuerySnapshot snapshot =
+        await _firestore.collection(collection).get();
+    return snapshot.docs
+        .map((e) => e.data() as Map<String, dynamic>? ?? <String, dynamic>{})
+        .toList();
+  }
+
+  /// Mutliple records fetching query method
+  Future<List<Map<String, dynamic>>> _getWithQuery(
+      {required Query<Map<String, dynamic>> query}) async {
+    final snapshot = await query.get();
+    return snapshot.docs.map((e) => e.data()).toList();
+  }
+
+  /// With Equal Condition
+  Future<List<Map<String, dynamic>>> fetchWithEqual({
+    required String collection,
+    required String filedId,
+    required dynamic isEqualTo,
+  }) async {
+    final Query<Map<String, dynamic>> query =
+        _firestore.collection(collection).where(filedId, isEqualTo: isEqualTo);
+    return _getWithQuery(query: query);
+  }
 }

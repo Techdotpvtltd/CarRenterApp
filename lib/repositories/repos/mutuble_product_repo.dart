@@ -1,7 +1,7 @@
 // ignore: dangling_library_doc_comments
 /// Project: 	   CarRenterApp
-/// File:    	   product_modification_repo
-/// Path:    	   lib/repositories/repos/product_modification_repo.dart
+/// File:    	   mutuble_product_repo
+/// Path:    	   lib/repositories/repos/mutuble_product_repo.dart
 /// Author:       Ali Akbar
 /// Date:        27-02-24 18:52:03 -- Tuesday
 /// Description:
@@ -10,29 +10,42 @@ import 'dart:io';
 
 import 'package:beasy/exceptions/exception_parsing.dart';
 import 'package:beasy/models/product_model.dart';
+import 'package:beasy/repositories/repos/immutable_product_repo.dart';
 import 'package:beasy/repositories/validations/data_validations.dart';
 import 'package:beasy/web_services/firestore_services.dart';
-import 'package:flutter/material.dart';
 
 import '../../utilities/constants/constants.dart';
 import '../../web_services/storage_services.dart';
 import 'user_repo.dart';
 
-class ProductModificationRepo {
-  static final ProductModificationRepo _instance =
-      ProductModificationRepo._internal();
-  ProductModificationRepo._internal();
-  factory ProductModificationRepo() => _instance;
-
+class MutableProductRepo {
   Future<void> create({required ProductModel productModel}) async {
     try {
-      await DataValidation.createProduct(productModel: productModel);
+      await DataValidation.product(productModel: productModel);
       final Map<String, dynamic> mapData = await FirestoreService()
           .saveWithSpecificIdFiled(
               path: FIREBASE_COLLECTION_USER_SERVICES,
               data: productModel.toMap(),
               docIdFiled: "id");
-      debugPrint(mapData.toString());
+      final ProductModel product = ProductModel.fromMap(mapData);
+      ImmutableProductRepo().addProduct = product;
+    } catch (e) {
+      throw thrownAppException(e: e);
+    }
+  }
+
+// Update Product
+
+  Future<void> update({required ProductModel productModel}) async {
+    try {
+      await DataValidation.product(productModel: productModel);
+      final Map<String, dynamic> mapData = await FirestoreService()
+          .updateWithDocId(
+              path: FIREBASE_COLLECTION_USER_SERVICES,
+              docId: productModel.id,
+              data: productModel.toMap());
+      final ProductModel updatedData = ProductModel.fromMap(mapData);
+      ImmutableProductRepo().updateProduct(updatedData);
     } catch (e) {
       throw thrownAppException(e: e);
     }

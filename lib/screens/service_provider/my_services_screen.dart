@@ -1,69 +1,158 @@
+import 'package:beasy/blocs/service_provider/sp_bloc.dart';
+import 'package:beasy/blocs/service_provider/sp_event.dart';
+import 'package:beasy/blocs/service_provider/sp_state.dart';
+import 'package:beasy/models/product_model.dart';
+import 'package:beasy/repositories/repos/immutable_product_repo.dart';
+import 'package:beasy/screens/service_provider/components/loading_widget.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
+import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/screens/service_provider/create_services_screen.dart';
 import 'package:beasy/screens/service_provider/detail_service_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MyServicesScreen extends StatelessWidget {
+import 'components/error_widget.dart';
+
+class MyServicesScreen extends StatefulWidget {
   const MyServicesScreen({super.key});
 
   @override
+  State<MyServicesScreen> createState() => _MyServicesScreenState();
+}
+
+class _MyServicesScreenState extends State<MyServicesScreen> {
+  List<ProductModel> products = ImmutableProductRepo().products;
+  bool isLoading = false;
+  bool isError = false;
+
+  Widget _getWidget() {
+    if (isLoading) {
+      return const LoadingWidget();
+    }
+
+    if (isError) {
+      return CustomAlertWidget(
+        onPressedRefresh: () {
+          context.read<SPBloc>().add(SPEventFetchProducts());
+        },
+      );
+    }
+
+    return _MainWidget(products);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(40),
-        child: CustomAppBar(
-          title: AppStrings.allServices,
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 27, right: 28, top: 30),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  physics: const ScrollPhysics(),
-                  itemCount: 2,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: _MyServicesCard(
-                        onDeletePressed: () {},
-                        onEditPressed: () => NavigationService.go(context,
-                            const DetailServiceScreen(isEditable: true)),
-                        onCardPressed: () => NavigationService.go(
-                            context, const DetailServiceScreen()),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              gapH20,
-              RoundedButton(
-                title: AppStrings.addService,
-                onPressed: () =>
-                    NavigationService.go(context, const CreateServiceScreen()),
-              )
-            ],
+    return BlocListener<SPBloc, SPState>(
+      listener: (context, state) {
+        if (state is SPStateFetchProductsFailure ||
+            state is SPStateFetchingProducts ||
+            state is SPStateProductsFetched ||
+            state is SPStateUpdatedProduct ||
+            state is SPStateCreatedProduct) {
+          setState(() {
+            isError = false;
+            isLoading = state.isLoading;
+            if (state is SPStateFetchProductsFailure) {
+              isError = true;
+            }
+            if (state is SPStateUpdatedProduct ||
+                state is SPStateCreatedProduct) {
+              products = ImmutableProductRepo().products;
+            }
+            if (state is SPStateProductsFetched) {
+              products = state.products;
+            }
+          });
+        }
+      },
+      child: Scaffold(
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(40),
+          child: CustomAppBar(
+            title: AppStrings.allServices,
           ),
+        ),
+        body: SafeArea(
+          child: _getWidget(),
         ),
       ),
     );
   }
 }
 
+class _MainWidget extends StatelessWidget {
+  const _MainWidget(this.products);
+  final List<ProductModel> products;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 27, right: 28, top: 30),
+      child: Column(
+        children: [
+          Expanded(
+            child: products.isEmpty
+                ? CustomAlertWidget(
+                    message: "Oops! No Products",
+                    onPressedRefresh: () {
+                      context.read<SPBloc>().add(SPEventFetchProducts());
+                    },
+                  )
+                : ListView.builder(
+                    physics: const ScrollPhysics(),
+                    itemCount: products.length,
+                    itemBuilder: (_, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: _MyServicesCard(
+                          product: products[index],
+                          onDeletePressed: () {},
+                          onEditPressed: () => NavigationService.go(
+                            context,
+                            DetailServiceScreen(
+                              isEditable: true,
+                              product: products[index],
+                            ),
+                          ),
+                          onCardPressed: () => NavigationService.go(
+                            context,
+                            DetailServiceScreen(
+                              product: products[index],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          gapH20,
+          RoundedButton(
+            title: AppStrings.addService,
+            onPressed: () =>
+                NavigationService.go(context, const CreateServiceScreen()),
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class _MyServicesCard extends StatelessWidget {
+  final ProductModel product;
+
   const _MyServicesCard(
       {required this.onDeletePressed,
       required this.onEditPressed,
-      required this.onCardPressed});
+      required this.onCardPressed,
+      required this.product});
   final VoidCallback onDeletePressed;
   final VoidCallback onEditPressed;
   final VoidCallback onCardPressed;
@@ -85,12 +174,10 @@ class _MyServicesCard extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Image.asset(
-                    Assets.demoCar,
+                  CustomNetworkImage(
+                    imageUrl: product.images.firstOrNull ?? "",
                     height: constraints.maxHeight * 0.76,
-                    width: screenWidth,
-                    fit: BoxFit.cover,
-                    isAntiAlias: true,
+                    width: constraints.maxWidth,
                   ),
                   Positioned(
                     top: 7,
@@ -134,13 +221,13 @@ class _MyServicesCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Bentley luxury Car",
+                      product.name,
                       style:
                           StyleGuide.productCardStyle1.copyWith(fontSize: 14),
                     ),
                     Text.rich(
                       TextSpan(
-                        text: "\$ 24.0",
+                        text: "\$ ${product.price}",
                         children: [
                           TextSpan(
                             text: "/Hour",

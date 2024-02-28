@@ -187,7 +187,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 bottom: 15,
                                 child: InkWell(
                                   onTap: () async {
-                                    final imagePicker = MyImagePicker();
+                                    final imagePicker =
+                                        MyImagePicker(imageQuality: 50);
                                     imagePicker.pick();
                                     imagePicker.onSelection(
                                       (exception, image) {

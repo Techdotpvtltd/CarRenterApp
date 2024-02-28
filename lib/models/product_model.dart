@@ -83,7 +83,9 @@ class ProductModel {
       id: map['id'] as String? ?? "",
       ownerId: map['ownerId'] as String? ?? "",
       createdAt: (map['createdAt'] as Timestamp? ?? Timestamp.now()).toDate(),
-      images: List<String>.from((map['images'] as List<String>? ?? [])),
+      images: (map['images'] as List<dynamic>? ?? [])
+          .map((e) => e.toString())
+          .toList(),
       name: map['name'] as String? ?? "",
       description: map['description'],
       model: map['model'] as String? ?? "",
