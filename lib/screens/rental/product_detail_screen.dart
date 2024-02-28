@@ -9,6 +9,7 @@ import 'package:beasy/utilities/widgets/map_sample.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -23,6 +24,29 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final _pageController = PageController(initialPage: 0, keepPage: false);
+  String? bookingLocation;
+
+  void _parseLocationFromCoordinates() async {
+    try {
+      final List<Placemark> marks = await placemarkFromCoordinates(
+          widget.product.latitude, widget.product.longitude);
+
+      final mark = marks.firstOrNull;
+
+      setState(() {
+        bookingLocation = "${mark?.locality ?? ""}, ${mark?.country ?? ""}";
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    _parseLocationFromCoordinates();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -294,65 +318,44 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               Radius.circular(9),
                             ),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 52,
-                                      height: 48,
-                                      child: MapSample(
-                                        isPin: true,
-                                        latLng: LatLng(
-                                          widget.product.latitude,
-                                          widget.product.longitude,
-                                        ),
-                                      ),
-                                    ),
-                                    gapW12,
-                                    const Flexible(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            AppStrings.zoneLocation,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontFamily: Assets.poppinsFont,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                              color: Color(0xFF9CA4AB),
-                                            ),
-                                          ),
-                                          gapH4,
-                                          Text(
-                                            "Midvalley City",
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontFamily: Assets.poppinsFont,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: StyleGuide.textColor2,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                              SizedBox(
+                                width: screenWidth,
+                                height: screenHeight * 0.30,
+                                child: MapSample(
+                                  isPin: true,
+                                  latLng: LatLng(
+                                    widget.product.latitude,
+                                    widget.product.longitude,
+                                  ),
                                 ),
                               ),
-                              RoundedButton(
-                                title: AppStrings.changeLocation,
-                                onPressed: () {},
-                                width: 90,
-                                height: 26,
-                                textSize: 9,
-                              )
+                              gapH12,
+                              const Text(
+                                AppStrings.zoneLocation,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontFamily: Assets.poppinsFont,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF9CA4AB),
+                                ),
+                              ),
+                              gapH4,
+                              Text(
+                                bookingLocation ?? "",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontFamily: Assets.poppinsFont,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: StyleGuide.textColor2,
+                                ),
+                              ),
                             ],
                           ),
                         ),
