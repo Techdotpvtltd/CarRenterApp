@@ -17,16 +17,20 @@ class CustomAlertWidget extends StatelessWidget {
       {super.key,
       this.message,
       this.isShowRefresh = true,
-      this.onPressedRefresh});
+      this.onPressedRefresh,
+      this.width,
+      this.height});
   final String? message;
   final bool isShowRefresh;
   final VoidCallback? onPressedRefresh;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: screenWidth,
-      height: screenHeight,
+      width: width ?? screenWidth,
+      height: height ?? screenHeight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

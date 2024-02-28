@@ -1,3 +1,4 @@
+import 'package:beasy/models/product_model.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -14,6 +15,7 @@ class ProductSectionWidget extends StatelessWidget {
     required this.onPressedProduct,
     required this.builder,
     required this.cardHeight,
+    required this.products,
   });
   final String title;
   final VoidCallback onPressedAll;
@@ -21,6 +23,7 @@ class ProductSectionWidget extends StatelessWidget {
   final Function(int index) onPressedProduct;
   final Widget Function(int) builder;
   final double cardHeight;
+  final List<ProductModel> products;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class ProductSectionWidget extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
-            itemCount: itemCount,
+            itemCount: products.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),

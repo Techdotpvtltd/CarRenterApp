@@ -1,6 +1,8 @@
+import 'package:beasy/models/product_model.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -11,12 +13,14 @@ class ProductCard extends StatefulWidget {
     this.height,
     this.isLargeCard = false,
     this.didHeartPressed,
+    required this.product,
   });
 
   final double? width;
   final double? height;
   final bool isLargeCard;
   final Function(bool)? didHeartPressed;
+  final ProductModel product;
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -42,11 +46,10 @@ class _ProductCardState extends State<ProductCard> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  Assets.demoCar,
+                CustomNetworkImage(
                   height: constraints.maxHeight * 0.65,
                   width: (constraints.maxWidth),
-                  fit: BoxFit.cover,
+                  imageUrl: widget.product.images.firstOrNull ?? "",
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -55,7 +58,7 @@ class _ProductCardState extends State<ProductCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Buggati Chiron",
+                        widget.product.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -72,7 +75,7 @@ class _ProductCardState extends State<ProductCard> {
                         children: [
                           Text.rich(
                             TextSpan(
-                              text: "\$ 24.00",
+                              text: "\$ ${widget.product.price}",
                               style: TextStyle(
                                 fontFamily: Assets.plusJakartaFont,
                                 fontSize: widget.isLargeCard ? 13.44 : 12.87,

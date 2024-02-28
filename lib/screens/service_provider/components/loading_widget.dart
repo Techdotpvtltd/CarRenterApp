@@ -10,13 +10,14 @@ import 'package:flutter/material.dart';
 /// Date:        28-02-24 15:08:37 -- Wednesday
 /// Description:
 class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({super.key});
-
+  const LoadingWidget({super.key, this.width, this.height});
+  final double? width;
+  final double? height;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: screenWidth,
-      height: screenHeight,
+      width: width ?? screenWidth,
+      height: height ?? screenHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,17 +1,21 @@
+import 'package:beasy/models/product_model.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/extensions/navigation_service.dart';
+import 'package:beasy/utilities/widgets/custom_network_image.dart';
+import 'package:beasy/utilities/widgets/map_sample.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  const ProductDetailScreen({super.key, required this.product});
+  final ProductModel product;
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -32,15 +36,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 height: screenHeight * .32,
                 child: PageView.builder(
                   controller: _pageController,
-                  itemCount: 3,
+                  itemCount: widget.product.images.length,
                   itemBuilder: (context, index) => ClipRRect(
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(64),
                       bottomRight: Radius.circular(51),
                     ),
-                    child: Image.asset(
-                      Assets.demoCar,
-                      fit: BoxFit.cover,
+                    child: CustomNetworkImage(
+                      imageUrl: widget.product.images[index],
                     ),
                   ),
                 ),
@@ -73,7 +76,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   alignment: Alignment.bottomCenter,
                   child: SmoothPageIndicator(
                     controller: _pageController,
-                    count: 2,
+                    count: widget.product.images.length,
                     effect: const WormEffect(
                       dotWidth: 7.5,
                       dotHeight: 7.5,
@@ -101,7 +104,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                "Bentley Luxury Car",
+                                widget.product.name,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: StyleGuide.productCardStyle1.copyWith(
@@ -114,7 +117,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  "\$ 24.00/Hour",
+                                  "\$ ${widget.product.price}/Hour",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: StyleGuide.productCardStyle1.copyWith(
@@ -147,63 +150,63 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                           ],
                         ),
-                        const Row(
-                          children: [
-                            Icon(
-                              Icons.watch_later_outlined,
-                            ),
-                            gapW10,
-                            Text(
-                              AppStrings.bookingHours,
-                              style: TextStyle(
-                                fontFamily: Assets.poppinsFont,
-                                fontSize: 7.5,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF9CA4AB),
-                              ),
-                            )
-                          ],
-                        ),
-                        gapH12,
-                        DottedBorder(
-                          padding: const EdgeInsets.all(5),
-                          color: const Color(0xFFE2E3E8),
-                          strokeWidth: 1,
-                          dashPattern: const [4, 4],
-                          radius: const Radius.circular(4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Today, 01:00 PM - 02:00 PM",
-                                style: StyleGuide.textStyle3.copyWith(
-                                  color: StyleGuide.primaryColor2,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 26,
-                                height: 26,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  style: const ButtonStyle(
-                                    backgroundColor: MaterialStatePropertyAll(
-                                        StyleGuide.primaryColor2),
-                                    padding: MaterialStatePropertyAll(
-                                        EdgeInsetsDirectional.zero),
-                                  ),
-                                  icon: SvgPicture.asset(
-                                    Assets.penIcon,
-                                    width: 12,
-                                    height: 12,
-                                    colorFilter: const ColorFilter.mode(
-                                        Colors.white, BlendMode.srcIn),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // const Row(
+                        //   children: [
+                        //     Icon(
+                        //       Icons.watch_later_outlined,
+                        //     ),
+                        //     gapW10,
+                        //     Text(
+                        //       AppStrings.bookingHours,
+                        //       style: TextStyle(
+                        //         fontFamily: Assets.poppinsFont,
+                        //         fontSize: 7.5,
+                        //         fontWeight: FontWeight.w500,
+                        //         color: Color(0xFF9CA4AB),
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
+                        // gapH12,
+                        // DottedBorder(
+                        //   padding: const EdgeInsets.all(5),
+                        //   color: const Color(0xFFE2E3E8),
+                        //   strokeWidth: 1,
+                        //   dashPattern: const [4, 4],
+                        //   radius: const Radius.circular(4),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Text(
+                        //         "Today, 01:00 PM - 02:00 PM",
+                        //         style: StyleGuide.textStyle3.copyWith(
+                        //           color: StyleGuide.primaryColor2,
+                        //           fontWeight: FontWeight.w500,
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 26,
+                        //         height: 26,
+                        //         child: IconButton(
+                        //           onPressed: () {},
+                        //           style: const ButtonStyle(
+                        //             backgroundColor: MaterialStatePropertyAll(
+                        //                 StyleGuide.primaryColor2),
+                        //             padding: MaterialStatePropertyAll(
+                        //                 EdgeInsetsDirectional.zero),
+                        //           ),
+                        //           icon: SvgPicture.asset(
+                        //             Assets.penIcon,
+                        //             width: 12,
+                        //             height: 12,
+                        //             colorFilter: const ColorFilter.mode(
+                        //                 Colors.white, BlendMode.srcIn),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         gapH16,
                         Text(
                           AppStrings.specification,
@@ -215,10 +218,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                         gapH12,
                         SizedBox(
-                          height: 50,
+                          height: widget.product.description == "" ? 0 : 100,
                           child: SingleChildScrollView(
                             child: ReadMoreText(
-                              "Lorem ipsum dolor sit amet consectetur. Lectus consequat euismod diam aliquet nisl quis. Urna arcu nunc consequat vel nulla ornare id quis. Lorem ipsum dolor sit amet consectetur. Lectus consequat euismod diam aliquet nisl quis. Urna arcu nunc consequat vel nulla ornare id quis.",
+                              widget.product.description ?? "",
+                              trimLength: 100,
                               trimLines: 3,
                               trimCollapsedText: AppStrings.readMore,
                               trimExpandedText: " Show Less",
@@ -244,7 +248,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ),
                             Text(
-                              "The Betayge eWB range",
+                              widget.product.model,
                               style: StyleGuide.textStyle3.copyWith(
                                 color: const Color(0xFF414141),
                               ),
@@ -262,7 +266,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ),
                             Text(
-                              "2023",
+                              widget.product.year.toString(),
                               style: StyleGuide.textStyle3.copyWith(
                                 color: const Color(0xFF414141),
                               ),
@@ -293,15 +297,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Expanded(
+                              Expanded(
                                 child: Row(
                                   children: [
                                     SizedBox(
                                       width: 52,
                                       height: 48,
+                                      child: MapSample(
+                                        isPin: true,
+                                        latLng: LatLng(
+                                          widget.product.latitude,
+                                          widget.product.longitude,
+                                        ),
+                                      ),
                                     ),
                                     gapW12,
-                                    Flexible(
+                                    const Flexible(
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
