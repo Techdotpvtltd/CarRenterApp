@@ -53,6 +53,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
         createdAt: DateTime.now(),
         images: images,
         name: nameTFController.text,
+        description: descTFController.text,
         model: "",
         year: 0,
         price: 0,
