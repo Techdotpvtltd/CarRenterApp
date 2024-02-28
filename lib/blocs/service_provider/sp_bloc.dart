@@ -82,5 +82,16 @@ class SPBloc extends Bloc<SPEvent, SPState> {
         }
       },
     );
+
+    // ===========================Delete Product Event================================
+    on<SPEventDeleteProduct>((event, emit) {
+      try {
+        MutableProductRepo().deleteProduct(index: event.atIndex);
+        ImmutableProductRepo().delete(event.atIndex);
+        emit(SPStateProductDeleted());
+      } on AppException catch (e) {
+        debugPrint(e.message);
+      }
+    });
   }
 }

@@ -62,4 +62,15 @@ class MutableProductRepo {
       throw thrownAppException(e: e);
     }
   }
+
+  /// Delete Product
+  Future<void> deleteProduct({required int index}) async {
+    try {
+      final String productId = ImmutableProductRepo().products[index].id;
+      FirestoreService().delete(
+          collection: FIREBASE_COLLECTION_USER_SERVICES, docId: productId);
+    } catch (e) {
+      throw thrownAppException(e: e);
+    }
+  }
 }

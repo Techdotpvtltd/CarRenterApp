@@ -91,3 +91,6 @@ class SPStateProductsFetched extends SPState {
 
   SPStateProductsFetched({required this.products});
 }
+
+// ===========================Delete Service State================================
+class SPStateProductDeleted extends SPState {}

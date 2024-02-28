@@ -11,6 +11,7 @@ import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
 import 'package:beasy/utilities/widgets/custom_network_image.dart';
+import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:beasy/screens/service_provider/create_services_screen.dart';
 import 'package:beasy/screens/service_provider/detail_service_screen.dart';
@@ -56,7 +57,8 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
             state is SPStateFetchingProducts ||
             state is SPStateProductsFetched ||
             state is SPStateUpdatedProduct ||
-            state is SPStateCreatedProduct) {
+            state is SPStateCreatedProduct ||
+            state is SPStateProductDeleted) {
           setState(() {
             isError = false;
             isLoading = state.isLoading;
@@ -64,7 +66,8 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
               isError = true;
             }
             if (state is SPStateUpdatedProduct ||
-                state is SPStateCreatedProduct) {
+                state is SPStateCreatedProduct ||
+                state is SPStateProductDeleted) {
               products = ImmutableProductRepo().products;
             }
             if (state is SPStateProductsFetched) {
@@ -94,52 +97,66 @@ class _MainWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 27, right: 28, top: 30),
-      child: Column(
-        children: [
-          Expanded(
-            child: products.isEmpty
-                ? CustomAlertWidget(
-                    message: "Oops! No Products",
-                    onPressedRefresh: () {
-                      context.read<SPBloc>().add(SPEventFetchProducts());
-                    },
-                  )
-                : ListView.builder(
-                    physics: const ScrollPhysics(),
-                    itemCount: products.length,
-                    itemBuilder: (_, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: _MyServicesCard(
-                          product: products[index],
-                          onDeletePressed: () {},
-                          onEditPressed: () => NavigationService.go(
-                            context,
-                            DetailServiceScreen(
-                              isEditable: true,
-                              product: products[index],
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<SPBloc>().add(SPEventFetchProducts());
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 27, right: 28, top: 30),
+        child: Column(
+          children: [
+            Expanded(
+              child: products.isEmpty
+                  ? CustomAlertWidget(
+                      message: "Oops! No Products",
+                      onPressedRefresh: () {
+                        context.read<SPBloc>().add(SPEventFetchProducts());
+                      },
+                    )
+                  : ListView.builder(
+                      itemCount: products.length,
+                      itemBuilder: (_, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: _MyServicesCard(
+                            product: products[index],
+                            onDeletePressed: () {
+                              CustomDilaogs().deleteBox(
+                                title: "Delete",
+                                message:
+                                    "Are you sure to delete the product ${products[index].name}?",
+                                onPositivePressed: () {
+                                  context.read<SPBloc>().add(
+                                      SPEventDeleteProduct(atIndex: index));
+                                },
+                              );
+                            },
+                            onEditPressed: () => NavigationService.go(
+                              context,
+                              DetailServiceScreen(
+                                isEditable: true,
+                                product: products[index],
+                              ),
+                            ),
+                            onCardPressed: () => NavigationService.go(
+                              context,
+                              DetailServiceScreen(
+                                product: products[index],
+                              ),
                             ),
                           ),
-                          onCardPressed: () => NavigationService.go(
-                            context,
-                            DetailServiceScreen(
-                              product: products[index],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-          gapH20,
-          RoundedButton(
-            title: AppStrings.addService,
-            onPressed: () =>
-                NavigationService.go(context, const CreateServiceScreen()),
-          )
-        ],
+                        );
+                      },
+                    ),
+            ),
+            gapH20,
+            RoundedButton(
+              title: AppStrings.addService,
+              onPressed: () =>
+                  NavigationService.go(context, const CreateServiceScreen()),
+            )
+          ],
+        ),
       ),
     );
   }

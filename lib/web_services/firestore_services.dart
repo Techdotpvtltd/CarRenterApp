@@ -89,4 +89,11 @@ class FirestoreService {
         _firestore.collection(collection).where(filedId, isEqualTo: isEqualTo);
     return _getWithQuery(query: query);
   }
+
+  //  Delete Services ====================================
+  Future<void> delete(
+      {required String collection, required String docId}) async {
+    final ref = _firestore.collection(collection).doc(docId);
+    await ref.delete();
+  }
 }

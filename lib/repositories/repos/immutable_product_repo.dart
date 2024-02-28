@@ -11,7 +11,6 @@ import 'package:beasy/models/product_model.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/constants.dart';
-import 'package:beasy/utilities/extensions/list_ext.dart';
 import 'package:beasy/web_services/firestore_services.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +32,10 @@ class ImmutableProductRepo {
     if (index != -1) {
       _products[index] = updatedData;
     }
+  }
+
+  void delete(int atIndex) {
+    _products.removeAt(atIndex);
   }
 
   /// Check the user type

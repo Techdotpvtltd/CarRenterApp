@@ -21,3 +21,9 @@ class SPEventUpdateProduct extends SPEvent {
 
   SPEventUpdateProduct({required this.product});
 }
+
+/// Delete Product Event
+class SPEventDeleteProduct extends SPEvent {
+  final int atIndex;
+  SPEventDeleteProduct({required this.atIndex});
+}
