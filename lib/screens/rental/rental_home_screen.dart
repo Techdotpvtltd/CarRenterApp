@@ -81,7 +81,7 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
             ),
             gapH32,
             const Text(
-              "Pic up Your favorite\nCar for rent.",
+              "Pick up Your favorite\nCar for rent.",
               style: TextStyle(
                 color: StyleGuide.textColor1,
                 fontFamily: Assets.poppinsFont,

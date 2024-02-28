@@ -32,20 +32,22 @@ class CustomNetworkImage extends StatelessWidget {
       ),
       errorWidget: (context, url, error) => Container(
         color: Colors.grey,
-        child:
-            url != "" && error.toString().contains("No host specified in URI")
-                ? Image.file(
-                    File(imageUrl),
-                    height: height,
-                    width: width,
-                    fit: BoxFit.cover,
-                  )
-                : const Center(
-                    child: Icon(
-                      Icons.image,
-                      size: 32,
-                    ),
+        child: LayoutBuilder(builder: (context, constraints) {
+          return url != "" &&
+                  error.toString().contains("No host specified in URI")
+              ? Image.file(
+                  File(imageUrl),
+                  height: height,
+                  width: width,
+                  fit: BoxFit.cover,
+                )
+              : Center(
+                  child: Icon(
+                    Icons.image,
+                    size: (height ?? constraints.maxHeight) / 2,
                   ),
+                );
+        }),
       ),
     );
   }
