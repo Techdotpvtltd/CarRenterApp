@@ -124,4 +124,7 @@ class AppStrings {
       "Are you sure to want this delete service";
   static const String delete = "Delete";
   static const String cancel = "Cancel";
+
+  /// DateTimeScreen =================
+  static const String dateAndTime = "Date & Time";
 }

@@ -1,4 +1,5 @@
 import 'package:beasy/models/product_model.dart';
+import 'package:beasy/screens/rental/calendar_screen.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -363,7 +364,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         gapH30,
                         RoundedButton(
                           title: AppStrings.choose,
-                          onPressed: () {},
+                          onPressed: () => NavigationService.go(
+                            context,
+                            CalendarScreen(product: widget.product),
+                          ),
                         )
                       ],
                     ),
