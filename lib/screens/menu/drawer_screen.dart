@@ -59,7 +59,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
     super.initState();
     if (!UserRepo().isUserNull) {
       setState(() {
-        _user = UserRepo().user;
+        _user = UserRepo().currentUser;
       });
     }
   }
@@ -92,7 +92,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             bloc.setOpen = false;
                           }),
                           mainScreen: Builder(builder: (context) {
-                            return UserRepo().user.userType ==
+                            return UserRepo().currentUser.userType ==
                                     UserType.rentalUser
                                 ? currentRentalScreen(bloc.currentIndex)
                                 : currentServiceProviderScreen(
@@ -151,7 +151,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                                     if (state
                                                         is AuthStateUpdatedUserProfile) {
                                                       setState(() {
-                                                        _user = UserRepo().user;
+                                                        _user = UserRepo()
+                                                            .currentUser;
                                                       });
                                                     }
                                                   });

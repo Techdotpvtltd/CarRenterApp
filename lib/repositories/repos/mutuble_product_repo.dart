@@ -55,7 +55,7 @@ class MutableProductRepo {
   Future<String> uploadImages({required String path}) async {
     try {
       final String collectionPath =
-          "$FIREBASE_COLLECTION_USER_SERVICES/${UserRepo().user.uid}/${DateTime.now().microsecondsSinceEpoch}";
+          "$FIREBASE_COLLECTION_USER_SERVICES/${UserRepo().currentUser.uid}/${DateTime.now().microsecondsSinceEpoch}";
       return await StorageService()
           .uploadImage(withFile: File(path), collectionPath: collectionPath);
     } catch (e) {

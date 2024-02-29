@@ -92,11 +92,11 @@ class BookingModel {
       bookingUserId: map['bookingUserId'] as String,
       bookingDate: (map['bookingDate'] as Timestamp).toDate(),
       createdAt: (map['createdAt'] as Timestamp).toDate(),
-      bookingTime: List<DateTime>.from(
-        (map['bookingTime'] as List<Timestamp>).map<DateTime>(
-          (x) => x.toDate(),
-        ),
-      ),
+      bookingTime: (map['bookingTime'])
+          .map<DateTime>(
+            (x) => (x as Timestamp).toDate(),
+          )
+          .toList(),
       status: BookingStatus.values
           .firstWhere((e) => e.name.toLowerCase() == map['status']),
       car: map['car'] as String,

@@ -33,3 +33,19 @@ class BookingStateBookingFailure extends BookingState {
 
 /// Success
 class BookingStateBooked extends BookingState {}
+
+// ===========================Fetching Booking States================================
+class BookingStateFetchingBookings extends BookingState {
+  BookingStateFetchingBookings(
+      {super.isLoading = true, super.loadingText = "Fetching..."});
+}
+
+// Failure
+class BookingStateFetchBookingsFailure extends BookingState {
+  final AppException exception;
+
+  BookingStateFetchBookingsFailure({required this.exception});
+}
+
+// Success
+class BookingStateFetchBookingSuccess extends BookingState {}

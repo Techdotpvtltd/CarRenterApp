@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:beasy/models/query_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
@@ -88,6 +89,29 @@ class FirestoreService {
     final Query<Map<String, dynamic>> query =
         _firestore.collection(collection).where(filedId, isEqualTo: isEqualTo);
     return _getWithQuery(query: query);
+  }
+
+  /// with multiple conditions
+  Future<List<Map<String, dynamic>>> fetchWithMultipleConditions({
+    required String collection,
+    required List<QueryModel> queries,
+  }) async {
+    final CollectionReference<Map<String, dynamic>> collectionReference =
+        _firestore.collection(collection);
+
+    Query<Map<String, dynamic>>? query;
+    for (QueryModel condition in queries) {
+      if (condition.type == QueryType.isEqual) {
+        query = collectionReference.where(condition.field,
+            isEqualTo: condition.value);
+      }
+
+      if (condition.type == QueryType.isNotEqual) {
+        collectionReference.where(condition.field,
+            isNotEqualTo: condition.value);
+      }
+    }
+    return _getWithQuery(query: query!);
   }
 
   //  Delete Services ====================================

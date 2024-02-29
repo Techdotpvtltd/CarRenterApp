@@ -39,7 +39,7 @@ class ImmutableProductRepo {
   }
 
   /// Check the user type
-  final UserType? type = UserRepo().user.userType;
+  final UserType? type = UserRepo().currentUser.userType;
 
   // ===========================Methods================================
 
@@ -48,7 +48,7 @@ class ImmutableProductRepo {
     try {
       /// For Service Provider
       if (type == UserType.serviceProvider) {
-        final String userId = UserRepo().user.uid;
+        final String userId = UserRepo().currentUser.uid;
         final List<Map<String, dynamic>> data = await FirestoreService()
             .fetchWithEqual(
                 collection: FIREBASE_COLLECTION_USER_SERVICES,

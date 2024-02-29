@@ -46,7 +46,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
       });
       return;
     }
-    final UserModel user = UserRepo().user;
+    final UserModel user = UserRepo().currentUser;
     productModel = ProductModel(
         id: "",
         ownerId: user.uid,

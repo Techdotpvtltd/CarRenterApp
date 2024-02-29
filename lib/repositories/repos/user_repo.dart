@@ -20,7 +20,7 @@ class UserRepo {
 
   static final UserRepo _instance = UserRepo._internal();
   UserModel? _userModel;
-  UserModel get user =>
+  UserModel get currentUser =>
       _userModel == null ? throw AuthExceptionUserNotFound() : _userModel!;
   bool get isUserNull => _userModel == null;
 
@@ -150,7 +150,7 @@ class UserRepo {
   Future<String> uploadProfile({required String path}) async {
     try {
       final String collectionPath =
-          "$FIREBASE_COLLECTION_USER_PROFILES/${UserRepo().user.uid}/${DateTime.now().microsecondsSinceEpoch}";
+          "$FIREBASE_COLLECTION_USER_PROFILES/${UserRepo().currentUser.uid}/${DateTime.now().microsecondsSinceEpoch}";
       return await StorageService()
           .uploadImage(withFile: File(path), collectionPath: collectionPath);
     } on FirebaseException catch (e) {

@@ -24,3 +24,6 @@ class BookingEventCreateBooking extends BookingEvent {
       required this.bookingTime,
       required this.product});
 }
+
+// ===========================Fetch Booking Event for Service Provider================================
+class BookingEventFetchForServiceProvider extends BookingEvent {}

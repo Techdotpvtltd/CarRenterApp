@@ -25,7 +25,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       (event, emit) async {
         try {
           final ProductModel product = event.product;
-          final UserModel user = UserRepo().user;
+          final UserModel user = UserRepo().currentUser;
           final BookingModel model = BookingModel(
             id: "",
             serviceId: product.id,
@@ -46,6 +46,19 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
           emit(BookingStateBooked());
         } on AppException catch (e) {
           emit(BookingStateBookingFailure(exception: e));
+        }
+      },
+    );
+
+    /// on Service Provider Booking Fetching
+    on<BookingEventFetchForServiceProvider>(
+      (event, emit) async {
+        try {
+          emit(BookingStateFetchingBookings());
+          await BookingRepo().fetchForServiceProvider();
+          emit(BookingStateFetchBookingSuccess());
+        } on AppException catch (e) {
+          emit(BookingStateFetchBookingsFailure(exception: e));
         }
       },
     );

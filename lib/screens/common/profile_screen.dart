@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isEditingEnabled = widget.isEditingEnabled;
       if (!UserRepo().isUserNull) {
-        final user = UserRepo().user;
+        final user = UserRepo().currentUser;
         _fnController.text = user.firstName;
         _emailController.text = user.email;
         _lnController.text = user.lastName;
@@ -296,8 +296,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         isLocationEnabled:
                             _locationController.text != "" && _isEditingEnabled,
                         latLng: !UserRepo().isUserNull
-                            ? LatLng(UserRepo().user.location.latitude,
-                                UserRepo().user.location.longitude)
+                            ? LatLng(UserRepo().currentUser.location.latitude,
+                                UserRepo().currentUser.location.longitude)
                             : null,
                         filedId: 6,
                         errorCode: _errorCode,

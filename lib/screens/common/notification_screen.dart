@@ -1,8 +1,8 @@
 import 'package:beasy/blocs/drawer/drawer_cubit.dart';
+import 'package:beasy/screens/service_provider/components/quick_notification_widget.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
-import 'package:beasy/utilities/widgets/notification_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,13 +31,9 @@ class NotificationScreen extends StatelessWidget {
               : null,
         ),
       ),
-      body: ListView.builder(
-        physics: const ScrollPhysics(),
-        itemCount: 3,
-        itemBuilder: (context, index) => const Padding(
-          padding: EdgeInsets.fromLTRB(30, 4, 22, 4),
-          child: NotificationCard(),
-        ),
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6),
+        child: QuickNotificationWidget(),
       ),
     );
   }

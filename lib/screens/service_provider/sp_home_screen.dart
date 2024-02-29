@@ -1,3 +1,5 @@
+import 'package:beasy/blocs/notification/notification_bloc.dart';
+import 'package:beasy/blocs/notification/notification_event.dart';
 import 'package:beasy/blocs/service_provider/sp_bloc.dart';
 import 'package:beasy/blocs/service_provider/sp_event.dart';
 import 'package:beasy/blocs/service_provider/sp_state.dart';
@@ -9,7 +11,6 @@ import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
 import 'package:beasy/utilities/widgets/custom_app_bar.dart';
-import 'package:beasy/utilities/widgets/notification_card.dart';
 import 'package:beasy/screens/conversations/chat_screen.dart';
 import 'package:beasy/screens/common/notification_screen.dart';
 import 'package:beasy/screens/service_provider/create_services_screen.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../blocs/drawer/drawer_cubit.dart';
+import 'components/quick_notification_widget.dart';
 
 class SPHomeScreen extends StatefulWidget {
   const SPHomeScreen({super.key});
@@ -32,6 +34,9 @@ class _SPHomeScreenState extends State<SPHomeScreen> {
   void initState() {
     super.initState();
     context.read<SPBloc>().add(SPEventFetchProducts()); // Fetch Products
+    context
+        .read<NotificationBloc>()
+        .add(NotificationEventFetch()); // Fetch Notification
   }
 
   @override
@@ -50,7 +55,7 @@ class _SPHomeScreenState extends State<SPHomeScreen> {
               onPressedPrefix: () {
                 context.read<DrawerCubit>().openDrawer();
               },
-              title: "Hey, 👋 ${UserRepo().user.firstName} ",
+              title: "Hey, 👋 ${UserRepo().currentUser.firstName} ",
               isCenteredTitle: true,
               titleColor: Colors.white,
               actions: [
@@ -154,17 +159,8 @@ class _SPHomeScreenState extends State<SPHomeScreen> {
                 ],
               ),
               gapH8,
-              Expanded(
-                child: ListView.builder(
-                  physics: const ScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (BuildContext context, int index) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 9),
-                      child: NotificationCard(),
-                    );
-                  },
-                ),
+              const Expanded(
+                child: QuickNotificationWidget(),
               ),
             ],
           ),

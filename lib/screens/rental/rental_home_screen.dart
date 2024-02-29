@@ -62,7 +62,7 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
   @override
   void initState() {
     if (!UserRepo().isUserNull) {
-      _userModel = UserRepo().user;
+      _userModel = UserRepo().currentUser;
       context.read<RentalProductBloc>().add(RentalEventFetchProducts());
     }
 

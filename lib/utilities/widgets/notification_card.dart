@@ -1,6 +1,10 @@
+import 'package:beasy/models/booking_model.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
+import 'package:beasy/utilities/helping_methods.dart';
+import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constants/asstes.dart';
 import '../constants/constants.dart';
@@ -8,11 +12,13 @@ import '../constants/style_guide.dart';
 import 'rounded_button.dart';
 
 class NotificationCard extends StatelessWidget {
-  const NotificationCard({super.key});
+  const NotificationCard({super.key, required this.booking});
+  final BookingModel booking;
 
   @override
   Widget build(BuildContext context) {
-    final bool isRentalUser = UserRepo().user.userType == UserType.rentalUser;
+    final bool isRentalUser =
+        UserRepo().currentUser.userType == UserType.rentalUser;
     return Container(
       decoration: BoxDecoration(
           color: const Color(0xffF3F4F9),
@@ -25,18 +31,22 @@ class NotificationCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  radius: 14,
-                  backgroundImage: AssetImage(Assets.userImage),
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  child: CustomNetworkImage(
+                    imageUrl: booking.bookingUserProfile,
+                    width: 30,
+                    height: 30,
+                  ),
                 ),
                 gapW8,
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Request Accepted",
-                        style: TextStyle(
+                      Text(
+                        booking.bookingUserName,
+                        style: const TextStyle(
                           fontFamily: Assets.plusJakartaFont,
                           color: StyleGuide.textColor2,
                           fontSize: 12,
@@ -47,12 +57,12 @@ class NotificationCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Flexible(
+                          Flexible(
                             child: Text(
-                              "Your booking request have been accepted",
+                              "I want to book your ${booking.car} car.",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: Assets.plusJakartaFont,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w400,
@@ -67,9 +77,9 @@ class NotificationCard extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                           gapW10,
-                          const Text(
-                            "33 mins ago",
-                            style: TextStyle(
+                          Text(
+                            parseTimePeriod(atTime: booking.createdAt),
+                            style: const TextStyle(
                                 fontFamily: Assets.plusJakartaFont,
                                 fontSize: 8,
                                 fontWeight: FontWeight.w400,
@@ -77,11 +87,12 @@ class NotificationCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Text(
-                            "17/03/2024",
-                            style: TextStyle(
+                            DateFormat("dd/MM/yyyy")
+                                .format(booking.bookingDate),
+                            style: const TextStyle(
                               color: StyleGuide.textColor2,
                               fontFamily: Assets.plusJakartaFont,
                               fontSize: 9,
@@ -90,8 +101,8 @@ class NotificationCard extends StatelessWidget {
                           ),
                           gapW8,
                           Text(
-                            "9:00PM to 12:00AM",
-                            style: TextStyle(
+                            "${DateFormat("hh:mm a").format(booking.bookingTime.first)} to ${DateFormat("hh:mm a").format(booking.bookingTime.last)}",
+                            style: const TextStyle(
                               color: StyleGuide.textColor2,
                               fontFamily: Assets.plusJakartaFont,
                               fontSize: 9,
