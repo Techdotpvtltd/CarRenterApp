@@ -8,6 +8,7 @@
 
 import 'package:beasy/exceptions/exception_parsing.dart';
 import 'package:beasy/models/product_model.dart';
+import 'package:beasy/models/query_model.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/constants.dart';
@@ -49,11 +50,13 @@ class ImmutableProductRepo {
       /// For Service Provider
       if (type == UserType.serviceProvider) {
         final String userId = UserRepo().currentUser.uid;
-        final List<Map<String, dynamic>> data = await FirestoreService()
-            .fetchWithEqual(
-                collection: FIREBASE_COLLECTION_USER_SERVICES,
-                filedId: "ownerId",
-                isEqualTo: userId);
+        final List<Map<String, dynamic>> data =
+            await FirestoreService().fetchWithMultipleConditions(
+          collection: FIREBASE_COLLECTION_USER_SERVICES,
+          queries: [
+            QueryModel(field: "ownerId", value: userId, type: QueryType.isEqual)
+          ],
+        );
         _products = data.map((e) => ProductModel.fromMap(e)).toList();
         debugPrint(_products.length.toString());
       }
@@ -61,6 +64,7 @@ class ImmutableProductRepo {
       /// For rental user
       if (type == UserType.rentalUser) {
         final List<Map<String, dynamic>> data = await FirestoreService()
+            // ignore: deprecated_member_use_from_same_package
             .fetchRecords(collection: FIREBASE_COLLECTION_USER_SERVICES);
         _products = data.map((e) => ProductModel.fromMap(e)).toList();
       }

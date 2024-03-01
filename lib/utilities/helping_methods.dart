@@ -1,4 +1,6 @@
 // ignore: dangling_library_doc_comments
+import 'package:intl/intl.dart';
+
 /// Project: 	   CarRenterApp
 /// File:    	   helping_methods
 /// Path:    	   lib/utilities/helping_methods.dart
@@ -35,4 +37,20 @@ String parseTimePeriod({required DateTime atTime}) {
     timeAgo = "$minutes ${minutes < 2 ? "minute" : "minutes"} ago";
   }
   return timeAgo;
+}
+
+/// Format Date
+DateTime formatDate({required DateTime dateTime, required String format}) {
+  final parsedDate = DateFormat(format).format(dateTime);
+  return DateFormat(format).parse(parsedDate);
+}
+
+/// Only Date in Seconds
+int dateInMilliSeconds({required DateTime date}) {
+  return formatDate(dateTime: date, format: "YY/MM/dd").millisecondsSinceEpoch;
+}
+
+/// Convert Str Time Into Miliseconds
+int timeInMilliSecondsFrom({required String value}) {
+  return DateFormat("HH:mm").parse(value).millisecondsSinceEpoch;
 }

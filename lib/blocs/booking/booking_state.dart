@@ -1,5 +1,6 @@
 // ignore: dangling_library_doc_comments
 import 'package:beasy/exceptions/app_exceptions.dart';
+import 'package:beasy/models/booking_model.dart';
 
 /// Project: 	   CarRenterApp
 /// File:    	   booking_state
@@ -48,4 +49,8 @@ class BookingStateFetchBookingsFailure extends BookingState {
 }
 
 // Success
-class BookingStateFetchBookingSuccess extends BookingState {}
+class BookingStateFetchBookingSuccess extends BookingState {
+  final List<BookingModel> bookings;
+
+  BookingStateFetchBookingSuccess({required this.bookings});
+}

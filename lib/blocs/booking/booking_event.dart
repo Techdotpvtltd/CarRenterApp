@@ -25,5 +25,13 @@ class BookingEventCreateBooking extends BookingEvent {
       required this.product});
 }
 
-// ===========================Fetch Booking Event for Service Provider================================
+// ===========================Fetch Booking Events ================================
+// For Service Providers
 class BookingEventFetchForServiceProvider extends BookingEvent {}
+
+// For Individual Services
+class BookingEventFetchForIndividualService extends BookingEvent {
+  final String serviceId;
+
+  BookingEventFetchForIndividualService({required this.serviceId});
+}

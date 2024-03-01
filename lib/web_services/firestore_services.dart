@@ -62,7 +62,7 @@ class FirestoreService {
   }
 
   /// Mutliple records fetching method
-
+  @Deprecated("Use fetchWithMultipleConditions instead")
   Future<List<Map<String, dynamic>>> fetchRecords({
     required String collection,
   }) async {
@@ -81,6 +81,7 @@ class FirestoreService {
   }
 
   /// With Equal Condition
+  @Deprecated("Use fetchWithMultipleConditions instead")
   Future<List<Map<String, dynamic>>> fetchWithEqual({
     required String collection,
     required String filedId,

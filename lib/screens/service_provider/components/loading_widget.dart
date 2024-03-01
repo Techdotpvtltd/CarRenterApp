@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 /// Date:        28-02-24 15:08:37 -- Wednesday
 /// Description:
 class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({super.key, this.width, this.height});
+  const LoadingWidget({super.key, this.width, this.height, this.loadingText});
   final double? width;
   final double? height;
+  final String? loadingText;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -25,7 +27,7 @@ class LoadingWidget extends StatelessWidget {
           const CircularProgressIndicator(color: StyleGuide.primaryColor2),
           gapW20,
           Text(
-            "Please wait...",
+            loadingText ?? "Please wait...",
             style: StyleGuide.serviceProviderStyle1.copyWith(fontSize: 18),
           ),
         ],

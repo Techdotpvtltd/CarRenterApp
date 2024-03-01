@@ -6,10 +6,10 @@ import 'package:beasy/models/booking_model.dart';
 import 'package:beasy/models/product_model.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
+import 'package:beasy/utilities/extensions/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
-import '../../repositories/repos/booking_repo.dart';
+import '../../repositories/repos/immutable_booking_repo.dart';
 
 /// Project: 	   CarRenterApp
 /// File:    	   booking_bloc
@@ -36,13 +36,13 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
             bookingDate: event.selectedDate,
             createdAt: DateTime.now(),
             bookingTime: event.bookingTime
-                .map((e) => DateFormat("HH:MM").parse(e))
+                .map((e) => event.selectedDate.mergeTimeFrom(e))
                 .toList(),
             status: BookingStatus.pending,
             car: product.name,
           );
           emit(BookingStateBookingCreating());
-          await BookingRepo().create(model: model);
+          await ImmutableBookingRepo().create(model: model);
           emit(BookingStateBooked());
         } on AppException catch (e) {
           emit(BookingStateBookingFailure(exception: e));
@@ -55,8 +55,23 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       (event, emit) async {
         try {
           emit(BookingStateFetchingBookings());
-          await BookingRepo().fetchForServiceProvider();
-          emit(BookingStateFetchBookingSuccess());
+          final List<BookingModel> bookings =
+              await ImmutableBookingRepo().fetchForServiceProvider();
+          emit(BookingStateFetchBookingSuccess(bookings: bookings));
+        } on AppException catch (e) {
+          emit(BookingStateFetchBookingsFailure(exception: e));
+        }
+      },
+    );
+
+    /// on Service Provider Booking Fetching
+    on<BookingEventFetchForIndividualService>(
+      (event, emit) async {
+        try {
+          emit(BookingStateFetchingBookings());
+          final List<BookingModel> bookings = await ImmutableBookingRepo()
+              .fetchForIndividualServices(serviceId: event.serviceId);
+          emit(BookingStateFetchBookingSuccess(bookings: bookings));
         } on AppException catch (e) {
           emit(BookingStateFetchBookingsFailure(exception: e));
         }

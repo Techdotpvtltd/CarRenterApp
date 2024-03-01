@@ -16,4 +16,11 @@ extension TimeStr on String {
     final int toTime = int.parse(to.replaceAll(':', ""));
     return selfTime > toTime;
   }
+
+  bool timeLessThen({required String to}) {
+    // Parese time
+    final int selfTime = int.parse(replaceAll(':', ""));
+    final int toTime = int.parse(to.replaceAll(':', ""));
+    return selfTime < toTime;
+  }
 }
