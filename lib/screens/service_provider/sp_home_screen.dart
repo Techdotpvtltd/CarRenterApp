@@ -1,8 +1,7 @@
-import 'package:beasy/blocs/notification/notification_bloc.dart';
-import 'package:beasy/blocs/notification/notification_event.dart';
 import 'package:beasy/blocs/service_provider/sp_bloc.dart';
 import 'package:beasy/blocs/service_provider/sp_event.dart';
 import 'package:beasy/blocs/service_provider/sp_state.dart';
+import 'package:beasy/repositories/repos/immutable_product_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
@@ -34,9 +33,6 @@ class _SPHomeScreenState extends State<SPHomeScreen> {
   void initState() {
     super.initState();
     context.read<SPBloc>().add(SPEventFetchProducts()); // Fetch Products
-    context
-        .read<NotificationBloc>()
-        .add(NotificationEventFetch()); // Fetch Notification
   }
 
   @override
@@ -103,15 +99,22 @@ class _SPHomeScreenState extends State<SPHomeScreen> {
                       const CreateServiceScreen(),
                     ),
                   ),
-                  _SPHomeCard(
-                    title: AppStrings.myService,
-                    subTitle: "12",
-                    iconPath: Assets.miniCarIcon,
-                    isSelected: true,
-                    onPressed: () => NavigationService.go(
-                      context,
-                      const MyServicesScreen(),
-                    ),
+                  BlocSelector<SPBloc, SPState, int>(
+                    selector: (state) => (state is SPStateProductsFetched)
+                        ? state.products.length
+                        : ImmutableProductRepo().products.length,
+                    builder: (context, state) {
+                      return _SPHomeCard(
+                        title: AppStrings.myService,
+                        subTitle: state.toString(),
+                        iconPath: Assets.miniCarIcon,
+                        isSelected: true,
+                        onPressed: () => NavigationService.go(
+                          context,
+                          const MyServicesScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _SPHomeCard(
                     title: AppStrings.messages,
@@ -160,7 +163,9 @@ class _SPHomeScreenState extends State<SPHomeScreen> {
               ),
               gapH8,
               const Expanded(
-                child: QuickNotificationWidget(),
+                child: QuickNotificationWidget(
+                  isComingFromHome: true,
+                ),
               ),
             ],
           ),

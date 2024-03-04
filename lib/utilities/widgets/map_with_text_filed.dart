@@ -140,7 +140,7 @@ class _MapWithTextFieldState extends State<MapWithTextField> {
     );
     setState(() {
       widget.controller?.text =
-          "${marks.firstOrNull?.locality ?? ""}, ${marks.firstOrNull?.country ?? ""}";
+          " ${marks.firstOrNull?.street}, ${marks.first.subLocality}, ${marks.firstOrNull?.locality ?? ""}, ${marks.firstOrNull?.country ?? ""}";
     });
   }
 

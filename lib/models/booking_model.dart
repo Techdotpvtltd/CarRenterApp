@@ -146,4 +146,13 @@ class BookingModel {
   }
 }
 
-enum BookingStatus { pending, accepted, rejected, paid }
+enum BookingStatus {
+  pending("Pending", 0xFF0000FF),
+  accepted("Accepted", 0xFFD68910),
+  rejected("Rejected", 0xFFFF0000),
+  paid("Paid", 0xFF008000);
+
+  const BookingStatus(this.text, this.colorCode);
+  final String text;
+  final int colorCode;
+}

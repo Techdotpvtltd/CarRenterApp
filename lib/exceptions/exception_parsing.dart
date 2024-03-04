@@ -17,7 +17,7 @@ AppException thrownAppException({required Object e}) {
   }
 
   if (e is FirebaseException) {
-    return throwDataException(errorCode: e.code);
+    return throwDataException(errorCode: e.code, message: e.toString());
   }
 
   if (e is AppException) {

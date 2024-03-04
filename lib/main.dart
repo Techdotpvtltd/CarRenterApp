@@ -2,6 +2,7 @@ import 'package:beasy/app_manager/app_bloc_manager.dart';
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
 import 'package:beasy/blocs/booking/booking_bloc.dart';
+import 'package:beasy/blocs/data_fetcher/data_fetcher_cubit.dart';
 import 'package:beasy/blocs/drawer/drawer_cubit.dart';
 import 'package:beasy/blocs/notification/notification_bloc.dart';
 import 'package:beasy/blocs/rental/rental_product_bloc.dart';
@@ -54,6 +55,7 @@ class _BeasyApp extends StatelessWidget {
         BlocProvider(create: (context) => DrawerCubit()),
         BlocProvider(create: (context) => BookingBloc()),
         BlocProvider(create: (context) => NotificationBloc()),
+        BlocProvider(create: (context) => DataFetcherCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

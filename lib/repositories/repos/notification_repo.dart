@@ -38,14 +38,13 @@ class NotificationRepo {
               value: user.uid,
               type: QueryType.isEqual),
           QueryModel(
-              field: "status",
-              value: BookingStatus.rejected.name.toLowerCase(),
-              type: QueryType.isNotEqual),
+            field: "createdAt",
+            value: true,
+            type: QueryType.orderBy,
+          ),
         ],
       );
       _bookings = data.map((e) => BookingModel.fromMap(e)).toList();
-      _bookings.sort((a, b) => b.createdAt.microsecondsSinceEpoch
-          .compareTo(a.createdAt.microsecondsSinceEpoch));
     } catch (e) {
       throw thrownAppException(e: e);
     }

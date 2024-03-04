@@ -61,11 +61,33 @@ class ImmutableBookingRepo {
               collection: FIREBASE_COLLECTION_BOOKING,
               queries: [
             QueryModel(
-                field: "serviceId", value: serviceId, type: QueryType.isEqual),
+              field: "status",
+              value: [
+                BookingStatus.accepted.name.toString(),
+                BookingStatus.pending.name.toString(),
+                BookingStatus.paid.name.toString(),
+              ],
+              type: QueryType.whereIn,
+            ),
             QueryModel(
-                field: "status",
-                value: BookingStatus.rejected,
-                type: QueryType.isNotEqual),
+                field: "serviceId", value: serviceId, type: QueryType.isEqual),
+          ]);
+      return data.map((e) => BookingModel.fromMap(e)).toList();
+    } catch (e) {
+      throw thrownAppException(e: e);
+    }
+  }
+
+  /// Fetching Bookings for Rental User
+  Future<List<BookingModel>> fetchForRentalUser() async {
+    try {
+      final String userId = UserRepo().currentUser.uid;
+      final List<Map<String, dynamic>> data = await FirestoreService()
+          .fetchWithMultipleConditions(
+              collection: FIREBASE_COLLECTION_BOOKING,
+              queries: [
+            QueryModel(
+                field: "bookingUserId", value: userId, type: QueryType.isEqual),
           ]);
       return data.map((e) => BookingModel.fromMap(e)).toList();
     } catch (e) {

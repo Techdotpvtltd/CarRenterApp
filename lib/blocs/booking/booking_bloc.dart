@@ -7,6 +7,7 @@ import 'package:beasy/models/product_model.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/extensions/extensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../repositories/repos/immutable_booking_repo.dart';
@@ -50,19 +51,20 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       },
     );
 
-    /// on Service Provider Booking Fetching
-    on<BookingEventFetchForServiceProvider>(
-      (event, emit) async {
-        try {
-          emit(BookingStateFetchingBookings());
-          final List<BookingModel> bookings =
-              await ImmutableBookingRepo().fetchForServiceProvider();
-          emit(BookingStateFetchBookingSuccess(bookings: bookings));
-        } on AppException catch (e) {
-          emit(BookingStateFetchBookingsFailure(exception: e));
-        }
-      },
-    );
+    // /// on Service Provider Booking Fetching
+    // on<BookingEventFetchForServiceProvider>(
+    //   (event, emit) async {
+    //     try {
+    //       emit(BookingStateFetchingBookings());
+    //       final List<BookingModel> bookings =
+    //           await ImmutableBookingRepo().fetchForServiceProvider();
+    //       emit(BookingStateFetchBookingSuccess(bookings: bookings));
+    //     } on AppException catch (e) {
+    //       debugPrint(e.message);
+    //       emit(BookingStateFetchBookingsFailure(exception: e));
+    //     }
+    //   },
+    // );
 
     /// on Service Provider Booking Fetching
     on<BookingEventFetchForIndividualService>(
@@ -74,6 +76,33 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
           emit(BookingStateFetchBookingSuccess(bookings: bookings));
         } on AppException catch (e) {
           emit(BookingStateFetchBookingsFailure(exception: e));
+        }
+      },
+    );
+
+    /// on rental user Booking Fetching
+    on<BookingEventFetchForRentalUser>(
+      (event, emit) async {
+        try {
+          emit(BookingStateFetchingBookings());
+          final List<BookingModel> bookings =
+              await ImmutableBookingRepo().fetchForRentalUser();
+          emit(BookingStateFetchBookingSuccess(bookings: bookings));
+        } on AppException catch (e) {
+          emit(BookingStateFetchBookingsFailure(exception: e));
+        }
+      },
+    );
+
+    /// OnUser Profile Fetch
+    on<BookingEventFetchSPProfile>(
+      (event, emit) async {
+        try {
+          final UserModel user =
+              await UserRepo().fetchUser(profileId: event.profileId);
+          emit(BookingStateUserProfileFetched(user: user));
+        } on AppException catch (e) {
+          debugPrint(e.message);
         }
       },
     );

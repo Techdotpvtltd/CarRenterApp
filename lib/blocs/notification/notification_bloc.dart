@@ -5,6 +5,7 @@ import 'package:beasy/exceptions/app_exceptions.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/notification_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Project: 	   CarRenterApp
@@ -29,6 +30,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
           emit(NotificationStateFetched());
         } on AppException catch (e) {
+          debugPrint(e.message);
           emit(NotificationStateFetchFailure(exception: e));
         }
       },

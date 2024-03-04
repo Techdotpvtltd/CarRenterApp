@@ -1,5 +1,6 @@
 // ignore: dangling_library_doc_comments
 import 'package:beasy/blocs/notification/notification_bloc.dart';
+import 'package:beasy/blocs/notification/notification_event.dart';
 import 'package:beasy/blocs/notification/notification_state.dart';
 import 'package:beasy/repositories/repos/notification_repo.dart';
 import 'package:beasy/screens/service_provider/components/error_widget.dart';
@@ -7,8 +8,6 @@ import 'package:beasy/screens/service_provider/components/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../blocs/booking/booking_bloc.dart';
-import '../../../blocs/booking/booking_event.dart';
 import '../../../models/booking_model.dart';
 import '../../../utilities/widgets/notification_card.dart';
 
@@ -20,8 +19,8 @@ import '../../../utilities/widgets/notification_card.dart';
 /// Description:
 
 class QuickNotificationWidget extends StatefulWidget {
-  const QuickNotificationWidget({super.key});
-
+  const QuickNotificationWidget({super.key, this.isComingFromHome = false});
+  final bool isComingFromHome;
   @override
   State<QuickNotificationWidget> createState() =>
       _QuickNotificationWidgetState();
@@ -33,11 +32,17 @@ class _QuickNotificationWidgetState extends State<QuickNotificationWidget> {
   bool isError = false;
   List<BookingModel> bookings = NotificationRepo().bookings;
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchAllBookings();
+  }
+
   void _fetchAllBookings() {
     setState(() {
       isError = false;
     });
-    context.read<BookingBloc>().add(BookingEventFetchForServiceProvider());
+    context.read<NotificationBloc>().add(NotificationEventFetch());
   }
 
   Widget _getCurrentWidget() {
@@ -54,6 +59,7 @@ class _QuickNotificationWidgetState extends State<QuickNotificationWidget> {
 
     return bookings.isEmpty
         ? CustomAlertWidget(
+            message: "No pending bookings.",
             onPressedRefresh: () => _fetchAllBookings(),
           )
         : RefreshIndicator(
@@ -77,12 +83,23 @@ class _QuickNotificationWidgetState extends State<QuickNotificationWidget> {
             loadingText = state.loadingText;
             if (state is NotificationStateFetchFailure) {
               isError = true;
-              debugPrint(state.exception.message);
             }
 
             if (state is NotificationStateFetched) {
-              isError = false;
-              bookings = NotificationRepo().bookings;
+              setState(() {
+                isError = false;
+                bookings = NotificationRepo().bookings;
+                if (widget.isComingFromHome) {
+                  bookings = bookings
+                      .where((element) =>
+                          element.status == BookingStatus.pending &&
+                          element.bookingDate.microsecondsSinceEpoch.compareTo(
+                                  DateTime.now().microsecondsSinceEpoch) ==
+                              1)
+                      .take(5)
+                      .toList();
+                }
+              });
             }
           });
         }

@@ -98,23 +98,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return remainingTimes;
   }
 
-  void _triggerBookingEvent(BookingBloc bloc) {
-    if (pickTime == null) {
-      CustomDilaogs().errorBox(message: "Please select Pick time.");
-      return;
-    }
-    if (returnTime == null) {
-      CustomDilaogs().errorBox(message: "Please select return time.");
-      return;
-    }
-    bloc.add(
-      BookingEventCreateBooking(
-          selectedDate: selectedDate,
-          bookingTime: [pickTime!, returnTime!],
-          product: widget.product),
-    );
-  }
-
   void updateSelectedDate(DateTime withSelectedDate) {
     setState(() {
       selectedDate = withSelectedDate;
@@ -147,8 +130,26 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   void triggerFetchBookingsEvent(BookingBloc bloc) {
+    debugPrint(widget.product.id.toString());
     bloc.add(
         BookingEventFetchForIndividualService(serviceId: widget.product.id));
+  }
+
+  void _triggerBookingEvent(BookingBloc bloc) {
+    if (pickTime == null) {
+      CustomDilaogs().errorBox(message: "Please select Pick time.");
+      return;
+    }
+    if (returnTime == null) {
+      CustomDilaogs().errorBox(message: "Please select return time.");
+      return;
+    }
+    bloc.add(
+      BookingEventCreateBooking(
+          selectedDate: selectedDate,
+          bookingTime: [pickTime!, returnTime!],
+          product: widget.product),
+    );
   }
 
   @override
@@ -255,7 +256,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         ),
                         calendarStyle: const CalendarStyle(
                           holidayDecoration: BoxDecoration(
-                            color: Colors.red,
+                            color: Colors.green,
                             shape: BoxShape.circle,
                           ),
                           holidayTextStyle: TextStyle(color: Colors.white),

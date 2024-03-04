@@ -55,7 +55,11 @@ class DataExceptionUnAuthenticated extends DataException {
 /// No storage bucket could be found for the app '${app.name}'.
 ///  Ensure you have set the [storageBucket] on [FirebaseOptions] whilst initializing the secondary Firebase app.
 class DataExceptionNoBucket extends DataException {
-  DataExceptionNoBucket({super.message = "Something went wrong."});
+  DataExceptionNoBucket({super.message = "No Bucket Found."});
+}
+
+class DataExceptionFaildPrecondition extends DataException {
+  DataExceptionFaildPrecondition({required super.message});
 }
 
 class DataExceptionUnknown extends DataException {
@@ -87,6 +91,10 @@ DataException throwDataException({required String errorCode, String? message}) {
       return DataExceptionUnAuthenticated();
     case 'NO-BUCKET':
       return DataExceptionNoBucket();
+    case 'FAILED-PRECONDITION':
+      return DataExceptionFaildPrecondition(
+          message: message ?? "FAILED-PRECONDITION");
+
     default:
       return DataExceptionUnknown(message: message ?? "Something went wrong.");
   }

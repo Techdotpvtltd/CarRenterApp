@@ -6,6 +6,8 @@ import 'package:beasy/web_services/storage_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../exceptions/exception_parsing.dart';
+import '../../models/query_model.dart';
 import '../../utilities/constants/constants.dart';
 import '../../web_services/firestore_services.dart';
 import '../../exceptions/data_exceptions.dart';
@@ -161,6 +163,24 @@ class UserRepo {
     } catch (e) {
       debugPrint(e.toString());
       throw DataExceptionUnknown(message: e.toString());
+    }
+  }
+
+  // Fetch Profile
+  Future<UserModel> fetchUser({required String profileId}) async {
+    try {
+      final List<Map<String, dynamic>> data = await FirestoreService()
+          .fetchWithMultipleConditions(
+              collection: FIREBASE_COLLECTION_USER,
+              queries: [
+            QueryModel(field: "uid", value: profileId, type: QueryType.isEqual),
+          ]);
+      if (data.firstOrNull != null) {
+        return UserModel.fromMap(data.first);
+      }
+      throw throwAuthException(errorCode: 'user-not-found');
+    } catch (e) {
+      throw thrownAppException(e: e);
     }
   }
 }

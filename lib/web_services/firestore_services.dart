@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:beasy/models/query_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class FirestoreService {
   late final FirebaseFirestore _firestore;
@@ -100,19 +101,65 @@ class FirestoreService {
     final CollectionReference<Map<String, dynamic>> collectionReference =
         _firestore.collection(collection);
 
-    Query<Map<String, dynamic>>? query;
-    for (QueryModel condition in queries) {
-      if (condition.type == QueryType.isEqual) {
-        query = collectionReference.where(condition.field,
-            isEqualTo: condition.value);
-      }
+    Query<Map<String, dynamic>> query = collectionReference;
 
-      if (condition.type == QueryType.isNotEqual) {
-        collectionReference.where(condition.field,
-            isNotEqualTo: condition.value);
+    for (QueryModel condition in queries) {
+      switch (condition.type) {
+        case QueryType.isEqual:
+          query = query.where(condition.field, isEqualTo: condition.value);
+          break;
+        //Note: isNotEqual will not work if you have already add other queries
+        case QueryType.isNotEqual:
+          query = query.where(condition.field, isNotEqualTo: condition.value);
+          break;
+        case QueryType.whereIn:
+          query = query.where(condition.field, whereIn: condition.value);
+          break;
+        // Note: WhereNotIn will not work if you have already add isEqual or isNotEqual
+        case QueryType.whereNotIn:
+          query = query.where(condition.field, whereNotIn: condition.value);
+          break;
+        case QueryType.arrayContains:
+          query = query.where(condition.field, arrayContains: condition.value);
+          break;
+        case QueryType.arrayContainsAny:
+          query =
+              query.where(condition.field, arrayContainsAny: condition.value);
+          break;
+        case QueryType.isGreaterThan:
+          query = query.where(condition.field, isGreaterThan: condition.value);
+          break;
+        case QueryType.isGreaterThanOrEqual:
+          query = query.where(condition.field,
+              isGreaterThanOrEqualTo: condition.value);
+        case QueryType.isLessThan:
+          query = query.where(condition.field, isLessThan: condition.value);
+        case QueryType.isLessThanOrEqual:
+          query = query.where(condition.field,
+              isLessThanOrEqualTo: condition.value);
+          break;
+
+        case QueryType.orderBy:
+          query = query.orderBy(condition.field, descending: condition.value);
+        case QueryType.startAt: // Add OrderBy query first
+          query = query.startAt(condition.value);
+        case QueryType.startAfter: // Add OrderBy query first
+          query = query.startAfter(condition.value);
+        case QueryType.endAt: // Add OrderBy query first
+          query = query.endAt(condition.value);
+        case QueryType.endBefore: // Add OrderBy query first
+          query = query.endBefore(condition.value);
+        case QueryType.limit: // Add OrderBy query first
+          query = query.limit(condition.value);
+        case QueryType.limitToLast: // Add OrderBy query first
+          query = query.limitToLast(condition.value);
+        default:
+          query = collectionReference;
       }
     }
-    return _getWithQuery(query: query!);
+
+    debugPrint(query.parameters.toString());
+    return _getWithQuery(query: query);
   }
 
   //  Delete Services ====================================
