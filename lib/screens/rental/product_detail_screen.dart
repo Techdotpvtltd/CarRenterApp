@@ -8,11 +8,11 @@ import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:beasy/utilities/widgets/map_sample.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -26,6 +26,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final _pageController = PageController(initialPage: 0, keepPage: false);
   String? bookingLocation;
+  bool isExpaned = false;
 
   void _parseLocationFromCoordinates() async {
     try {
@@ -242,26 +243,44 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ),
                         ),
                         gapH12,
-                        SizedBox(
-                          height: widget.product.description == "" ? 0 : 100,
-                          child: SingleChildScrollView(
-                            child: ReadMoreText(
-                              widget.product.description ?? "",
-                              trimLength: 100,
-                              trimLines: 3,
-                              trimCollapsedText: AppStrings.readMore,
-                              trimExpandedText: " Show Less",
-                              style: StyleGuide.textStyle3.copyWith(
-                                color: const Color(0xFF9CA4AB),
+
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Flexible(
+                              flex: 10,
+                              child: Text(
+                                widget.product.description ?? "",
+                                style: StyleGuide.textStyle3.copyWith(
+                                  color: const Color(0xFF9CA4AB),
+                                ),
+                                maxLines: isExpaned ? null : 4,
                               ),
-                              moreStyle: StyleGuide.textStyle3
-                                  .copyWith(color: StyleGuide.textColor2),
-                              lessStyle: StyleGuide.textStyle3
-                                  .copyWith(color: StyleGuide.textColor2),
-                              trimMode: TrimMode.Line,
                             ),
-                          ),
+                            Visibility(
+                              visible: widget.product.description != "" &&
+                                  (widget.product.description?.length ?? 0) >
+                                      50,
+                              child: Flexible(
+                                flex: 2,
+                                child: Text.rich(
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        setState(() {
+                                          isExpaned = !isExpaned;
+                                        });
+                                      },
+                                    text: isExpaned ? "Less" : "More",
+                                    style: StyleGuide.textStyle3
+                                        .copyWith(color: StyleGuide.textColor2),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+
                         const SeparateWidget(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

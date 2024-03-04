@@ -203,6 +203,8 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
     if (widget.index == 0) {
       setState(() {
         filteredBookings = bookings;
+        bookings.sort((a, b) => a.bookingDate.millisecondsSinceEpoch
+            .compareTo(b.bookingDate.millisecondsSinceEpoch));
       });
     }
 
@@ -212,7 +214,15 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
         filteredBookings = bookings
             .where((element) => element.status == BookingStatus.paid)
             .toList();
+        filteredBookings.sort((a, b) => a.bookingDate.millisecondsSinceEpoch
+            .compareTo(b.bookingDate.millisecondsSinceEpoch));
       });
+    }
+
+    if (widget.index == 2) {
+      filteredBookings = bookings
+          .where((element) => element.bookingDate.isBefore(DateTime.now()))
+          .toList();
     }
   }
 
@@ -274,15 +284,20 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
                     message: "Oops! Seems that there is no booking yet.",
                     isShowRefresh: false,
                   )
-                : ListView.builder(
-                    itemCount: filteredBookings.length,
-                    itemBuilder: (context, index) {
-                      return myBooking(
-                        ongoing: widget.index == 1 ? true : false,
-                        previous: widget.index == 2 ? true : false,
-                        booking: filteredBookings[index],
-                      );
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      triggerFetchBookings(context.read<BookingBloc>());
                     },
+                    child: ListView.builder(
+                      itemCount: filteredBookings.length,
+                      itemBuilder: (context, index) {
+                        return myBooking(
+                          ongoing: widget.index == 1 ? true : false,
+                          previous: widget.index == 2 ? true : false,
+                          booking: filteredBookings[index],
+                        );
+                      },
+                    ),
                   ),
           ),
         ),
