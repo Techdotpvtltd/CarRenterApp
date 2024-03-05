@@ -17,18 +17,6 @@ import 'package:beasy/web_services/firestore_services.dart';
 class ImmutableBookingRepo {
   // ===========================Signleton Instance================================
 
-  /// Create Booking
-  Future<void> create({required BookingModel model}) async {
-    try {
-      await FirestoreService().saveWithSpecificIdFiled(
-          path: FIREBASE_COLLECTION_BOOKING,
-          data: model.toMap(),
-          docIdFiled: "id");
-    } catch (e) {
-      throw thrownAppException(e: e);
-    }
-  }
-
   /// Fetching Bookings For Service Provider
   Future<List<BookingModel>> fetchForServiceProvider() async {
     try {

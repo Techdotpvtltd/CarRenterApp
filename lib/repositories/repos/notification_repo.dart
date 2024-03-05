@@ -25,6 +25,11 @@ class NotificationRepo {
   List<BookingModel> _bookings = [];
   List<BookingModel> get bookings => _bookings;
 
+  // Clear All Data
+  void clearAll() {
+    _bookings.clear();
+  }
+
   /// Fetching Bookings
   Future<void> fetchForServiceProvider() async {
     try {

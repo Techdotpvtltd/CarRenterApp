@@ -28,8 +28,9 @@ import '../../utilities/widgets/custom_app_bar.dart';
 /// Description:
 
 class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({super.key, required this.product});
+  const CalendarScreen({super.key, required this.product, this.booking});
   final ProductModel product;
+  final BookingModel? booking;
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -44,6 +45,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
   bool isFetchingBookings = true;
   List<BookingModel> bookings = [];
   List<Map<String, String>> bookingTimes = [];
+  late final BookingModel? existedBooking = widget.booking;
+
+  @override
+  void initState() {
+    super.initState();
+    triggerFetchBookingsEvent(context.read<BookingBloc>());
+  }
+
+  void freeExistedBookingTimes() {
+    setState(() {
+      selectedDate = existedBooking?.bookingDate ?? DateTime.now();
+      bookings.removeWhere((element) => element.id == existedBooking?.id);
+    });
+  }
 
   List<String> _getAvailablePickTimes() {
     final pickingTimes = bookingTimes.map((e) => e["pickingTime"]).toList();
@@ -51,6 +66,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
     pickingTimes.sort();
     returnTimes.sort();
     List<String> remainingTimes = timeList;
+    final today = DateTime.now();
+    if (isSameDay(selectedDate, today)) {
+      final String currentTime = DateFormat("HH:MM").format(today);
+      setState(() {
+        remainingTimes = remainingTimes
+            .where((element) => element.timeGreaterThen(to: currentTime))
+            .toList();
+      });
+    }
     for (int index = 0; index < pickingTimes.length; index++) {
       final startingTime = pickingTimes[index];
       final endingTime = returnTimes[index];
@@ -125,8 +149,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
             .add({"pickingTime": pickingTime, "returnTime": returnTime});
       });
     }
-
-    debugPrint(bookingTimes.toString());
   }
 
   void triggerFetchBookingsEvent(BookingBloc bloc) {
@@ -144,18 +166,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
       CustomDilaogs().errorBox(message: "Please select return time.");
       return;
     }
-    bloc.add(
-      BookingEventCreateBooking(
-          selectedDate: selectedDate,
-          bookingTime: [pickTime!, returnTime!],
-          product: widget.product),
-    );
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    triggerFetchBookingsEvent(context.read<BookingBloc>());
+    existedBooking != null
+        ? bloc.add(
+            BookingEventUpdateBooking(
+              selectedDate: selectedDate,
+              bookingModel: existedBooking!,
+              bookingTime: [pickTime!, returnTime!],
+            ),
+          )
+        : bloc.add(
+            BookingEventCreateBooking(
+              selectedDate: selectedDate,
+              bookingTime: [pickTime!, returnTime!],
+              product: widget.product,
+            ),
+          );
   }
 
   @override
@@ -172,6 +198,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
             if (state is BookingStateFetchBookingSuccess) {
               bookings = state.bookings;
+              if (existedBooking != null) {
+                freeExistedBookingTimes();
+              }
               checkAvailableTimesAtDate();
             }
           });
@@ -179,22 +208,39 @@ class _CalendarScreenState extends State<CalendarScreen> {
         // For Requesting
         if (state is BookingStateBookingCreating ||
             state is BookingStateBookingFailure ||
-            state is BookingStateBooked) {
+            state is BookingStateBooked ||
+            state is BookingStateUpdateBookingFailure ||
+            state is BookingStateBookingUpdating ||
+            state is BookingStateBookingUpdated) {
           setState(() {
             isButtonLoad = state.isLoading;
-            loadingText = state.isLoading ? "Requesting..." : null;
+            loadingText = state.isLoading
+                ? existedBooking != null
+                    ? "Updating..."
+                    : "Requesting..."
+                : null;
           });
 
-          if (state is BookingStateBookingFailure) {
+          if (state is BookingStateBookingFailure ||
+              state is BookingStateUpdateBookingFailure) {
             CustomDilaogs()
                 .successBox(message: "Oops! unable to book the service.");
-            debugPrint(state.exception.message);
           }
 
+          if (state is BookingStateBookingUpdated) {
+            CustomDilaogs().successBox(
+              message: "Booking time updated successfully.",
+              title: "Booking Update",
+              positiveTitle: "Go to Back",
+              onPositivePressed: () {
+                Navigator.pop(context);
+              },
+            );
+          }
           if (state is BookingStateBooked) {
             CustomDilaogs().successBox(
               message:
-                  "Your Booking Request send successfully after accepted the request\nYou will receive notification.",
+                  "Your Booking Request sent successfully after accepted the request\nYou will receive notification.",
               title: "Booking Request",
               positiveTitle: "Go to Home",
               onPositivePressed: () {
@@ -377,7 +423,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: RoundedButton(
                         isLoading: isButtonLoad,
                         loadingText: loadingText,
-                        title: "Request Book",
+                        title: existedBooking != null
+                            ? "Update Booking"
+                            : "Request Book",
                         onPressed: () =>
                             _triggerBookingEvent(context.read<BookingBloc>()),
                       ),

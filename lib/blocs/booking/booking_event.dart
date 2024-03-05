@@ -1,4 +1,5 @@
 // ignore: dangling_library_doc_comments
+import 'package:beasy/models/booking_model.dart';
 import 'package:beasy/models/product_model.dart';
 
 /// Project: 	   CarRenterApp
@@ -23,6 +24,19 @@ class BookingEventCreateBooking extends BookingEvent {
       {required this.selectedDate,
       required this.bookingTime,
       required this.product});
+}
+
+// =========================== Create Booking Event ================================
+class BookingEventUpdateBooking extends BookingEvent {
+  final BookingModel bookingModel;
+  final DateTime selectedDate;
+  final List<String> bookingTime;
+
+  BookingEventUpdateBooking({
+    required this.selectedDate,
+    required this.bookingModel,
+    required this.bookingTime,
+  });
 }
 
 // ===========================Fetch Booking Events ================================

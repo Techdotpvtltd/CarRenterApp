@@ -36,6 +36,26 @@ class BookingStateBookingFailure extends BookingState {
 /// Success
 class BookingStateBooked extends BookingState {}
 
+// =========================== Create Booking States ================================
+class BookingStateBookingUpdating extends BookingState {
+  BookingStateBookingUpdating(
+      {super.isLoading = true, super.loadingText = "Requesting..."});
+}
+
+/// Failure
+class BookingStateUpdateBookingFailure extends BookingState {
+  final AppException exception;
+
+  BookingStateUpdateBookingFailure({required this.exception});
+}
+
+/// Success
+class BookingStateBookingUpdated extends BookingState {
+  final BookingModel? booking;
+
+  BookingStateBookingUpdated({this.booking});
+}
+
 // ===========================Fetching Booking States================================
 class BookingStateFetchingBookings extends BookingState {
   BookingStateFetchingBookings(

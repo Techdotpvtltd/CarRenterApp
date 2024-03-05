@@ -5,6 +5,7 @@ import 'package:beasy/exceptions/app_exceptions.dart';
 import 'package:beasy/models/booking_model.dart';
 import 'package:beasy/models/product_model.dart';
 import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/mutable_booking_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/extensions/extensions.dart';
 import 'package:flutter/foundation.dart';
@@ -22,6 +23,10 @@ import '../../repositories/repos/immutable_booking_repo.dart';
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc() : super(BookingStateInitial()) {
     /// Create booking event
+
+    on<BookingEventInitial>(
+      (event, emit) => emit(BookingStateInitial()),
+    );
     on<BookingEventCreateBooking>(
       (event, emit) async {
         try {
@@ -43,7 +48,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
             car: product.name,
           );
           emit(BookingStateBookingCreating());
-          await ImmutableBookingRepo().create(model: model);
+          await MutableBookingRepo().create(model: model);
           emit(BookingStateBooked());
         } on AppException catch (e) {
           emit(BookingStateBookingFailure(exception: e));
@@ -51,6 +56,26 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       },
     );
 
+    /// Update Booking Event
+    on<BookingEventUpdateBooking>(
+      (event, emit) async {
+        try {
+          final BookingModel model = event.bookingModel.copyWith(
+            bookingDate: event.selectedDate,
+            bookingTime: event.bookingTime
+                .map((e) => event.selectedDate.mergeTimeFrom(e))
+                .toList(),
+            updatedDate: DateTime.now(),
+          );
+          emit(BookingStateBookingUpdating());
+          final BookingModel updatedModel =
+              await MutableBookingRepo().update(model: model);
+          emit(BookingStateBookingUpdated(booking: updatedModel));
+        } on AppException catch (e) {
+          emit(BookingStateUpdateBookingFailure(exception: e));
+        }
+      },
+    );
     // /// on Service Provider Booking Fetching
     // on<BookingEventFetchForServiceProvider>(
     //   (event, emit) async {

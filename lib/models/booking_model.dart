@@ -21,6 +21,7 @@ class BookingModel {
   final String bookingUserId;
   final DateTime bookingDate;
   final DateTime createdAt;
+  final DateTime? updatedDate;
   final List<DateTime> bookingTime;
   final BookingStatus status;
   final String car;
@@ -36,6 +37,7 @@ class BookingModel {
     required this.bookingTime,
     required this.status,
     required this.car,
+    this.updatedDate,
   });
 
   BookingModel copyWith({
@@ -50,6 +52,7 @@ class BookingModel {
     List<DateTime>? bookingTime,
     BookingStatus? status,
     String? car,
+    DateTime? updatedDate,
   }) {
     return BookingModel(
       id: id ?? this.id,
@@ -63,6 +66,7 @@ class BookingModel {
       bookingTime: bookingTime ?? this.bookingTime,
       status: status ?? this.status,
       car: car ?? this.car,
+      updatedDate: updatedDate ?? this.updatedDate,
     );
   }
 
@@ -79,6 +83,8 @@ class BookingModel {
       'bookingTime': bookingTime.map((x) => Timestamp.fromDate(x)).toList(),
       'status': status.name.toLowerCase(),
       'car': car,
+      "updatedDate":
+          updatedDate != null ? Timestamp.fromDate(updatedDate!) : null,
     };
   }
 
@@ -92,6 +98,7 @@ class BookingModel {
       bookingUserId: map['bookingUserId'] as String,
       bookingDate: (map['bookingDate'] as Timestamp).toDate(),
       createdAt: (map['createdAt'] as Timestamp).toDate(),
+      updatedDate: (map['updatedDate'] as Timestamp?)?.toDate(),
       bookingTime: (map['bookingTime'])
           .map<DateTime>(
             (x) => (x as Timestamp).toDate(),
@@ -110,7 +117,7 @@ class BookingModel {
 
   @override
   String toString() {
-    return 'BookingModel(id: $id, serviceId: $serviceId, serviceProviderId: $serviceProviderId, bookingUserName: $bookingUserName, bookingUserProfile: $bookingUserProfile, bookingUserId: $bookingUserId, bookingDate: $bookingDate, createdAt: $createdAt, bookingTime: $bookingTime, status: $status, car: $car)';
+    return 'BookingModel(id: $id, serviceId: $serviceId, serviceProviderId: $serviceProviderId, bookingUserName: $bookingUserName, bookingUserProfile: $bookingUserProfile, bookingUserId: $bookingUserId, bookingDate: $bookingDate, createdAt: $createdAt, bookingTime: $bookingTime, status: $status, car: $car, updatedDate: $updatedDate)';
   }
 
   @override
@@ -127,7 +134,8 @@ class BookingModel {
         other.createdAt == createdAt &&
         listEquals(other.bookingTime, bookingTime) &&
         other.status == status &&
-        other.car == car;
+        other.car == car &&
+        other.updatedDate == updatedDate;
   }
 
   @override

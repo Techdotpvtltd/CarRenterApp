@@ -40,5 +40,19 @@ class RentalProductBloc extends Bloc<RentalProductEvent, RentalProductState> {
         }
       },
     );
+
+    // ===========================Fetch Product Event================================
+    on<RentalEventFetchProduct>(
+      (event, emit) async {
+        try {
+          emit(RentalProductStateFetchingProduct());
+          final ProductModel? productModel =
+              await ImmutableProductRepo().findProduct(event.productId);
+          emit(RentalProductStateFetchedProduct(product: productModel));
+        } on AppException catch (e) {
+          emit(RentalProductStateFetchProductFailure(exception: e));
+        }
+      },
+    );
   }
 }

@@ -35,6 +35,28 @@ class ImmutableProductRepo {
     }
   }
 
+  /// Find Product
+  Future<ProductModel?> findProduct(String productId) async {
+    final ProductModel? productModel = _products
+        .where((element) => element.id == productId)
+        .toList()
+        .firstOrNull;
+    if (productModel != null) {
+      return productModel;
+    }
+    try {
+      final Map<String, dynamic>? data = await FirestoreService()
+          .fetchSingleRecord(
+              path: FIREBASE_COLLECTION_USER_SERVICES, docId: productId);
+      if (data != null) {
+        return ProductModel.fromMap(data);
+      }
+      return null;
+    } catch (e) {
+      throw thrownAppException(e: e);
+    }
+  }
+
   void delete(int atIndex) {
     _products.removeAt(atIndex);
   }
@@ -71,5 +93,10 @@ class ImmutableProductRepo {
     } catch (e) {
       throw thrownAppException(e: e);
     }
+  }
+
+  // Clear Products
+  void clearAll() {
+    _products.clear();
   }
 }

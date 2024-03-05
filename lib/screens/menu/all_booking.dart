@@ -6,11 +6,13 @@ import 'package:beasy/models/booking_model.dart';
 import 'package:beasy/models/product_model.dart';
 import 'package:beasy/repositories/repos/immutable_product_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
+import 'package:beasy/screens/rental/booking_detail_view_rental.dart';
 import 'package:beasy/screens/service_provider/components/error_widget.dart';
 import 'package:beasy/screens/service_provider/components/loading_widget.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/helping_methods.dart';
 import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
@@ -192,6 +194,24 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
   bool isError = false;
   List<BookingModel> bookings = [];
   List<BookingModel> filteredBookings = [];
+  bool isScreenVisible = true;
+
+  /// Avoid listening when screen is in background or other screen is mounted.
+
+  void loadDetailView(ProductModel product, BookingModel bookingModel) async {
+    setState(() {
+      isScreenVisible = false;
+    });
+    await NavigationService.go(
+      context,
+      BookingDetailViewRentalScreen(
+        booking: bookingModel,
+      ),
+    );
+    setState(() {
+      isScreenVisible = true;
+    });
+  }
 
   @override
   void initState() {
@@ -249,6 +269,7 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
   Widget build(BuildContext context) {
     applyFilter();
     return BlocListener<BookingBloc, BookingState>(
+      listenWhen: (previous, current) => isScreenVisible,
       listener: (context, state) {
         if (state is BookingStateFetchBookingSuccess ||
             state is BookingStateFetchBookingsFailure ||
@@ -280,9 +301,10 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
             child: filteredBookings.isEmpty
-                ? const CustomAlertWidget(
+                ? CustomAlertWidget(
                     message: "Oops! Seems that there is no booking yet.",
-                    isShowRefresh: false,
+                    onPressedRefresh: () =>
+                        triggerFetchBookings(context.read<BookingBloc>()),
                   )
                 : RefreshIndicator(
                     onRefresh: () async {
@@ -312,245 +334,261 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
         .where((element) => element.id == booking.serviceId)
         .firstOrNull;
 
-    return Builder(builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xffF5F6FB),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      // crossAxisAlignment: CrossAxisAlignment.start,
+    return Builder(
+      builder: (context) {
+        return InkWell(
+          onTap: () => loadDetailView(product!, booking),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF5F6FB),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: CustomNetworkImage(
-                            imageUrl: product?.images.firstOrNull ?? "",
-                            height: 81,
-                            width: 81,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            /// image widget
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: CustomNetworkImage(
+                                imageUrl: product?.images.firstOrNull ?? "",
+                                height: 81,
+                                width: 81,
+                              ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Row(
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    const Spacer(),
-                                    Container(
-                                      width: 68,
-                                      height: 18,
-                                      decoration: BoxDecoration(
-                                        color: Color(booking.status.colorCode)
-                                            .withAlpha(30),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(12),
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          booking.status.text,
-                                          style: TextStyle(
-                                            fontFamily: Assets.plusJakartaFont,
-                                            fontSize: 6.88,
-                                            fontWeight: FontWeight.w700,
+                                    Row(
+                                      children: [
+                                        const Spacer(),
+
+                                        /// Status Widget
+                                        Container(
+                                          width: 68,
+                                          height: 18,
+                                          decoration: BoxDecoration(
                                             color:
-                                                Color(booking.status.colorCode),
+                                                Color(booking.status.colorCode)
+                                                    .withAlpha(30),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(12),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                gapH4,
-                                Row(
-                                  children: [
-                                    Text(
-                                      booking.car,
-                                      style: const TextStyle(
-                                        fontFamily: Assets.plusJakartaFont,
-                                        color: StyleGuide.textColor2,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Image.asset(
-                                      "assets/icons/pin1.png",
-                                      width: 16,
-                                      height: 16,
-                                    ),
-                                    Text(
-                                      " ${(calculateDistance(UserRepo().currentUser.location.latitude, UserRepo().currentUser.location.longitude, product?.latitude ?? 0, product?.longitude ?? 0)).toInt()} km",
-                                      style: const TextStyle(
-                                        fontFamily: Assets.plusJakartaFont,
-                                        color: Color(0xff6B6B6B),
-                                        fontSize: 13.6,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 1),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "\$ ${product?.price ?? ""}",
-                                      style: const TextStyle(
-                                        fontFamily: Assets.plusJakartaFont,
-                                        color: StyleGuide.primaryColor2,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const Text(
-                                      "/Hour",
-                                      style: TextStyle(
-                                          fontFamily: Assets.plusJakartaFont,
-                                          color: Color(0xff6B6B6B),
-                                          fontSize: 13.6,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    const Spacer(),
-                                    SvgPicture.asset(
-                                      Assets.starIcon,
-                                      width: 12,
-                                      height: 12,
-                                    ),
-                                    gapW4,
-                                    const Text(
-                                      "4.8",
-                                      style: TextStyle(
-                                        fontFamily: Assets.plusJakartaFont,
-                                        color: Color(0xff6B6B6B),
-                                        fontSize: 14.6,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 1.5),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 1),
-                    ongoing
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Divider(
-                                color: Color(0xffCFCFCF),
-                                thickness: 2,
-                              ),
-                              const SizedBox(height: 1),
-                              const Text(
-                                "Picking Time",
-                                style: TextStyle(
-                                  fontSize: 13.5,
-                                  fontFamily: Assets.plusJakartaFont,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF5C5C5C),
-                                ),
-                              ),
-                              gapH8,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        "assets/icons/date.png",
-                                        height: 33,
-                                      ),
-                                      gapW10,
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: screenWidth * 0.36,
+                                          child: Center(
                                             child: Text(
-                                              "${DateFormat("dd MMM").format(booking.bookingDate)}, ${DateFormat("hh:mm a").format(booking.bookingTime.first)} - ${DateFormat("hh:mm a").format(booking.bookingTime.last)}",
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
+                                              booking.status.text,
+                                              style: TextStyle(
                                                 fontFamily:
                                                     Assets.plusJakartaFont,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14,
-                                                color: StyleGuide.textColor2,
+                                                fontSize: 6.88,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(
+                                                    booking.status.colorCode),
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 0.4),
-                                          const Text(
-                                            "Schedule",
-                                            style: TextStyle(
-                                              fontSize: 12.8,
-                                              fontWeight: FontWeight.w400,
+                                        )
+                                      ],
+                                    ),
+                                    gapH4,
+
+                                    /// Car Widget
+                                    Row(
+                                      children: [
+                                        Text(
+                                          booking.car,
+                                          style: const TextStyle(
+                                            fontFamily: Assets.plusJakartaFont,
+                                            color: StyleGuide.textColor2,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Image.asset(
+                                          "assets/icons/pin1.png",
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                        Text(
+                                          " ${(calculateDistance(UserRepo().currentUser.location.latitude, UserRepo().currentUser.location.longitude, product?.latitude ?? 0, product?.longitude ?? 0)).toInt()} km",
+                                          style: const TextStyle(
+                                            fontFamily: Assets.plusJakartaFont,
+                                            color: Color(0xff6B6B6B),
+                                            fontSize: 13.6,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 1),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "\$ ${product?.price ?? ""}",
+                                          style: const TextStyle(
+                                            fontFamily: Assets.plusJakartaFont,
+                                            color: StyleGuide.primaryColor2,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const Text(
+                                          "/Hour",
+                                          style: TextStyle(
                                               fontFamily:
                                                   Assets.plusJakartaFont,
-                                              color: Color(0xff5C5C5C),
-                                            ),
+                                              color: Color(0xff6B6B6B),
+                                              fontSize: 13.6,
+                                              fontWeight: FontWeight.w300),
+                                        ),
+                                        const Spacer(),
+                                        SvgPicture.asset(
+                                          Assets.starIcon,
+                                          width: 12,
+                                          height: 12,
+                                        ),
+                                        gapW4,
+                                        const Text(
+                                          "4.8",
+                                          style: TextStyle(
+                                            fontFamily: Assets.plusJakartaFont,
+                                            color: Color(0xff6B6B6B),
+                                            fontSize: 14.6,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 1.5),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 1),
+                        ongoing
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Divider(
+                                    color: Color(0xffCFCFCF),
+                                    thickness: 2,
+                                  ),
+                                  const SizedBox(height: 1),
+                                  const Text(
+                                    "Picking Time",
+                                    style: TextStyle(
+                                      fontSize: 13.5,
+                                      fontFamily: Assets.plusJakartaFont,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF5C5C5C),
+                                    ),
+                                  ),
+                                  gapH8,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            "assets/icons/date.png",
+                                            height: 33,
+                                          ),
+                                          gapW10,
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: screenWidth * 0.36,
+                                                child: Text(
+                                                  "${DateFormat("dd MMM").format(booking.bookingDate)}, ${DateFormat("hh:mm a").format(booking.bookingTime.first)} - ${DateFormat("hh:mm a").format(booking.bookingTime.last)}",
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontFamily:
+                                                        Assets.plusJakartaFont,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14,
+                                                    color:
+                                                        StyleGuide.textColor2,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 0.4),
+                                              const Text(
+                                                "Schedule",
+                                                style: TextStyle(
+                                                  fontSize: 12.8,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily:
+                                                      Assets.plusJakartaFont,
+                                                  color: Color(0xff5C5C5C),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
+                                      RoundedButton(
+                                        title: "Message",
+                                        onPressed: () {},
+                                        width: 120,
+                                        height: 40,
+                                      )
                                     ],
                                   ),
+                                ],
+                              )
+                            : const SizedBox(),
+                        previous
+                            ? Column(
+                                children: [
+                                  const Divider(
+                                    color: Color(0xffCFCFCF),
+                                    thickness: 2,
+                                  ),
+                                  const SizedBox(height: 1),
+                                  gapH18,
                                   RoundedButton(
-                                    title: "Message",
+                                    title: "Write Review",
                                     onPressed: () {},
                                     width: 120,
                                     height: 40,
                                   )
                                 ],
-                              ),
-                            ],
-                          )
-                        : const SizedBox(),
-                    previous
-                        ? Column(
-                            children: [
-                              const Divider(
-                                color: Color(0xffCFCFCF),
-                                thickness: 2,
-                              ),
-                              const SizedBox(height: 1),
-                              gapH18,
-                              RoundedButton(
-                                title: "Write Review",
-                                onPressed: () {},
-                                width: 120,
-                                height: 40,
                               )
-                            ],
-                          )
-                        : const SizedBox(),
-                  ],
+                            : const SizedBox(),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      );
-    });
+          ),
+        );
+      },
+    );
   }
 }

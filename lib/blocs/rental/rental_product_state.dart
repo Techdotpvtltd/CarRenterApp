@@ -37,3 +37,21 @@ class RentalStateProductsFetched extends RentalProductState {
 
   RentalStateProductsFetched({required this.products});
 }
+
+/// Fetched Product
+class RentalProductStateFetchedProduct extends RentalProductState {
+  final ProductModel? product;
+
+  RentalProductStateFetchedProduct({this.product});
+}
+
+/// FetchingProduct Product
+class RentalProductStateFetchingProduct extends RentalProductState {
+  RentalProductStateFetchingProduct({super.isLoading = true});
+}
+
+/// Fetch Product Failure
+class RentalProductStateFetchProductFailure extends RentalProductState {
+  final AppException exception;
+  RentalProductStateFetchProductFailure({required this.exception});
+}

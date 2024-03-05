@@ -4,7 +4,6 @@ import 'package:beasy/exceptions/auth_exceptions.dart';
 import 'package:beasy/exceptions/data_exceptions.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/repositories/validations/data_validations.dart';
-import 'package:beasy/utilities/extensions/shared_preferences.dart';
 import 'package:beasy/web_services/firebase_auth_serivces.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,6 @@ class AuthRepo {
   }
 
   //  Login With Apple ====================================
-
   Future<void> loginWithApple() async {
     try {
       final credential = await SignInWithApple.getAppleIDCredential(scopes: [
@@ -125,7 +123,6 @@ class AuthRepo {
   Future<void> performLogout() async {
     await FirebaseAuthService().logoutUser();
     AppManager().clearData();
-    LocalPreferences.clearAll();
   }
 
   /// Perform Logout

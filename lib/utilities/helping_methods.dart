@@ -110,3 +110,25 @@ double calculateDistance(double startLatitude, double startLongitude,
           2;
   return (12742 * asin(sqrt(a))); // 2 * R; R = 6371 km
 }
+
+// calculate total hours
+int calculateTotalHours(DateTime startTime, DateTime endTime) {
+  final diff = endTime.difference(startTime);
+  return diff.inSeconds;
+}
+
+String parseTotalHours(DateTime startTime, DateTime endTime) {
+  int timeInSeconds = calculateTotalHours(startTime, endTime);
+  final int hours = timeInSeconds ~/ (60 * 60);
+  timeInSeconds %= (60 * 60);
+  final int minutes = timeInSeconds ~/ 60;
+  return "$hours:$minutes";
+}
+
+// Calculate Total price
+double calculateTotalPrice(
+    DateTime startTime, DateTime endTime, double pricePerHour) {
+  final int timeInSeconds = calculateTotalHours(startTime, endTime);
+  double hours = timeInSeconds / (60 * 60);
+  return (hours * pricePerHour).ceilToDouble();
+}
