@@ -97,12 +97,12 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     );
 
     /// on rental user Booking Fetching
-    on<BookingEventFetchForRentalUser>(
+    on<BookingEventFetchCurrentUserBookings>(
       (event, emit) async {
         try {
           emit(BookingStateFetchingBookings());
           final List<BookingModel> bookings =
-              await ImmutableBookingRepo().fetchForRentalUser();
+              await ImmutableBookingRepo().fetchForRentalUserAndSP();
           emit(BookingStateFetchBookingSuccess(bookings: bookings));
         } on AppException catch (e) {
           emit(BookingStateFetchBookingsFailure(exception: e));
@@ -111,7 +111,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     );
 
     /// OnUser Profile Fetch
-    on<BookingEventFetchSPProfile>(
+    on<BookingEventFetchUserProfile>(
       (event, emit) async {
         try {
           final UserModel user =

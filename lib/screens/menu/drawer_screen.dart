@@ -22,22 +22,38 @@ import '../../blocs/drawer/drawer_screen_state.dart';
 import '../rental/bottom_navi.dart';
 import '../common/notification_screen.dart';
 
-List titles = [
+List rentalTitles = [
   "Home",
   "Bookings",
   "Notifications",
-  "Change Password",
   "Reviews",
   "FAQ’s",
   "Teams & Conditions",
   "Contact us",
 ];
 
-List images = [
+List rentalImages = [
   "assets/icons/dd1.png",
   "assets/icons/dd2.png",
   "assets/icons/dd3.png",
-  "assets/icons/dd4.png",
+  "assets/icons/dd5.png",
+  "assets/icons/dd6.png",
+  "assets/icons/dd7.png",
+  "assets/icons/dd8.png"
+];
+
+List spTitles = [
+  "Home",
+  "Bookings",
+  "Reviews",
+  "FAQ’s",
+  "Teams & Conditions",
+  "Contact us",
+];
+
+List spImages = [
+  "assets/icons/dd1.png",
+  "assets/icons/dd2.png",
   "assets/icons/dd5.png",
   "assets/icons/dd6.png",
   "assets/icons/dd7.png",
@@ -237,6 +253,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
     switch (currentIndex) {
       case 0:
         return const SPHomeScreen();
+      case 1:
+        return const AllBookings();
       case 2:
         return const NotificationScreen();
       default:
@@ -276,7 +294,7 @@ class DrawerScreen extends StatefulWidget {
 
 class _DrawerScreenState extends State<DrawerScreen> {
   int _active = 0;
-
+  final UserModel user = UserRepo().currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -297,7 +315,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           padding: const EdgeInsets.only(left: 33),
                           child: ListView.builder(
                             // padding: EdgeInsets.zero,
-                            itemCount: titles.length,
+                            itemCount: user.userType == UserType.rentalUser
+                                ? rentalTitles.length
+                                : spTitles.length,
                             itemBuilder: (context, index) => InkWell(
                               onTap: () {
                                 setState(() {
@@ -326,14 +346,18 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   child: Row(
                                     children: [
                                       Image.asset(
-                                        images[index],
+                                        user.userType == UserType.rentalUser
+                                            ? rentalImages[index]
+                                            : spImages[index],
                                         height: 24,
                                         color: Colors.black,
                                       ),
                                       gapW20,
                                       Flexible(
                                         child: Text(
-                                          titles[index],
+                                          user.userType == UserType.rentalUser
+                                              ? rentalTitles[index]
+                                              : spTitles[index],
                                           style: TextStyle(
                                               fontFamily:
                                                   Assets.plusJakartaFont,

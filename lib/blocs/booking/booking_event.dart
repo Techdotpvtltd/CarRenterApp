@@ -45,11 +45,11 @@ class BookingEventFetchForIndividualService extends BookingEvent {
 }
 
 // For Rental User
-class BookingEventFetchForRentalUser extends BookingEvent {}
+class BookingEventFetchCurrentUserBookings extends BookingEvent {}
 
 // ===========================User Profile Fetching Events================================
-class BookingEventFetchSPProfile extends BookingEvent {
+class BookingEventFetchUserProfile extends BookingEvent {
   final String profileId;
 
-  BookingEventFetchSPProfile({required this.profileId});
+  BookingEventFetchUserProfile({required this.profileId});
 }
