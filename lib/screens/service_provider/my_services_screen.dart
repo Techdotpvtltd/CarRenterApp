@@ -247,7 +247,7 @@ class _MyServicesCard extends StatelessWidget {
                         text: "\$ ${product.price}",
                         children: [
                           TextSpan(
-                            text: "/Hour",
+                            text: "/Day",
                             style: StyleGuide.productCardStyle1.copyWith(
                               fontSize: 8,
                               fontWeight: FontWeight.w400,

@@ -6,6 +6,7 @@ import 'package:beasy/blocs/rental/rental_product_bloc.dart';
 import 'package:beasy/blocs/rental/rental_product_event.dart';
 import 'package:beasy/blocs/rental/rental_product_state.dart';
 import 'package:beasy/models/booking_model.dart';
+import 'package:beasy/screens/conversations/inbox_screen.dart';
 import 'package:beasy/screens/rental/calendar_screen.dart';
 
 import 'package:beasy/screens/rental/product_detail_screen.dart';
@@ -119,22 +120,47 @@ class _BookingDetailViewRentalScreenState
                 ),
                 Positioned(
                   left: 12,
+                  right: 12,
                   child: SafeArea(
-                    child: SizedBox.fromSize(
-                      size: const Size(27, 27),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () {
-                          NavigationService.back(context);
-                        },
-                        style: const ButtonStyle(
-                          padding: MaterialStatePropertyAll(EdgeInsets.zero),
-                          iconSize: MaterialStatePropertyAll(16),
-                          iconColor: MaterialStatePropertyAll(Colors.black),
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox.fromSize(
+                          size: const Size(35, 35),
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_back),
+                            onPressed: () {
+                              NavigationService.back(context);
+                            },
+                            style: const ButtonStyle(
+                              padding:
+                                  MaterialStatePropertyAll(EdgeInsets.zero),
+                              iconSize: MaterialStatePropertyAll(16),
+                              iconColor: MaterialStatePropertyAll(Colors.black),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.white),
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox.fromSize(
+                          size: const Size(35, 35),
+                          child: IconButton(
+                            icon: const Icon(Icons.message),
+                            onPressed: () {
+                              NavigationService.go(
+                                  context, const InboxScreen());
+                            },
+                            style: const ButtonStyle(
+                              padding:
+                                  MaterialStatePropertyAll(EdgeInsets.zero),
+                              iconSize: MaterialStatePropertyAll(16),
+                              iconColor: MaterialStatePropertyAll(Colors.black),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -188,7 +214,7 @@ class _BookingDetailViewRentalScreenState
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    "---", // "\$ ${calculateTotalPrice(bookingModel.bookingTime.first, bookingModel.bookingTime.last, product?.price ?? 0)}",
+                                    "${product?.price}/Day",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style:
@@ -271,7 +297,7 @@ class _BookingDetailViewRentalScreenState
                                               DateTime.now())
                                           ? "Today"
                                           : bookingModel.bookingDate
-                                              .dateToString("dd-MMM-yy"),
+                                              .dateToString("dd-MMMM-yy"),
                                       style: StyleGuide.textStyle3.copyWith(
                                         color: StyleGuide.primaryColor2,
                                         fontWeight: FontWeight.w500,
@@ -325,26 +351,6 @@ class _BookingDetailViewRentalScreenState
                               ),
                               Text(
                                 bookingModel.status.text,
-                                style: StyleGuide.textStyle3.copyWith(
-                                  color: const Color(0xFF414141),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SeparateWidget(),
-
-                          const SeparateWidget(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Price:",
-                                style: StyleGuide.textStyle3.copyWith(
-                                  color: StyleGuide.textColor2,
-                                ),
-                              ),
-                              Text(
-                                "\$ ${product?.price ?? 0}/Hour",
                                 style: StyleGuide.textStyle3.copyWith(
                                   color: const Color(0xFF414141),
                                 ),

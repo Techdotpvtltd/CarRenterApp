@@ -17,25 +17,20 @@ class BookingEventInitial extends BookingEvent {}
 // =========================== Create Booking Event ================================
 class BookingEventCreateBooking extends BookingEvent {
   final DateTime selectedDate;
-  final List<String> bookingTime;
   final ProductModel product;
 
   BookingEventCreateBooking(
-      {required this.selectedDate,
-      required this.bookingTime,
-      required this.product});
+      {required this.selectedDate, required this.product});
 }
 
 // =========================== Create Booking Event ================================
 class BookingEventUpdateBooking extends BookingEvent {
   final BookingModel bookingModel;
   final DateTime selectedDate;
-  final List<String> bookingTime;
 
   BookingEventUpdateBooking({
     required this.selectedDate,
     required this.bookingModel,
-    required this.bookingTime,
   });
 }
 

@@ -451,7 +451,7 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
                                           ),
                                         ),
                                         const Text(
-                                          "/Hour",
+                                          "/Day",
                                           style: TextStyle(
                                               fontFamily:
                                                   Assets.plusJakartaFont,

@@ -113,7 +113,7 @@ class AppStrings {
   static const String addModel = "Add Model";
   static const String enterModel = "Enter Model";
   static const String enterYear = "Enter Year";
-  static const String enterPriceHour = "Enter Price/ hour";
+  static const String enterPriceHour = "Enter Price Per Day.";
   static const String upload = "Upload";
 
   // AllServicesScreen  ========================================

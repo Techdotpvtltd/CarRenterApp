@@ -7,7 +7,6 @@ import 'package:beasy/models/product_model.dart';
 import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/mutable_booking_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
-import 'package:beasy/utilities/extensions/extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -57,9 +56,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         try {
           final BookingModel model = event.bookingModel.copyWith(
             bookingDate: event.selectedDate,
-            bookingTime: event.bookingTime
-                .map((e) => event.selectedDate.mergeTimeFrom(e))
-                .toList(),
             updatedDate: DateTime.now(),
           );
           emit(BookingStateBookingUpdating());

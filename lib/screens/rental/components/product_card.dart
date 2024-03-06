@@ -84,7 +84,7 @@ class _ProductCardState extends State<ProductCard> {
                               ),
                               children: [
                                 TextSpan(
-                                  text: " /Hour",
+                                  text: " /Day",
                                   style: TextStyle(
                                     fontSize: widget.isLargeCard ? 8.96 : 8.58,
                                     fontWeight: FontWeight.w400,

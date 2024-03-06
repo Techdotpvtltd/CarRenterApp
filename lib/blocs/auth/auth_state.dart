@@ -16,6 +16,12 @@ class AuthStateInitialize extends AuthState {
   AuthStateInitialize({super.isLoading});
 }
 
+// AuthStateLogout  ========================================
+
+class AuthStateLogout extends AuthState {
+  AuthStateLogout({super.isLoading});
+}
+
 // AuthStateStartup  ========================================
 class AuthStateStartup extends AuthState {
   AuthStateStartup({super.isLoading});

@@ -169,55 +169,65 @@ class _RentalHomeScreenState extends State<RentalHomeScreen> {
               child: Column(
                 children: [
                   ProductSectionWidget(
-                    products: products,
                     title: AppStrings.topBrands,
-                    itemCount: 10,
                     cardHeight: 40,
                     onPressedAll: () {
                       NavigationService.go(context, const AllBrandScreen());
                     },
-                    onPressedProduct: (index) {
-                      setState(
-                        () {
-                          _selectedBrand = index;
-                        },
-                      );
-                    },
-                    builder: (index) => Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 23,
-                      ),
-                      decoration: BoxDecoration(
-                        color: _selectedBrand == index
-                            ? StyleGuide.primaryColor2
-                            : Colors.white,
-                        border: Border.all(
-                          color: _selectedBrand == index
-                              ? StyleGuide.primaryColor2
-                              : const Color(0xFFBFBFBF),
-                        ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(78)),
-                      ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            Assets.bmwIcon,
-                            height: 21,
-                            width: 21,
-                            fit: BoxFit.contain,
-                          ),
-                          gapW6,
-                          Text(
-                            "BMW",
-                            style: StyleGuide.onboardingText1.copyWith(
-                              color: _selectedBrand == index
-                                  ? Colors.white
-                                  : StyleGuide.textColor2,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: false,
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: InkWell(
+                            onTap: () {
+                              setState(
+                                () {
+                                  _selectedBrand = index;
+                                },
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 23,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _selectedBrand == index
+                                    ? StyleGuide.primaryColor2
+                                    : Colors.white,
+                                border: Border.all(
+                                  color: _selectedBrand == index
+                                      ? StyleGuide.primaryColor2
+                                      : const Color(0xFFBFBFBF),
+                                ),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(78)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    Assets.bmwIcon,
+                                    height: 21,
+                                    width: 21,
+                                    fit: BoxFit.contain,
+                                  ),
+                                  gapW6,
+                                  Text(
+                                    "BMW",
+                                    style: StyleGuide.onboardingText1.copyWith(
+                                      color: _selectedBrand == index
+                                          ? Colors.white
+                                          : StyleGuide.textColor2,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   _getWidget(),
@@ -241,7 +251,6 @@ class _MainWidget extends StatelessWidget {
       children: [
         gapH18,
         ProductSectionWidget(
-          products: products,
           title: AppStrings.availableNearYour,
           onPressedAll: () {
             NavigationService.go(
@@ -251,24 +260,34 @@ class _MainWidget extends StatelessWidget {
               ),
             );
           },
-          itemCount: products.length,
-          onPressedProduct: (index) {
-            NavigationService.go(
-              context,
-              ProductDetailScreen(
-                product: products[index],
-              ),
-            );
-          },
-          builder: (index) => ProductCard(
-            product: products[index],
-            width: 167,
-          ),
           cardHeight: 170,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: false,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: InkWell(
+                  onTap: () => NavigationService.go(
+                    context,
+                    ProductDetailScreen(
+                      product: products[index],
+                    ),
+                  ),
+                  child: ProductCard(
+                    product: products[index],
+                    width: 167,
+                  ),
+                ),
+              );
+            },
+          ),
         ),
         gapH18,
+
+        /// To Deal Widget
         ProductSectionWidget(
-          products: products,
           title: AppStrings.topDeals,
           onPressedAll: () {
             NavigationService.go(
@@ -278,20 +297,29 @@ class _MainWidget extends StatelessWidget {
               ),
             );
           },
-          itemCount: 5,
-          onPressedProduct: (index) {
-            NavigationService.go(
-              context,
-              ProductDetailScreen(
-                product: products[index],
-              ),
-            );
-          },
-          builder: (index) => ProductCard(
-            product: products[index],
-            width: 167,
-          ),
           cardHeight: 170,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: false,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: InkWell(
+                  onTap: () => NavigationService.go(
+                    context,
+                    ProductDetailScreen(
+                      product: products[index],
+                    ),
+                  ),
+                  child: ProductCard(
+                    product: products[index],
+                    width: 167,
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

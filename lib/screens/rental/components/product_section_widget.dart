@@ -1,4 +1,3 @@
-import 'package:beasy/models/product_model.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/strings.dart';
@@ -11,19 +10,13 @@ class ProductSectionWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.onPressedAll,
-    required this.itemCount,
-    required this.onPressedProduct,
-    required this.builder,
     required this.cardHeight,
-    required this.products,
+    required this.child,
   });
   final String title;
   final VoidCallback onPressedAll;
-  final int itemCount;
-  final Function(int index) onPressedProduct;
-  final Widget Function(int) builder;
   final double cardHeight;
-  final List<ProductModel> products;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -53,20 +46,7 @@ class ProductSectionWidget extends StatelessWidget {
         gapH14,
         Container(
           constraints: BoxConstraints(maxHeight: cardHeight),
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: InkWell(
-                  onTap: () => onPressedProduct(index),
-                  child: builder(index),
-                ),
-              );
-            },
-          ),
+          child: child,
         )
       ],
     );

@@ -94,47 +94,33 @@ class _NotificationCardState extends State<NotificationCard> {
 
                           /// Remaining Time Widgets
                           BlocSelector<DataFetcherCubit, dynamic,
-                                  DataFetcherTimePeriod?>(
-                              selector: (state) =>
-                                  state is DataFetcherTimePeriod
-                                      ? DataFetcherTimePeriod()
-                                      : null,
-                              builder: (context, state) {
-                                return Text(
-                                  parseTimePeriod(
-                                      atTime: widget.booking.createdAt),
-                                  style: const TextStyle(
-                                      fontFamily: Assets.plusJakartaFont,
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.w400,
-                                      color: StyleGuide.textColor2),
-                                );
-                              }),
+                              DataFetcherTimePeriod?>(
+                            selector: (state) => state is DataFetcherTimePeriod
+                                ? DataFetcherTimePeriod()
+                                : null,
+                            builder: (context, state) {
+                              return Text(
+                                parseTimePeriod(
+                                    atTime: widget.booking.createdAt),
+                                style: const TextStyle(
+                                    fontFamily: Assets.plusJakartaFont,
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.w400,
+                                    color: StyleGuide.textColor2),
+                              );
+                            },
+                          ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            DateFormat("dd/MM/yyyy")
-                                .format(widget.booking.bookingDate),
-                            style: const TextStyle(
-                              color: StyleGuide.textColor2,
-                              fontFamily: Assets.plusJakartaFont,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          gapW8,
-                          const Text(
-                            "", //"${DateFormat("hh:mm a").format(widget.booking.bookingTime.first)} to ${DateFormat("hh:mm a").format(widget.booking.bookingTime.last)}",
-                            style: TextStyle(
-                              color: StyleGuide.textColor2,
-                              fontFamily: Assets.plusJakartaFont,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        DateFormat("dd/MM/yyyy")
+                            .format(widget.booking.bookingDate),
+                        style: const TextStyle(
+                          color: StyleGuide.textColor2,
+                          fontFamily: Assets.plusJakartaFont,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       gapH4,
                       BlocSelector<DataFetcherCubit, dynamic,

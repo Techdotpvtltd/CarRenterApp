@@ -7,14 +7,11 @@ import 'package:beasy/models/product_model.dart';
 import 'package:beasy/screens/service_provider/components/loading_widget.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/utilities/extensions/str_ext.dart';
-import 'package:beasy/utilities/helping_methods.dart';
+import 'package:beasy/utilities/extensions/date_extension.dart';
 import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../utilities/constants/strings.dart';
@@ -38,13 +35,11 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   DateTime selectedDate = DateTime.now();
-  String? pickTime;
-  String? returnTime;
   bool isButtonLoad = false;
   String? loadingText;
+  bool isBookingAvailableAtDate = false;
   bool isFetchingBookings = true;
   List<BookingModel> bookings = [];
-  List<Map<String, String>> bookingTimes = [];
   late final BookingModel? existedBooking = widget.booking;
 
   @override
@@ -60,125 +55,36 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
-  List<String> _getAvailablePickTimes() {
-    final pickingTimes = bookingTimes.map((e) => e["pickingTime"]).toList();
-    final returnTimes = bookingTimes.map((e) => e["returnTime"]).toList();
-    pickingTimes.sort();
-    returnTimes.sort();
-    List<String> remainingTimes = timeList;
-    final today = DateTime.now();
-    if (isSameDay(selectedDate, today)) {
-      final String currentTime = DateFormat("HH:MM").format(today);
-      setState(() {
-        remainingTimes = remainingTimes
-            .where((element) => element.timeGreaterThen(to: currentTime))
-            .toList();
-      });
-    }
-    for (int index = 0; index < pickingTimes.length; index++) {
-      final startingTime = pickingTimes[index];
-      final endingTime = returnTimes[index];
-      if (startingTime != null && endingTime != null) {
-        remainingTimes = remainingTimes
-            .where((element) => (timeInMilliSecondsFrom(value: element) <
-                    timeInMilliSecondsFrom(value: startingTime) ||
-                (timeInMilliSecondsFrom(value: element)) >
-                    timeInMilliSecondsFrom(value: endingTime)))
-            .toList();
-      }
-    }
-    return remainingTimes;
-  }
-
-  List<String> _getAvailableReturnTimes() {
-    final pickingTimes = bookingTimes.map((e) => e["pickingTime"]).toList();
-    List<String> remainingTimes = timeList;
-
-    if (pickingTimes.isEmpty) {
-      return remainingTimes
-          .where((element) => element.timeGreaterThen(to: pickTime!))
-          .toList();
-    }
-    for (String? pT in pickingTimes) {
-      if (pT != null) {
-        if ((pickTime ?? "").timeGreaterThen(to: pT)) {
-          remainingTimes = remainingTimes
-              .where((value) =>
-                  value.timeGreaterThen(to: pickTime ?? "") &&
-                  value.timeGreaterThen(to: pT))
-              .toList();
-        } else {
-          remainingTimes = remainingTimes
-              .where((value) =>
-                  timeInMilliSecondsFrom(value: value) <
-                      timeInMilliSecondsFrom(value: pT) &&
-                  timeInMilliSecondsFrom(value: value) >
-                      timeInMilliSecondsFrom(value: pickTime ?? ""))
-              .toList();
-        }
-      }
-    }
-
-    return remainingTimes;
-  }
-
   void updateSelectedDate(DateTime withSelectedDate) {
     setState(() {
       selectedDate = withSelectedDate;
-      bookingTimes = [];
-      pickTime = null;
-      returnTime = null;
+      checkServiceAvailableAtDate();
     });
-    checkAvailableTimesAtDate();
   }
 
-  void checkAvailableTimesAtDate() {
-    // final List<BookingModel> bookingData = bookings
-    //     .where((element) =>
-    //         dateInMilliSeconds(date: element.bookingDate) ==
-    //         dateInMilliSeconds(date: selectedDate))
-    //     .toList();
-
-    // for (BookingModel booking in bookingData) {
-    //   final String pickingTime =
-    //       DateFormat("HH:mm").format(booking.bookingTime.first);
-    //   final String returnTime =
-    //       DateFormat("HH:mm").format(booking.bookingTime.last);
-    //   setState(() {
-    //     bookingTimes
-    //         .add({"pickingTime": pickingTime, "returnTime": returnTime});
-    //   });
-    // }
+  void checkServiceAvailableAtDate() {
+    isBookingAvailableAtDate = bookings
+        .where((element) => isSameDay(element.bookingDate, selectedDate))
+        .isEmpty;
   }
 
   void triggerFetchBookingsEvent(BookingBloc bloc) {
-    debugPrint(widget.product.id.toString());
     bloc.add(
         BookingEventFetchForIndividualService(serviceId: widget.product.id));
   }
 
   void _triggerBookingEvent(BookingBloc bloc) {
-    if (pickTime == null) {
-      CustomDilaogs().errorBox(message: "Please select Pick time.");
-      return;
-    }
-    if (returnTime == null) {
-      CustomDilaogs().errorBox(message: "Please select return time.");
-      return;
-    }
-
+    selectedDate = selectedDate.onlyDate();
     existedBooking != null
         ? bloc.add(
             BookingEventUpdateBooking(
               selectedDate: selectedDate,
               bookingModel: existedBooking!,
-              bookingTime: [pickTime!, returnTime!],
             ),
           )
         : bloc.add(
             BookingEventCreateBooking(
               selectedDate: selectedDate,
-              bookingTime: [pickTime!, returnTime!],
               product: widget.product,
             ),
           );
@@ -201,7 +107,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               if (existedBooking != null) {
                 freeExistedBookingTimes();
               }
-              checkAvailableTimesAtDate();
+              checkServiceAvailableAtDate();
             }
           });
         }
@@ -317,109 +223,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     gapH20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        /// Pick up Time Widget
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Pick-up time",
-                              style: StyleGuide.productCardStyle1
-                                  .copyWith(fontSize: 12),
-                            ),
-                            gapH10,
-                            DropdownButton2(
-                              items: _getAvailablePickTimes()
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      value: e,
-                                      child: Text(e),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  pickTime = value;
-                                  returnTime = null;
-                                });
-                              },
-                              underline: const SizedBox(),
-                              value: pickTime,
-                              hint: const Text("Select Time"),
-                              customButton: Container(
-                                padding: const EdgeInsets.only(
-                                    left: 20, top: 12, bottom: 12, right: 5),
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFF7F7F7),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16)),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(pickTime ?? "Select Time"),
-                                    gapW30,
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        /// Return Time Widget
-                        if (pickTime != null)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Return time",
-                                style: StyleGuide.productCardStyle1
-                                    .copyWith(fontSize: 12),
-                              ),
-                              gapH10,
-                              DropdownButton2(
-                                items: _getAvailableReturnTimes()
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text(e),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    returnTime = value;
-                                  });
-                                },
-                                underline: const SizedBox(),
-                                value: returnTime,
-                                hint: const Text("Select Time"),
-                                customButton: Container(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, top: 12, bottom: 12, right: 5),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFFF7F7F7),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(16)),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(returnTime ?? "Selct Time"),
-                                      gapW30,
-                                      const Icon(Icons.arrow_drop_down),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                      ],
-                    ),
                     const Spacer(),
                     Visibility(
-                      visible: pickTime != null && returnTime != null,
+                      visible: isBookingAvailableAtDate,
                       child: RoundedButton(
                         isLoading: isButtonLoad,
                         loadingText: loadingText,

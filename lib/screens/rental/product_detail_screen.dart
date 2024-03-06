@@ -143,7 +143,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  "\$ ${widget.product.price}/Hour",
+                                  "\$ ${widget.product.price}/Day",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: StyleGuide.productCardStyle1.copyWith(
@@ -176,63 +176,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                           ],
                         ),
-                        // const Row(
-                        //   children: [
-                        //     Icon(
-                        //       Icons.watch_later_outlined,
-                        //     ),
-                        //     gapW10,
-                        //     Text(
-                        //       AppStrings.bookingHours,
-                        //       style: TextStyle(
-                        //         fontFamily: Assets.poppinsFont,
-                        //         fontSize: 7.5,
-                        //         fontWeight: FontWeight.w500,
-                        //         color: Color(0xFF9CA4AB),
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
-                        // gapH12,
-                        // DottedBorder(
-                        //   padding: const EdgeInsets.all(5),
-                        //   color: const Color(0xFFE2E3E8),
-                        //   strokeWidth: 1,
-                        //   dashPattern: const [4, 4],
-                        //   radius: const Radius.circular(4),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Text(
-                        //         "Today, 01:00 PM - 02:00 PM",
-                        //         style: StyleGuide.textStyle3.copyWith(
-                        //           color: StyleGuide.primaryColor2,
-                        //           fontWeight: FontWeight.w500,
-                        //         ),
-                        //       ),
-                        //       SizedBox(
-                        //         width: 26,
-                        //         height: 26,
-                        //         child: IconButton(
-                        //           onPressed: () {},
-                        //           style: const ButtonStyle(
-                        //             backgroundColor: MaterialStatePropertyAll(
-                        //                 StyleGuide.primaryColor2),
-                        //             padding: MaterialStatePropertyAll(
-                        //                 EdgeInsetsDirectional.zero),
-                        //           ),
-                        //           icon: SvgPicture.asset(
-                        //             Assets.penIcon,
-                        //             width: 12,
-                        //             height: 12,
-                        //             colorFilter: const ColorFilter.mode(
-                        //                 Colors.white, BlendMode.srcIn),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         gapH16,
                         Text(
                           AppStrings.specification,
@@ -243,7 +186,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ),
                         ),
                         gapH12,
-
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -280,7 +222,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                           ],
                         ),
-
                         const SeparateWidget(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

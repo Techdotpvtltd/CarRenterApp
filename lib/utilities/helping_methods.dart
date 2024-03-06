@@ -1,5 +1,6 @@
 // ignore: dangling_library_doc_comments
 import 'dart:math';
+import 'package:beasy/utilities/extensions/date_extension.dart';
 import 'package:intl/intl.dart';
 
 /// Project: 	   CarRenterApp
@@ -42,44 +43,20 @@ String parseTimePeriod({required DateTime atTime}) {
 }
 
 String remainingTime({required DateTime atTime}) {
-  const int secondsInDay = 24 * 3600;
-  const int secondsInHours = 3600;
-  const int secondsInMinutes = 60;
-  int remainingSeconds =
-      (atTime.millisecondsSinceEpoch - DateTime.now().millisecondsSinceEpoch) ~/
-          1000;
-  final int days = remainingSeconds ~/ secondsInDay;
-  remainingSeconds = remainingSeconds % secondsInDay;
-  final int hours = remainingSeconds ~/ secondsInHours;
-  remainingSeconds = remainingSeconds % secondsInHours;
+  final Duration diff = atTime.difference(DateTime.now().onlyDate());
+  final int days = diff.inDays;
+  final int hours = diff.inHours;
 
-  final int minutes = remainingSeconds ~/ secondsInMinutes;
-  remainingSeconds = remainingSeconds % secondsInMinutes;
-  final int seconds = remainingSeconds;
   String timeAgo = "";
 
   if (days > 0) {
-    timeAgo = "$days ${days < 2 ? "day" : "days"}";
+    timeAgo = days < 2 ? "Tomorrow" : "$days days left";
   }
 
-  if (days == 0 && hours > 0 && hours < 24) {
-    timeAgo = "$timeAgo $hours ${hours < 2 ? "hour" : "hours"}";
+  if (hours < 24) {
+    timeAgo = "Today";
   }
-
-  if (days == 0 && hours == 0 && minutes > 0 && minutes < 60) {
-    timeAgo = "$timeAgo $minutes ${minutes < 2 ? "minute" : "minutes "}";
-  }
-
-  if (days == 0 && hours == 0 && minutes > 0 && seconds > 0 && seconds < 60) {
-    timeAgo = "$timeAgo $seconds ${seconds < 2 ? "second" : "seconds "}";
-  } else if (days == 0 &&
-      hours == 0 &&
-      minutes == 0 &&
-      seconds > 0 &&
-      seconds < 60) {
-    timeAgo = "$timeAgo $seconds ${seconds < 2 ? "second" : "seconds "}";
-  }
-  return timeAgo != "" ? "$timeAgo left" : "Expired";
+  return timeAgo != "" ? timeAgo : "Expired";
 }
 
 /// Format Date
