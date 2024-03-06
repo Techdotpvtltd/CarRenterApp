@@ -45,10 +45,10 @@ class _NotificationCardState extends State<NotificationCard> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                const ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
                   child: CustomNetworkImage(
-                    imageUrl: widget.booking.bookingUserProfile,
+                    imageUrl: "",
                     width: 30,
                     height: 30,
                   ),
@@ -58,9 +58,9 @@ class _NotificationCardState extends State<NotificationCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.booking.bookingUserName,
-                        style: const TextStyle(
+                      const Text(
+                        "---",
+                        style: TextStyle(
                           fontFamily: Assets.plusJakartaFont,
                           color: StyleGuide.textColor2,
                           fontSize: 12,
@@ -125,9 +125,9 @@ class _NotificationCardState extends State<NotificationCard> {
                             ),
                           ),
                           gapW8,
-                          Text(
-                            "${DateFormat("hh:mm a").format(widget.booking.bookingTime.first)} to ${DateFormat("hh:mm a").format(widget.booking.bookingTime.last)}",
-                            style: const TextStyle(
+                          const Text(
+                            "", //"${DateFormat("hh:mm a").format(widget.booking.bookingTime.first)} to ${DateFormat("hh:mm a").format(widget.booking.bookingTime.last)}",
+                            style: TextStyle(
                               color: StyleGuide.textColor2,
                               fontFamily: Assets.plusJakartaFont,
                               fontSize: 9,
@@ -144,8 +144,7 @@ class _NotificationCardState extends State<NotificationCard> {
                             : null,
                         builder: (context, state) {
                           return Text(
-                            remainingTime(
-                                atTime: widget.booking.bookingTime.first),
+                            remainingTime(atTime: widget.booking.bookingDate),
                             style: const TextStyle(
                                 fontFamily: Assets.plusJakartaFont,
                                 fontSize: 11,

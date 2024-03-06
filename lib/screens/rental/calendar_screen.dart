@@ -133,22 +133,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   void checkAvailableTimesAtDate() {
-    final List<BookingModel> bookingData = bookings
-        .where((element) =>
-            dateInMilliSeconds(date: element.bookingDate) ==
-            dateInMilliSeconds(date: selectedDate))
-        .toList();
+    // final List<BookingModel> bookingData = bookings
+    //     .where((element) =>
+    //         dateInMilliSeconds(date: element.bookingDate) ==
+    //         dateInMilliSeconds(date: selectedDate))
+    //     .toList();
 
-    for (BookingModel booking in bookingData) {
-      final String pickingTime =
-          DateFormat("HH:mm").format(booking.bookingTime.first);
-      final String returnTime =
-          DateFormat("HH:mm").format(booking.bookingTime.last);
-      setState(() {
-        bookingTimes
-            .add({"pickingTime": pickingTime, "returnTime": returnTime});
-      });
-    }
+    // for (BookingModel booking in bookingData) {
+    //   final String pickingTime =
+    //       DateFormat("HH:mm").format(booking.bookingTime.first);
+    //   final String returnTime =
+    //       DateFormat("HH:mm").format(booking.bookingTime.last);
+    //   setState(() {
+    //     bookingTimes
+    //         .add({"pickingTime": pickingTime, "returnTime": returnTime});
+    //   });
+    // }
   }
 
   void triggerFetchBookingsEvent(BookingBloc bloc) {

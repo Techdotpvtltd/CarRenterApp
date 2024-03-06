@@ -36,14 +36,9 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
             id: "",
             serviceId: product.id,
             serviceProviderId: product.ownerId,
-            bookingUserName: "${user.firstName} ${user.lastName}",
-            bookingUserProfile: user.imageUrl ?? "",
-            bookingUserId: user.uid,
+            rentalUserId: user.uid,
             bookingDate: event.selectedDate,
             createdAt: DateTime.now(),
-            bookingTime: event.bookingTime
-                .map((e) => event.selectedDate.mergeTimeFrom(e))
-                .toList(),
             status: BookingStatus.pending,
             car: product.name,
           );

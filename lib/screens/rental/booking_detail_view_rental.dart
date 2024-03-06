@@ -10,7 +10,6 @@ import 'package:beasy/screens/rental/calendar_screen.dart';
 
 import 'package:beasy/screens/rental/product_detail_screen.dart';
 import 'package:beasy/utilities/extensions/date_extension.dart';
-import 'package:beasy/utilities/helping_methods.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -78,9 +77,7 @@ class _BookingDetailViewRentalScreenState
 
   @override
   Widget build(BuildContext context) {
-    final bool isAvailable = product != null &&
-        bookingModel.bookingTime.last.millisecondsSinceEpoch >
-            DateTime.now().millisecondsSinceEpoch;
+    final bool isAvailable = product != null;
     return BlocListener<RentalProductBloc, RentalProductState>(
       listener: (context, state) {
         // if (state is BookingStateBookingUpdated) {
@@ -191,7 +188,7 @@ class _BookingDetailViewRentalScreenState
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    "\$ ${calculateTotalPrice(bookingModel.bookingTime.first, bookingModel.bookingTime.last, product?.price ?? 0)}",
+                                    "---", // "\$ ${calculateTotalPrice(bookingModel.bookingTime.first, bookingModel.bookingTime.last, product?.price ?? 0)}",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style:
@@ -270,7 +267,11 @@ class _BookingDetailViewRentalScreenState
                                 child: Row(
                                   children: [
                                     Text(
-                                      "${isSameDay(bookingModel.bookingDate, DateTime.now()) ? "Today" : bookingModel.bookingDate.dateToString("dd-MMM-yy")}, ${bookingModel.bookingTime.first.dateToString("hh:mm a")} - ${bookingModel.bookingTime.last.dateToString("hh:mm a")}",
+                                      isSameDay(bookingModel.bookingDate,
+                                              DateTime.now())
+                                          ? "Today"
+                                          : bookingModel.bookingDate
+                                              .dateToString("dd-MMM-yy"),
                                       style: StyleGuide.textStyle3.copyWith(
                                         color: StyleGuide.primaryColor2,
                                         fontWeight: FontWeight.w500,
@@ -331,24 +332,7 @@ class _BookingDetailViewRentalScreenState
                             ],
                           ),
                           const SeparateWidget(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Total hours:",
-                                style: StyleGuide.textStyle3.copyWith(
-                                  color: StyleGuide.textColor2,
-                                ),
-                              ),
-                              Text(
-                                parseTotalHours(bookingModel.bookingTime.first,
-                                    bookingModel.bookingTime.last),
-                                style: StyleGuide.textStyle3.copyWith(
-                                  color: const Color(0xFF414141),
-                                ),
-                              ),
-                            ],
-                          ),
+
                           const SeparateWidget(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

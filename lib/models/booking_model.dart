@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 // ignore: dangling_library_doc_comments
 /// Project: 	   CarRenterApp
@@ -16,28 +15,25 @@ class BookingModel {
   final String id;
   final String serviceId;
   final String serviceProviderId;
-  final String bookingUserName;
-  final String bookingUserProfile;
-  final String bookingUserId;
+  final String rentalUserId;
   final DateTime bookingDate;
   final DateTime createdAt;
   final DateTime? updatedDate;
-  final List<DateTime> bookingTime;
   final BookingStatus status;
+  final DateTime? cancelationDate;
+
   final String car;
   BookingModel({
     required this.id,
     required this.serviceId,
     required this.serviceProviderId,
-    required this.bookingUserName,
-    required this.bookingUserProfile,
-    required this.bookingUserId,
+    required this.rentalUserId,
     required this.bookingDate,
     required this.createdAt,
-    required this.bookingTime,
     required this.status,
     required this.car,
     this.updatedDate,
+    this.cancelationDate,
   });
 
   BookingModel copyWith({
@@ -46,27 +42,26 @@ class BookingModel {
     String? serviceProviderId,
     String? bookingUserName,
     String? bookingUserProfile,
-    String? bookingUserId,
+    String? rentalUserId,
     DateTime? bookingDate,
     DateTime? createdAt,
     List<DateTime>? bookingTime,
     BookingStatus? status,
     String? car,
     DateTime? updatedDate,
+    DateTime? cancelationDate,
   }) {
     return BookingModel(
       id: id ?? this.id,
       serviceId: serviceId ?? this.serviceId,
       serviceProviderId: serviceProviderId ?? this.serviceProviderId,
-      bookingUserName: bookingUserName ?? this.bookingUserName,
-      bookingUserProfile: bookingUserProfile ?? this.bookingUserProfile,
-      bookingUserId: bookingUserId ?? this.bookingUserId,
+      rentalUserId: rentalUserId ?? this.rentalUserId,
       bookingDate: bookingDate ?? this.bookingDate,
       createdAt: createdAt ?? this.createdAt,
-      bookingTime: bookingTime ?? this.bookingTime,
       status: status ?? this.status,
       car: car ?? this.car,
       updatedDate: updatedDate ?? this.updatedDate,
+      cancelationDate: cancelationDate ?? this.cancelationDate,
     );
   }
 
@@ -75,16 +70,15 @@ class BookingModel {
       'id': id,
       'serviceId': serviceId,
       'serviceProviderId': serviceProviderId,
-      'bookingUserName': bookingUserName,
-      'bookingUserProfile': bookingUserProfile,
-      'bookingUserId': bookingUserId,
+      'rentalUserId': rentalUserId,
       'bookingDate': Timestamp.fromDate(bookingDate),
       'createdAt': Timestamp.fromDate(createdAt),
-      'bookingTime': bookingTime.map((x) => Timestamp.fromDate(x)).toList(),
       'status': status.name.toLowerCase(),
       'car': car,
       "updatedDate":
           updatedDate != null ? Timestamp.fromDate(updatedDate!) : null,
+      "cancelationDate":
+          cancelationDate != null ? Timestamp.fromDate(cancelationDate!) : null,
     };
   }
 
@@ -93,17 +87,11 @@ class BookingModel {
       id: map['id'] as String,
       serviceId: map['serviceId'] as String,
       serviceProviderId: map['serviceProviderId'] as String,
-      bookingUserName: map['bookingUserName'] as String,
-      bookingUserProfile: map['bookingUserProfile'] as String,
-      bookingUserId: map['bookingUserId'] as String,
+      rentalUserId: map['rentalUserId'] as String,
       bookingDate: (map['bookingDate'] as Timestamp).toDate(),
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       updatedDate: (map['updatedDate'] as Timestamp?)?.toDate(),
-      bookingTime: (map['bookingTime'])
-          .map<DateTime>(
-            (x) => (x as Timestamp).toDate(),
-          )
-          .toList(),
+      cancelationDate: (map['cancelationDate'] as Timestamp?)?.toDate(),
       status: BookingStatus.values
           .firstWhere((e) => e.name.toLowerCase() == map['status']),
       car: map['car'] as String,
@@ -117,7 +105,7 @@ class BookingModel {
 
   @override
   String toString() {
-    return 'BookingModel(id: $id, serviceId: $serviceId, serviceProviderId: $serviceProviderId, bookingUserName: $bookingUserName, bookingUserProfile: $bookingUserProfile, bookingUserId: $bookingUserId, bookingDate: $bookingDate, createdAt: $createdAt, bookingTime: $bookingTime, status: $status, car: $car, updatedDate: $updatedDate)';
+    return 'BookingModel(id: $id, serviceId: $serviceId, serviceProviderId: $serviceProviderId, rentalUserId: $rentalUserId, bookingDate: $bookingDate, createdAt: $createdAt, status: $status, car: $car, updatedDate: $updatedDate, cancelationDate: $cancelationDate)';
   }
 
   @override
@@ -127,14 +115,12 @@ class BookingModel {
     return other.id == id &&
         other.serviceId == serviceId &&
         other.serviceProviderId == serviceProviderId &&
-        other.bookingUserName == bookingUserName &&
-        other.bookingUserProfile == bookingUserProfile &&
-        other.bookingUserId == bookingUserId &&
+        other.rentalUserId == rentalUserId &&
         other.bookingDate == bookingDate &&
         other.createdAt == createdAt &&
-        listEquals(other.bookingTime, bookingTime) &&
         other.status == status &&
         other.car == car &&
+        other.cancelationDate == cancelationDate &&
         other.updatedDate == updatedDate;
   }
 
@@ -143,13 +129,11 @@ class BookingModel {
     return id.hashCode ^
         serviceId.hashCode ^
         serviceProviderId.hashCode ^
-        bookingUserName.hashCode ^
-        bookingUserProfile.hashCode ^
-        bookingUserId.hashCode ^
+        rentalUserId.hashCode ^
         bookingDate.hashCode ^
         createdAt.hashCode ^
-        bookingTime.hashCode ^
         status.hashCode ^
+        cancelationDate.hashCode ^
         car.hashCode;
   }
 }

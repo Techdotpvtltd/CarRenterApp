@@ -522,7 +522,10 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
                                               SizedBox(
                                                 width: screenWidth * 0.36,
                                                 child: Text(
-                                                  "${DateFormat("dd MMM").format(booking.bookingDate)}, ${DateFormat("hh:mm a").format(booking.bookingTime.first)} - ${DateFormat("hh:mm a").format(booking.bookingTime.last)}",
+                                                  DateFormat("dd-MMM-yyyy")
+                                                      .format(
+                                                          booking.bookingDate),
+                                                  // "${DateFormat("dd MMM").format(booking.bookingDate)}, ${DateFormat("hh:mm a").format(booking.bookingTime.first)} - ${DateFormat("hh:mm a").format(booking.bookingTime.last)}",
                                                   maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,
