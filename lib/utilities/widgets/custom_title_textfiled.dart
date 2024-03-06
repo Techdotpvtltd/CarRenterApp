@@ -20,6 +20,9 @@ class CustomTitleTextField extends StatefulWidget {
     this.maxLines = 1,
     this.minLines,
     this.isShowEdiatbleButton = false,
+    this.fieldId,
+    this.errorCode,
+    this.onSubmitted,
   });
   final String fieldText;
   final String hintText;
@@ -34,6 +37,9 @@ class CustomTitleTextField extends StatefulWidget {
   final int maxLines;
   final int? minLines;
   final bool isShowEdiatbleButton;
+  final int? fieldId;
+  final int? errorCode;
+  final Function(String)? onSubmitted;
 
   @override
   State<CustomTitleTextField> createState() => _CustomTitleTextFieldState();
@@ -70,7 +76,13 @@ class _CustomTitleTextFieldState extends State<CustomTitleTextField> {
           readOnly: _isReadOnly,
           maxLines: widget.maxLines,
           minLines: widget.minLines,
-          style: StyleGuide.textStyle3.copyWith(color: const Color(0xFF2C2C2C)),
+          onSubmitted: widget.onSubmitted != null
+              ? (value) => widget.onSubmitted!(value)
+              : null,
+          style: StyleGuide.textStyle3.copyWith(
+            color: const Color(0xFF2C2C2C),
+            fontWeight: FontWeight.w600,
+          ),
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 23, vertical: 14),
@@ -113,7 +125,10 @@ class _CustomTitleTextFieldState extends State<CustomTitleTextField> {
             hintStyle: StyleGuide.textStyle3.copyWith(
               color: const Color(0xFF6B6B6B),
             ),
-            errorText: widget.errorText,
+            errorText:
+                (widget.fieldId == widget.errorCode && widget.errorText != null)
+                    ? widget.errorText
+                    : null,
             errorStyle: StyleGuide.textStyle3.copyWith(color: Colors.red),
             suffixIcon: widget.suffixWidget ??
                 (widget.isShowEdiatbleButton

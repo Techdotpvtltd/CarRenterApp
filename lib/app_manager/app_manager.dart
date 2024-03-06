@@ -1,22 +1,21 @@
-import 'package:beasy/models/user_model.dart';
-import 'package:flutter/material.dart';
+import 'package:beasy/repositories/repos/immutable_product_repo.dart';
+import 'package:beasy/repositories/repos/mutuble_product_repo.dart';
+import 'package:beasy/repositories/repos/notification_repo.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
+import 'package:beasy/utilities/extensions/shared_preferences.dart';
 
 class AppManager {
   static final AppManager _instance = AppManager._internal();
-  AppManager._internal() {
-    debugPrint(runtimeType.toString());
-  }
+  AppManager._internal();
   factory AppManager() {
     return _instance;
   }
 
-  UserModel? _userModel;
-  UserModel get user {
-    if (_userModel == null) {
-      throw Exception("User is empty");
-    }
-    return _userModel!;
+  void clearData() {
+    UserRepo().clearAll();
+    MutableProductRepo();
+    ImmutableProductRepo().clearAll();
+    NotificationRepo().clearAll();
+    LocalPreferences.clearAll();
   }
-
-  set setUser(UserModel userModel) => _userModel = userModel;
 }

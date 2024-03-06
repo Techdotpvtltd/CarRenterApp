@@ -1,18 +1,38 @@
-import 'package:beasy/app_manager/app_manager.dart';
+import 'package:beasy/blocs/data_fetcher/data_fetcher_cubit.dart';
+import 'package:beasy/blocs/data_fetcher/data_fetcher_state.dart';
+import 'package:beasy/models/booking_model.dart';
 import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
+import 'package:beasy/utilities/helping_methods.dart';
+import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../constants/asstes.dart';
 import '../constants/constants.dart';
 import '../constants/style_guide.dart';
 import 'rounded_button.dart';
 
-class NotificationCard extends StatelessWidget {
-  const NotificationCard({super.key});
+class NotificationCard extends StatefulWidget {
+  const NotificationCard({super.key, required this.booking});
+  final BookingModel booking;
+
+  @override
+  State<NotificationCard> createState() => _NotificationCardState();
+}
+
+class _NotificationCardState extends State<NotificationCard> {
+  @override
+  void initState() {
+    super.initState();
+    DataFetcherCubit().scheduleTime();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bool isRentalUser = AppManager().user.userType == UserType.rentalUser;
+    final bool isRentalUser =
+        UserRepo().currentUser.userType == UserType.rentalUser;
     return Container(
       decoration: BoxDecoration(
           color: const Color(0xffF3F4F9),
@@ -25,9 +45,13 @@ class NotificationCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  radius: 14,
-                  backgroundImage: AssetImage(Assets.userImage),
+                const ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  child: CustomNetworkImage(
+                    imageUrl: "",
+                    width: 30,
+                    height: 30,
+                  ),
                 ),
                 gapW8,
                 Expanded(
@@ -35,7 +59,7 @@ class NotificationCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Request Accepted",
+                        "---",
                         style: TextStyle(
                           fontFamily: Assets.plusJakartaFont,
                           color: StyleGuide.textColor2,
@@ -47,12 +71,12 @@ class NotificationCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Flexible(
+                          Flexible(
                             child: Text(
-                              "Your booking request have been accepted",
+                              "I want to book your ${widget.booking.car} car.",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: Assets.plusJakartaFont,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w400,
@@ -67,21 +91,33 @@ class NotificationCard extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                           gapW10,
-                          const Text(
-                            "33 mins ago",
-                            style: TextStyle(
-                                fontFamily: Assets.plusJakartaFont,
-                                fontSize: 8,
-                                fontWeight: FontWeight.w400,
-                                color: StyleGuide.textColor2),
-                          ),
+
+                          /// Remaining Time Widgets
+                          BlocSelector<DataFetcherCubit, dynamic,
+                                  DataFetcherTimePeriod?>(
+                              selector: (state) =>
+                                  state is DataFetcherTimePeriod
+                                      ? DataFetcherTimePeriod()
+                                      : null,
+                              builder: (context, state) {
+                                return Text(
+                                  parseTimePeriod(
+                                      atTime: widget.booking.createdAt),
+                                  style: const TextStyle(
+                                      fontFamily: Assets.plusJakartaFont,
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.w400,
+                                      color: StyleGuide.textColor2),
+                                );
+                              }),
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Text(
-                            "17/03/2024",
-                            style: TextStyle(
+                            DateFormat("dd/MM/yyyy")
+                                .format(widget.booking.bookingDate),
+                            style: const TextStyle(
                               color: StyleGuide.textColor2,
                               fontFamily: Assets.plusJakartaFont,
                               fontSize: 9,
@@ -89,8 +125,8 @@ class NotificationCard extends StatelessWidget {
                             ),
                           ),
                           gapW8,
-                          Text(
-                            "9:00PM to 12:00AM",
+                          const Text(
+                            "", //"${DateFormat("hh:mm a").format(widget.booking.bookingTime.first)} to ${DateFormat("hh:mm a").format(widget.booking.bookingTime.last)}",
                             style: TextStyle(
                               color: StyleGuide.textColor2,
                               fontFamily: Assets.plusJakartaFont,
@@ -99,6 +135,23 @@ class NotificationCard extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                      gapH4,
+                      BlocSelector<DataFetcherCubit, dynamic,
+                          DataFetcherTimePeriod?>(
+                        selector: (state) => state is DataFetcherTimePeriod
+                            ? DataFetcherTimePeriod()
+                            : null,
+                        builder: (context, state) {
+                          return Text(
+                            remainingTime(atTime: widget.booking.bookingDate),
+                            style: const TextStyle(
+                                fontFamily: Assets.plusJakartaFont,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: StyleGuide.primaryColor),
+                          );
+                        },
                       ),
                     ],
                   ),

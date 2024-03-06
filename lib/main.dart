@@ -1,25 +1,37 @@
+import 'package:beasy/app_manager/app_bloc_manager.dart';
 import 'package:beasy/blocs/auth/auth_bloc.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
+import 'package:beasy/blocs/booking/booking_bloc.dart';
+import 'package:beasy/blocs/data_fetcher/data_fetcher_cubit.dart';
+import 'package:beasy/blocs/drawer/drawer_cubit.dart';
+import 'package:beasy/blocs/notification/notification_bloc.dart';
 import 'package:beasy/blocs/rental/rental_product_bloc.dart';
 import 'package:beasy/blocs/service_provider/sp_bloc.dart';
-import 'package:beasy/utilities/constants/style_guide.dart';
-import 'package:beasy/views/onboarding/enable_notification_screen.dart';
-import 'package:beasy/views/onboarding/enabled_location_access_screen.dart';
-import 'package:beasy/views/onboarding/get_started_screen.dart';
-import 'package:beasy/views/onboarding/login_screen.dart';
-import 'package:beasy/views/onboarding/sign_up_screen.dart';
-import 'package:beasy/views/onboarding/splash_screen.dart';
-import 'package:beasy/views/onboarding/user_type_screen.dart';
+import 'package:beasy/screens/menu/drawer_screen.dart';
+import 'package:beasy/screens/onboarding/enable_notification_screen.dart';
+import 'package:beasy/screens/onboarding/enabled_location_access_screen.dart';
+import 'package:beasy/screens/onboarding/get_started_screen.dart';
+import 'package:beasy/screens/onboarding/login_screen.dart';
+import 'package:beasy/screens/onboarding/sign_up_screen.dart';
+import 'package:beasy/screens/onboarding/splash_screen.dart';
+import 'package:beasy/screens/onboarding/user_type_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'app_manager/app_bloc_observer.dart';
-import 'views/menu/drawer_screen.dart';
+import 'app_manager/firebase_options.dart';
 
-void main() {
-  Bloc.observer = AppBlocObserver();
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Bloc.observer = AppBlocObserver();
+  //  1 - Ensure firebase app is initialized if starting from background/terminated state
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const _BeasyApp());
 }
 
@@ -34,25 +46,25 @@ class _BeasyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navKey,
-      title: 'Beasy',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: StyleGuide.primaryColor).copyWith(
-                // background: Colors.white,
-                ),
-      ),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-          BlocProvider<RentalProductBloc>(
-              create: (context) => RentalProductBloc()),
-          BlocProvider<SPBloc>(create: (context) => SPBloc()),
-        ],
-        child: const _BeasyPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(create: (context) => AppBlocManager().authBloc),
+        BlocProvider<RentalProductBloc>(
+            create: (context) => AppBlocManager().rentalBloc),
+        BlocProvider<SPBloc>(create: (context) => AppBlocManager().spBloc),
+        BlocProvider(create: (context) => DrawerCubit()),
+        BlocProvider(create: (context) => BookingBloc()),
+        BlocProvider(create: (context) => NotificationBloc()),
+        BlocProvider(create: (context) => DataFetcherCubit()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navKey,
+        title: 'Beasy',
+        theme: ThemeData(
+          useMaterial3: true,
+        ),
+        home: const _BeasyPage(),
       ),
     );
   }
@@ -93,18 +105,27 @@ class _BeasyPage extends StatelessWidget {
           return const EnableLocationAccessScreen();
         }
 
-        if (state is AuthStateRegistered) {
+        if (state is AuthStateSplashActionDone ||
+            state is AuthStateAppleLoggedIn ||
+            state is AuthStateLoggedIn) {
           return const HomeDrawer();
         }
-
-        // if (state is AuthStateLoadedForgotPassword) {
-        //   return const ForgotScreen();
-        // }
 
         return const SplashScreen();
       },
       buildWhen: (previous, current) {
-        return true;
+        /// If these states are emitted then rebuild the widget, otherwise not.
+        return current is AuthStateStartup ||
+            current is AuthStateLoadedGetStarted ||
+            current is AuthStateLoadedLogin ||
+            current is AuthStateLoadedSignup ||
+            current is AuthStateNeedsToSetUserType ||
+            current is AuthStateNeedsToEnableNotification ||
+            current is AuthStateNeedToAllowLocation ||
+            current is AuthStateLoggedIn ||
+            current is AuthStateSplashActionDone ||
+            current is AuthStateInitialize ||
+            current is AuthStateAppleLoggedIn;
       },
     );
   }

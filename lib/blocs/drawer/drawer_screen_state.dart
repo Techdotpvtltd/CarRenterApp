@@ -16,3 +16,7 @@ class DrawerStateToggled extends DrawerScreenState {
 class DrawerStateUpdated extends DrawerScreenState {
   DrawerStateUpdated({super.isLoading = false});
 }
+
+class DrawerStateUpdate extends DrawerScreenState {
+  DrawerStateUpdate({super.isLoading = false});
+}

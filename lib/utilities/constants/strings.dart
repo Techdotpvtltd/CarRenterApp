@@ -22,7 +22,7 @@ class AppStrings {
   static const String firstName = "First Name";
   static const String confirmPassword = "Confirm Password";
   static const String addLocation = "Add Location";
-  static const String enterLocation = "Enter Location";
+  static const String selectLocation = "Select Location";
   static const String alreadyHaveAccount = "Already have an Account? ";
   static const String signIn = "Sign In";
   static const String signUp = "Sign Up";
@@ -124,4 +124,7 @@ class AppStrings {
       "Are you sure to want this delete service";
   static const String delete = "Delete";
   static const String cancel = "Cancel";
+
+  /// DateTimeScreen =================
+  static const String dateAndTime = "Date & Time";
 }

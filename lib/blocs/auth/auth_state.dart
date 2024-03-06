@@ -1,7 +1,9 @@
+import 'package:beasy/exceptions/app_exceptions.dart';
+
 abstract class AuthState {
   final bool isLoading;
   final String loadingText;
-  AuthState({this.isLoading = false, this.loadingText = ""});
+  AuthState({this.isLoading = false, this.loadingText = "Please wait."});
 }
 
 // AuthStateUnitialize ========================================
@@ -26,9 +28,37 @@ class AuthStateRegisterring extends AuthState {
   AuthStateRegisterring({this.exception, super.isLoading});
 }
 
+// Auth State Loging with apple
+class AuthStateAppleLogging extends AuthState {
+  final AppException? exception;
+  AuthStateAppleLogging({super.isLoading, super.loadingText, this.exception});
+}
+
+class AuthStateAppleLoggedIn extends AuthState {
+  AuthStateAppleLoggedIn({super.isLoading});
+}
+
+// Auth State Loging with google
+class AuthStateGoogleLogging extends AuthState {
+  final AppException? exception;
+  AuthStateGoogleLogging({super.isLoading, super.loadingText, this.exception});
+}
+
+class AuthStateGoogleLoggedIn extends AuthState {
+  AuthStateGoogleLoggedIn({super.isLoading});
+}
+
 // AuthStateLoggedIn  ========================================
 class AuthStateLoggedIn extends AuthState {
   AuthStateLoggedIn({super.isLoading});
+}
+
+/// AuthStateSplashActionDone
+class AuthStateSplashActionDone extends AuthState {}
+
+class AuthStateLogging extends AuthState {
+  final AppException? exception;
+  AuthStateLogging({super.isLoading, this.exception, super.loadingText});
 }
 
 // Loading Login Screen State  ========================================
@@ -44,6 +74,24 @@ class AuthStateLoadedGetStarted extends AuthState {
 // Loaded SignupScreen State  ========================================
 class AuthStateLoadedSignup extends AuthState {
   AuthStateLoadedSignup({super.isLoading});
+}
+
+// Registered State  ========================================
+class AuthStateRegistering extends AuthState {
+  final AppException? exception;
+  AuthStateRegistering({this.exception, super.isLoading, super.loadingText});
+}
+
+// User Profile Updating States
+class AuthStateUpdatingUserProfile extends AuthState {
+  final AppException? exception;
+
+  AuthStateUpdatingUserProfile(
+      {super.isLoading, super.loadingText, this.exception});
+}
+
+class AuthStateUpdatedUserProfile extends AuthState {
+  AuthStateUpdatedUserProfile({super.isLoading});
 }
 
 // Registered State  ========================================

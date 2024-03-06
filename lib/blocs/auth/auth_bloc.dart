@@ -1,7 +1,15 @@
-import 'package:beasy/app_manager/app_manager.dart';
 import 'package:beasy/blocs/auth/auth_event.dart';
 import 'package:beasy/blocs/auth/auth_state.dart';
-import 'package:beasy/models/user_model.dart';
+import 'package:beasy/main.dart';
+import 'package:beasy/exceptions/auth_exceptions.dart';
+import 'package:beasy/exceptions/app_exceptions.dart';
+import 'package:beasy/exceptions/data_exceptions.dart';
+import 'package:beasy/repositories/repos/auth_repo.dart';
+import 'package:beasy/repositories/repos/user_repo.dart';
+import 'package:beasy/utilities/extensions/navigation_service.dart';
+import 'package:beasy/screens/common/profile_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -11,8 +19,69 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateStartup(isLoading: false));
     });
 
-    // Show Login Screen Event  ========================================
+    //  Login Screen Event  ========================================
     on<AuthEventLoadedLogin>((event, emit) => emit(AuthStateLoadedLogin()));
+
+    // Display User Type Screen
+    on<AuthEventNeedsToSetUserType>(
+      (event, emit) => emit(AuthStateNeedsToSetUserType()),
+    );
+    // On Logout Request  ============================================
+    on<AuthEventPerformLogout>(
+      (event, emit) async {
+        await AuthRepo().performLogout();
+        emit(AuthStateInitialize());
+      },
+    );
+
+    // Splash Process completed  ============================================
+    on<AuthEventSplashActionDone>(
+        (event, emit) => emit(AuthStateSplashActionDone()));
+
+    on<AuthEventPerformLogin>((event, emit) async {
+      emit(AuthStateLogging(
+        isLoading: true,
+        loadingText: "Login...",
+      ));
+
+      try {
+        await AuthRepo()
+            .loginUser(withEmail: event.email, withPassword: event.password);
+        emit(AuthStateLoggedIn(isLoading: false));
+      } on AppException catch (e) {
+        if (e is DataExceptionNotFound || e is AuthExceptionUserNotFound) {
+          await NavigationService.go(
+            navKey.currentContext!,
+            const ProfileScreen(
+              isEditingEnabled: true,
+              isShowBack: false,
+              isCommingFromLogin: true,
+            ),
+          );
+          emit(AuthStateLogging(isLoading: false));
+          if (!UserRepo().isUserNull) {
+            emit(AuthStateLoggedIn(isLoading: false));
+          } else {
+            emit(AuthStateLogging(
+              isLoading: false,
+              exception: AuthExceptionUnAuthorized(),
+            ));
+          }
+          return;
+        }
+
+        emit(AuthStateLogging(
+          isLoading: false,
+          exception: e,
+        ));
+      } on FirebaseException catch (e) {
+        emit(AuthStateLogging(
+          isLoading: false,
+          exception: DataExceptionUnknown(message: e.toString()),
+        ));
+      }
+    });
+
     // Show GetStarted Screen Event  ========================================
     on<AuthEventLoadedGetStarted>(
         (event, emit) => emit(AuthStateLoadedGetStarted()));
@@ -21,20 +90,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) => emit(AuthStateLoadedSignup()),
     );
 
-    // Show UserType Screen  ========================================
-    on<AuthEventNeedsToSetUserType>(
-      (event, emit) => emit(AuthStateNeedsToSetUserType()),
-    );
-
-    on<AuthEventUserTypeSet>((event, emit) {
-      AppManager().setUser = UserModel(
-          userType: event.selectedIndex == 0
-              ? UserType.rentalUser
-              : UserType.serviceProvider);
-      emit(AuthStateUserTypeSet(isLoading: false));
-      emit(AuthStateRegistered());
-    });
-    // Show Noticiation Enabled Screen  ========================================
     on<AuthEventNeedsToEnableNotification>(
       (event, emit) => emit(AuthStateNeedsToEnableNotification()),
     );
@@ -44,9 +99,138 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) => emit(AuthStateNeedToAllowLocation()),
     );
 
-    // Show Next Screens  ============================================
-    on<AuthEventRegistered>(
-      (event, emit) => emit(AuthStateRegistered()),
+    /// Updating User Profile
+    on<AuthEventUpdateUserProfile>(
+      (event, emit) async {
+        String? imagePath = event.imagePath;
+        try {
+          if (imagePath != null && Uri.parse(imagePath).host.isEmpty) {
+            emit(AuthStateUpdatingUserProfile(
+              isLoading: true,
+              loadingText: "Uploading..",
+            ));
+            imagePath = await UserRepo().uploadProfile(path: imagePath);
+          }
+          emit(AuthStateUpdatingUserProfile(
+            isLoading: true,
+            loadingText: "Uploading...",
+          ));
+          await UserRepo().update(
+            firstName: event.firstName,
+            lastName: event.lastName,
+            email: event.email,
+            userLocation: event.location,
+            phoneNumber: event.phoneNumber,
+            imagePath: imagePath,
+          );
+          emit(AuthStateUpdatedUserProfile(isLoading: false));
+        } on AppException catch (e) {
+          emit(AuthStateUpdatingUserProfile(
+              isLoading: false,
+              exception: e,
+              loadingText: "Updating Profile Error..."));
+        } on Exception catch (e) {
+          emit(AuthStateUpdatingUserProfile(
+            isLoading: false,
+            exception: DataExceptionUnknown(message: e.toString()),
+            loadingText: "Updating Profile Error...",
+          ));
+        }
+      },
     );
+    // Show Next Screens  ============================================
+    on<AuthEventRegistering>(
+      (event, emit) async {
+        emit(AuthStateRegistering(
+            isLoading: true, loadingText: "Creating user."));
+
+        try {
+          await AuthRepo().registeredUser(
+            firstName: event.firstName,
+            lastName: event.lastName,
+            email: event.email,
+            password: event.password,
+            confirmPassword: event.confirmPassword,
+            location: event.location,
+          );
+          emit(AuthStateRegistered(isLoading: false));
+        } on AppException catch (e) {
+          emit(AuthStateRegistering(isLoading: false, exception: e));
+        } on Exception catch (e) {
+          debugPrint(e.toString());
+          emit(AuthStateRegistering(
+              isLoading: false,
+              exception: DataExceptionUnknown(message: e.toString())));
+        }
+      },
+    );
+
+    // Apple Login Event
+    on<AuthEventAppleLogin>((event, emit) async {
+      try {
+        emit(AuthStateLogging(
+            isLoading: true, loadingText: "Signing with Apple."));
+        await AuthRepo().loginWithApple();
+        emit(AuthStateLoggedIn(isLoading: false));
+      } on AppException catch (e) {
+        if (e is AuthExceptionUserNotFound || e is DataExceptionNotFound) {
+          await NavigationService.go(
+            navKey.currentContext!,
+            const ProfileScreen(
+              isEditingEnabled: true,
+              isShowBack: false,
+              isCommingFromLogin: true,
+            ),
+          );
+
+          if (UserRepo().isUserNull) {
+            emit(AuthStateLogging(
+                isLoading: false, exception: AuthExceptionUnAuthorized()));
+          }
+          emit(AuthStateLoggedIn(isLoading: false));
+          return;
+        }
+        emit(AuthStateAppleLogging(isLoading: false, exception: e));
+      } on Exception catch (e) {
+        emit(AuthStateLogging(
+          isLoading: false,
+          exception: AuthExceptionUnknown(message: e.toString()),
+        ));
+      }
+    });
+
+    // Google Login Event
+    on<AuthEventGoogleLogin>((event, emit) async {
+      emit(AuthStateLogging(
+          isLoading: true, loadingText: "Signing with Google."));
+      try {
+        await AuthRepo().loginWithGoogle();
+        emit(AuthStateLoggedIn(isLoading: false));
+      } on AppException catch (e) {
+        if (e is AuthExceptionUserNotFound || e is DataExceptionNotFound) {
+          await NavigationService.go(
+            navKey.currentContext!,
+            const ProfileScreen(
+              isEditingEnabled: true,
+              isShowBack: false,
+              isCommingFromLogin: true,
+            ),
+          );
+
+          if (UserRepo().isUserNull) {
+            emit(AuthStateLogging(
+                isLoading: false, exception: AuthExceptionUnAuthorized()));
+          }
+          emit(AuthStateLoggedIn(isLoading: false));
+          return;
+        }
+        emit(AuthStateAppleLogging(isLoading: false, exception: e));
+      } on Exception catch (e) {
+        emit(AuthStateLogging(
+          isLoading: false,
+          exception: AuthExceptionUnknown(message: e.toString()),
+        ));
+      }
+    });
   }
 }

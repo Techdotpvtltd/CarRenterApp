@@ -1,4 +1,5 @@
 import 'package:beasy/utilities/constants/asstes.dart';
+import 'package:beasy/utilities/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/style_guide.dart';
@@ -12,6 +13,8 @@ class RoundedButton extends StatelessWidget {
     required this.onPressed,
     this.textSize,
     this.withBorderOnly = false,
+    this.isLoading = false,
+    this.loadingText,
   });
 
   final double? width;
@@ -20,10 +23,12 @@ class RoundedButton extends StatelessWidget {
   final Function() onPressed;
   final double? textSize;
   final bool withBorderOnly;
+  final bool isLoading;
+  final String? loadingText;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       style: ButtonStyle(
         minimumSize: MaterialStatePropertyAll(
           Size(
@@ -39,16 +44,38 @@ class RoundedButton extends StatelessWidget {
         backgroundColor: MaterialStatePropertyAll(
             withBorderOnly ? Colors.transparent : StyleGuide.primaryColor),
       ),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontFamily: Assets.plusJakartaFont,
-          fontWeight: FontWeight.w700,
-          fontSize: textSize ?? 16,
-          color:
-              withBorderOnly ? StyleGuide.primaryColor : StyleGuide.textColor1,
-        ),
-      ),
+      child: isLoading
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+                gapW10,
+                Text(
+                  loadingText ?? "",
+                  style: TextStyle(
+                    fontFamily: Assets.plusJakartaFont,
+                    fontWeight: FontWeight.w700,
+                    fontSize: textSize ?? 16,
+                    color: withBorderOnly
+                        ? StyleGuide.primaryColor
+                        : StyleGuide.textColor1,
+                  ),
+                )
+              ],
+            )
+          : Text(
+              title,
+              style: TextStyle(
+                fontFamily: Assets.plusJakartaFont,
+                fontWeight: FontWeight.w700,
+                fontSize: textSize ?? 16,
+                color: withBorderOnly
+                    ? StyleGuide.primaryColor
+                    : StyleGuide.textColor1,
+              ),
+            ),
     );
   }
 }
