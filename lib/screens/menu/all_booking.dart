@@ -427,7 +427,7 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
                                           Row(
                                             children: [
                                               Text(
-                                                booking.car,
+                                                product?.name ?? "---",
                                                 style: const TextStyle(
                                                   fontFamily:
                                                       Assets.plusJakartaFont,

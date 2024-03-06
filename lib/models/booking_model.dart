@@ -22,7 +22,6 @@ class BookingModel {
   final BookingStatus status;
   final DateTime? cancelationDate;
 
-  final String car;
   BookingModel({
     required this.id,
     required this.serviceId,
@@ -31,7 +30,6 @@ class BookingModel {
     required this.bookingDate,
     required this.createdAt,
     required this.status,
-    required this.car,
     this.updatedDate,
     this.cancelationDate,
   });
@@ -47,7 +45,6 @@ class BookingModel {
     DateTime? createdAt,
     List<DateTime>? bookingTime,
     BookingStatus? status,
-    String? car,
     DateTime? updatedDate,
     DateTime? cancelationDate,
   }) {
@@ -59,7 +56,6 @@ class BookingModel {
       bookingDate: bookingDate ?? this.bookingDate,
       createdAt: createdAt ?? this.createdAt,
       status: status ?? this.status,
-      car: car ?? this.car,
       updatedDate: updatedDate ?? this.updatedDate,
       cancelationDate: cancelationDate ?? this.cancelationDate,
     );
@@ -74,7 +70,6 @@ class BookingModel {
       'bookingDate': Timestamp.fromDate(bookingDate),
       'createdAt': Timestamp.fromDate(createdAt),
       'status': status.name.toLowerCase(),
-      'car': car,
       "updatedDate":
           updatedDate != null ? Timestamp.fromDate(updatedDate!) : null,
       "cancelationDate":
@@ -94,7 +89,6 @@ class BookingModel {
       cancelationDate: (map['cancelationDate'] as Timestamp?)?.toDate(),
       status: BookingStatus.values
           .firstWhere((e) => e.name.toLowerCase() == map['status']),
-      car: map['car'] as String,
     );
   }
 
@@ -105,7 +99,7 @@ class BookingModel {
 
   @override
   String toString() {
-    return 'BookingModel(id: $id, serviceId: $serviceId, serviceProviderId: $serviceProviderId, rentalUserId: $rentalUserId, bookingDate: $bookingDate, createdAt: $createdAt, status: $status, car: $car, updatedDate: $updatedDate, cancelationDate: $cancelationDate)';
+    return 'BookingModel(id: $id, serviceId: $serviceId, serviceProviderId: $serviceProviderId, rentalUserId: $rentalUserId, bookingDate: $bookingDate, createdAt: $createdAt, status: $status, updatedDate: $updatedDate, cancelationDate: $cancelationDate)';
   }
 
   @override
@@ -119,7 +113,6 @@ class BookingModel {
         other.bookingDate == bookingDate &&
         other.createdAt == createdAt &&
         other.status == status &&
-        other.car == car &&
         other.cancelationDate == cancelationDate &&
         other.updatedDate == updatedDate;
   }
@@ -133,8 +126,7 @@ class BookingModel {
         bookingDate.hashCode ^
         createdAt.hashCode ^
         status.hashCode ^
-        cancelationDate.hashCode ^
-        car.hashCode;
+        cancelationDate.hashCode;
   }
 }
 

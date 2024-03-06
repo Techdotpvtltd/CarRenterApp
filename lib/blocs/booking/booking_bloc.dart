@@ -39,7 +39,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
             bookingDate: event.selectedDate,
             createdAt: DateTime.now(),
             status: BookingStatus.pending,
-            car: product.name,
           );
           emit(BookingStateBookingCreating());
           await MutableBookingRepo().create(model: model);

@@ -1,7 +1,9 @@
 import 'package:beasy/blocs/data_fetcher/data_fetcher_cubit.dart';
 import 'package:beasy/blocs/data_fetcher/data_fetcher_state.dart';
 import 'package:beasy/models/booking_model.dart';
+import 'package:beasy/models/product_model.dart';
 import 'package:beasy/models/user_model.dart';
+import 'package:beasy/repositories/repos/immutable_product_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/utilities/helping_methods.dart';
 import 'package:beasy/utilities/widgets/custom_network_image.dart';
@@ -33,6 +35,10 @@ class _NotificationCardState extends State<NotificationCard> {
   Widget build(BuildContext context) {
     final bool isRentalUser =
         UserRepo().currentUser.userType == UserType.rentalUser;
+    final ProductModel? product = ImmutableProductRepo()
+        .products
+        .where((e) => e.id == widget.booking.serviceId)
+        .firstOrNull;
     return Container(
       decoration: BoxDecoration(
           color: const Color(0xffF3F4F9),
@@ -82,7 +88,7 @@ class _NotificationCardState extends State<NotificationCard> {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    "I want to book your ${widget.booking.car} car.",
+                                    "I want to book your ${product?.name} car.",
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
