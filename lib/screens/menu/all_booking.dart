@@ -337,7 +337,7 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
     return Builder(
       builder: (context) {
         return InkWell(
-          onTap: () => loadDetailView(product!, booking),
+          onTap: () => product != null ? loadDetailView(product, booking) : {},
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Stack(

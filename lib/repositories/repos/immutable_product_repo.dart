@@ -80,7 +80,7 @@ class ImmutableProductRepo {
           ],
         );
         _products = data.map((e) => ProductModel.fromMap(e)).toList();
-        debugPrint(_products.length.toString());
+        return;
       }
 
       /// For rental user
@@ -89,6 +89,7 @@ class ImmutableProductRepo {
             // ignore: deprecated_member_use_from_same_package
             .fetchRecords(collection: FIREBASE_COLLECTION_USER_SERVICES);
         _products = data.map((e) => ProductModel.fromMap(e)).toList();
+        return;
       }
     } catch (e) {
       throw thrownAppException(e: e);

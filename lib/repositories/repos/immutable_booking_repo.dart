@@ -21,19 +21,20 @@ class ImmutableBookingRepo {
   Future<List<BookingModel>> fetchForServiceProvider() async {
     try {
       final UserModel user = UserRepo().currentUser;
-      final List<Map<String, dynamic>> data = await FirestoreService()
-          .fetchWithMultipleConditions(
-              collection: FIREBASE_COLLECTION_BOOKING,
-              queries: [
-            QueryModel(
-                field: "serviceProviderId",
-                value: user.uid,
-                type: QueryType.isEqual),
-            QueryModel(
-                field: "status",
-                value: BookingStatus.rejected.name.toLowerCase(),
-                type: QueryType.isNotEqual),
-          ]);
+      final List<Map<String, dynamic>> data =
+          await FirestoreService().fetchWithMultipleConditions(
+        collection: FIREBASE_COLLECTION_BOOKING,
+        queries: [
+          QueryModel(
+              field: "serviceProviderId",
+              value: user.uid,
+              type: QueryType.isEqual),
+          QueryModel(
+              field: "status",
+              value: BookingStatus.rejected.name.toLowerCase(),
+              type: QueryType.isNotEqual),
+        ],
+      );
       return data.map((e) => BookingModel.fromMap(e)).toList();
     } catch (e) {
       throw thrownAppException(e: e);

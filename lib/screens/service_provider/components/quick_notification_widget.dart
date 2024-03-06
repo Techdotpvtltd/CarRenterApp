@@ -89,7 +89,7 @@ class _QuickNotificationWidgetState extends State<QuickNotificationWidget> {
               setState(() {
                 isError = false;
                 bookings = NotificationRepo().bookings;
-                if (widget.isComingFromHome) {
+                if (widget.isComingFromHome && bookings.length > 5) {
                   bookings = bookings
                       .where((element) =>
                           element.status == BookingStatus.pending &&
