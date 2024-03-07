@@ -19,8 +19,16 @@ import '../extensions/navigation_service.dart';
 import 'rounded_button.dart';
 
 class NotificationCard extends StatefulWidget {
-  const NotificationCard({super.key, required this.booking});
+  const NotificationCard(
+      {super.key,
+      required this.booking,
+      this.onButtonPressed,
+      this.isLoadingButton = false,
+      this.status});
   final BookingModel booking;
+  final Function(BookingStatus)? onButtonPressed;
+  final bool isLoadingButton;
+  final BookingStatus? status;
 
   @override
   State<NotificationCard> createState() => _NotificationCardState();
@@ -28,6 +36,8 @@ class NotificationCard extends StatefulWidget {
 
 class _NotificationCardState extends State<NotificationCard> {
   UserModel? user;
+  bool isButtonLoading = false;
+  late BookingModel booking = widget.booking;
   @override
   void initState() {
     super.initState();
@@ -40,25 +50,25 @@ class _NotificationCardState extends State<NotificationCard> {
         UserRepo().currentUser.userType == UserType.rentalUser;
     final ProductModel? product = ImmutableProductRepo()
         .products
-        .where((e) => e.id == widget.booking.serviceId)
+        .where((e) => e.id == booking.serviceId)
         .firstOrNull;
     return InkWell(
       onTap: () {
-        NavigationService.go(context,
-            BookingDetailViewSP(booking: widget.booking, userModel: user));
+        NavigationService.go(
+            context, BookingDetailViewSP(booking: booking, userModel: user));
       },
       child: Container(
         decoration: BoxDecoration(
-            color: const Color(0xffF3F4F9),
-            borderRadius: BorderRadius.circular(12)),
+          color: const Color(0xffF3F4F9),
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FutureBuilder<UserModel?>(
-                  future: UserRepo()
-                      .fetchUser(profileId: widget.booking.rentalUserId),
+                  future: UserRepo().fetchUser(profileId: booking.rentalUserId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       user = snapshot.data;
@@ -124,7 +134,7 @@ class _NotificationCardState extends State<NotificationCard> {
                                     builder: (context, state) {
                                       return Text(
                                         parseTimePeriod(
-                                            atTime: widget.booking.createdAt),
+                                            atTime: booking.createdAt),
                                         style: const TextStyle(
                                             fontFamily: Assets.plusJakartaFont,
                                             fontSize: 8,
@@ -137,7 +147,7 @@ class _NotificationCardState extends State<NotificationCard> {
                               ),
                               Text(
                                 DateFormat("dd/MM/yyyy")
-                                    .format(widget.booking.bookingDate),
+                                    .format(booking.bookingDate),
                                 style: const TextStyle(
                                   color: StyleGuide.textColor2,
                                   fontFamily: Assets.plusJakartaFont,
@@ -147,8 +157,7 @@ class _NotificationCardState extends State<NotificationCard> {
                               ),
                               gapH4,
                               Text(
-                                remainingTime(
-                                    atTime: widget.booking.bookingDate),
+                                remainingTime(atTime: booking.bookingDate),
                                 style: const TextStyle(
                                     fontFamily: Assets.plusJakartaFont,
                                     fontSize: 11,
@@ -163,11 +172,14 @@ class _NotificationCardState extends State<NotificationCard> {
                   }),
               gapH16,
               Center(
-                child: isRentalUser
+                child: isRentalUser &&
+                        (widget.status ?? booking.status) ==
+                            BookingStatus.accepted
                     ? RoundedButton(
                         title: "Pay now",
                         onPressed: () {},
                         width: 162,
+                        isLoading: widget.isLoadingButton,
                         height: 32,
                         textSize: 12,
                       )
@@ -176,7 +188,8 @@ class _NotificationCardState extends State<NotificationCard> {
                           /// Accepted and rejected buttons
                           Visibility(
                             visible: !isRentalUser &&
-                                widget.booking.status == BookingStatus.pending,
+                                (widget.status ?? booking.status) ==
+                                    BookingStatus.pending,
                             child: Expanded(
                               child: Row(
                                 mainAxisAlignment:
@@ -185,9 +198,15 @@ class _NotificationCardState extends State<NotificationCard> {
                                   Expanded(
                                     child: RoundedButton(
                                       title: "Reject",
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        if (widget.onButtonPressed != null) {
+                                          widget.onButtonPressed!(
+                                              BookingStatus.rejected);
+                                        }
+                                      },
                                       height: 32,
                                       textSize: 12,
+                                      isLoading: widget.isLoadingButton,
                                       withBorderOnly: true,
                                       buttonColor: Color(
                                           BookingStatus.rejected.colorCode),
@@ -197,8 +216,14 @@ class _NotificationCardState extends State<NotificationCard> {
                                   Expanded(
                                     child: RoundedButton(
                                       title: "Accept",
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        if (widget.onButtonPressed != null) {
+                                          widget.onButtonPressed!(
+                                              BookingStatus.accepted);
+                                        }
+                                      },
                                       height: 32,
+                                      isLoading: widget.isLoadingButton,
                                       textSize: 12,
                                       buttonColor: Color(
                                           BookingStatus.accepted.colorCode),
@@ -212,21 +237,23 @@ class _NotificationCardState extends State<NotificationCard> {
                           /// OnGoing and Completed Buttons
                           Visibility(
                             visible: !isRentalUser &&
-                                (widget.booking.status == BookingStatus.paid ||
-                                    widget.booking.status ==
+                                ((widget.status ?? booking.status) ==
+                                        BookingStatus.paid ||
+                                    (widget.status ?? booking.status) ==
                                         BookingStatus.ongoing),
                             child: Expanded(
                               child: Row(
                                 children: [
                                   Visibility(
                                     visible: !isRentalUser &&
-                                        widget.booking.status ==
+                                        (widget.status ?? booking.status) ==
                                             BookingStatus.paid,
                                     child: Expanded(
                                       child: RoundedButton(
                                         title: "Mark On-Going",
                                         onPressed: () {},
                                         height: 32,
+                                        isLoading: widget.isLoadingButton,
                                         textSize: 12,
                                         buttonColor: Color(
                                             BookingStatus.ongoing.colorCode),
@@ -235,13 +262,14 @@ class _NotificationCardState extends State<NotificationCard> {
                                   ),
                                   Visibility(
                                     visible: !isRentalUser &&
-                                        widget.booking.status ==
+                                        (widget.status ?? booking.status) ==
                                             BookingStatus.ongoing,
                                     child: Expanded(
                                       child: RoundedButton(
                                         title: "Mark Completed",
                                         onPressed: () {},
                                         height: 32,
+                                        isLoading: widget.isLoadingButton,
                                         textSize: 12,
                                         buttonColor: Color(
                                             BookingStatus.completed.colorCode),

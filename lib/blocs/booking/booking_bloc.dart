@@ -121,5 +121,23 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         }
       },
     );
+
+    // Update Status Event
+    on<BookingEventUpdateStatus>(
+      (event, emit) async {
+        try {
+          emit(BookingStateUpdatingStatus());
+          final Map<String, dynamic> model = {
+            "status": event.status.name.toLowerCase()
+          };
+          await MutableBookingRepo()
+              .updateData(data: model, id: event.bookingId);
+          emit(
+              BookingStateStatusUpdated(event.bookingId, status: event.status));
+        } on AppException catch (e) {
+          emit(BookingStateUpdateStatusFailure(exception: e));
+        }
+      },
+    );
   }
 }

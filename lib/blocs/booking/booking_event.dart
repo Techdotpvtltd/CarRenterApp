@@ -53,3 +53,11 @@ class BookingEventFetchUserProfile extends BookingEvent {
 
   BookingEventFetchUserProfile({required this.profileId});
 }
+
+// ===========================Update Status Event================================
+class BookingEventUpdateStatus extends BookingEvent {
+  final String bookingId;
+  final BookingStatus status;
+
+  BookingEventUpdateStatus({required this.bookingId, required this.status});
+}

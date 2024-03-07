@@ -1,4 +1,7 @@
 // ignore: dangling_library_doc_comments
+import 'package:beasy/blocs/booking/booking_bloc.dart';
+import 'package:beasy/blocs/booking/booking_event.dart';
+import 'package:beasy/blocs/booking/booking_state.dart';
 import 'package:beasy/blocs/notification/notification_bloc.dart';
 import 'package:beasy/blocs/notification/notification_event.dart';
 import 'package:beasy/blocs/notification/notification_state.dart';
@@ -109,19 +112,59 @@ class _QuickNotificationWidgetState extends State<QuickNotificationWidget> {
   }
 }
 
-class _NotificationListWidget extends StatelessWidget {
+class _NotificationListWidget extends StatefulWidget {
   const _NotificationListWidget(this.bookings);
   final List<BookingModel> bookings;
 
   @override
+  State<_NotificationListWidget> createState() =>
+      _NotificationListWidgetState();
+}
+
+class _NotificationListWidgetState extends State<_NotificationListWidget> {
+  int? updatedIndex;
+  bool isButtonLoading = false;
+  BookingStatus? status;
+
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: bookings.length,
+      itemCount: widget.bookings.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 9),
-          child: NotificationCard(
-            booking: bookings[index],
+          child: BlocListener<BookingBloc, BookingState>(
+            listener: (context, state) {
+              if (state is BookingStateUpdateStatusFailure ||
+                  state is BookingStateStatusUpdated ||
+                  state is BookingStateUpdatingStatus) {
+                setState(() {
+                  isButtonLoading = state.isLoading;
+
+                  if (state is BookingStateStatusUpdated) {
+                    status = state.status;
+                    final currentIndex = widget.bookings
+                        .indexWhere((element) => element.id == state.id);
+                    if (currentIndex > 0) {
+                      widget.bookings[currentIndex] = widget
+                          .bookings[currentIndex]
+                          .copyWith(status: state.status);
+                    }
+                  }
+                });
+              }
+            },
+            child: NotificationCard(
+              booking: widget.bookings[index],
+              onButtonPressed: (status) {
+                setState(() {
+                  updatedIndex = index;
+                });
+                context.read<BookingBloc>().add(BookingEventUpdateStatus(
+                    bookingId: widget.bookings[index].id, status: status));
+              },
+              isLoadingButton: updatedIndex == index && isButtonLoading,
+            ),
           ),
         );
       },

@@ -52,6 +52,18 @@ class FirestoreService {
     return data;
   }
 
+  /// Update Data with document id
+  Future<Map<String, dynamic>> updateDataWithDocId(
+      {required String path,
+      required String docId,
+      required Map<String, dynamic> data}) async {
+    await _firestore
+        .collection(path)
+        .doc(docId)
+        .set(data, SetOptions(merge: true));
+    return data;
+  }
+
 //  Fetch Services ====================================
   Future<Map<String, dynamic>?> fetchSingleRecord({
     required String path,

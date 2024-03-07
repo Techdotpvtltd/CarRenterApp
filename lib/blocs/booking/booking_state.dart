@@ -84,3 +84,23 @@ class BookingStateUserProfileFetched extends BookingState {
   BookingStateUserProfileFetched(
       {super.isLoading, super.loadingText, required this.user});
 }
+
+// =========================== Udate Status States ================================
+class BookingStateUpdatingStatus extends BookingState {
+  BookingStateUpdatingStatus({super.isLoading = true});
+}
+
+// Failure Case
+class BookingStateUpdateStatusFailure extends BookingState {
+  final AppException exception;
+
+  BookingStateUpdateStatusFailure({required this.exception});
+}
+
+// Success Case
+class BookingStateStatusUpdated extends BookingState {
+  final BookingStatus status;
+  final String id;
+  BookingStateStatusUpdated(this.id,
+      {super.isLoading, super.loadingText, required this.status});
+}

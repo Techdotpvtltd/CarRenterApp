@@ -36,4 +36,14 @@ class MutableBookingRepo {
       throw thrownAppException(e: e);
     }
   }
+
+  Future<void> updateData(
+      {required Map<String, dynamic> data, required String id}) async {
+    try {
+      await FirestoreService().updateDataWithDocId(
+          path: FIREBASE_COLLECTION_BOOKING, docId: id, data: data);
+    } catch (e) {
+      throw thrownAppException(e: e);
+    }
+  }
 }
