@@ -8,6 +8,7 @@ import 'package:beasy/models/user_model.dart';
 import 'package:beasy/repositories/repos/immutable_product_repo.dart';
 import 'package:beasy/repositories/repos/user_repo.dart';
 import 'package:beasy/screens/rental/booking_detail_view_rental.dart';
+import 'package:beasy/screens/service_provider/booking_detail_view_sp.dart';
 import 'package:beasy/screens/service_provider/components/error_widget.dart';
 import 'package:beasy/screens/service_provider/components/loading_widget.dart';
 import 'package:beasy/utilities/constants/asstes.dart';
@@ -633,7 +634,12 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
                 user = snapshot.data;
               }
               return InkWell(
-                onTap: () => {},
+                onTap: () => NavigationService.go(
+                    context,
+                    BookingDetailViewSP(
+                      booking: booking,
+                      userModel: user,
+                    )),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Stack(

@@ -15,6 +15,7 @@ class RoundedButton extends StatelessWidget {
     this.withBorderOnly = false,
     this.isLoading = false,
     this.loadingText,
+    this.buttonColor,
   });
 
   final double? width;
@@ -25,6 +26,8 @@ class RoundedButton extends StatelessWidget {
   final bool withBorderOnly;
   final bool isLoading;
   final String? loadingText;
+  final Color? buttonColor;
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -39,10 +42,12 @@ class RoundedButton extends StatelessWidget {
         shadowColor: const MaterialStatePropertyAll(Colors.transparent),
         surfaceTintColor: const MaterialStatePropertyAll(Colors.transparent),
         side: MaterialStatePropertyAll(BorderSide(
-            color:
-                withBorderOnly ? StyleGuide.primaryColor : Colors.transparent)),
-        backgroundColor: MaterialStatePropertyAll(
-            withBorderOnly ? Colors.transparent : StyleGuide.primaryColor),
+            color: withBorderOnly
+                ? buttonColor ?? StyleGuide.primaryColor
+                : Colors.transparent)),
+        backgroundColor: MaterialStatePropertyAll(withBorderOnly
+            ? Colors.transparent
+            : buttonColor ?? StyleGuide.primaryColor),
       ),
       child: isLoading
           ? Row(
@@ -59,7 +64,7 @@ class RoundedButton extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     fontSize: textSize ?? 16,
                     color: withBorderOnly
-                        ? StyleGuide.primaryColor
+                        ? buttonColor ?? StyleGuide.primaryColor
                         : StyleGuide.textColor1,
                   ),
                 )
@@ -72,7 +77,7 @@ class RoundedButton extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: textSize ?? 16,
                 color: withBorderOnly
-                    ? StyleGuide.primaryColor
+                    ? buttonColor ?? StyleGuide.primaryColor
                     : StyleGuide.textColor1,
               ),
             ),

@@ -118,6 +118,8 @@ class _BookingDetailViewRentalScreenState
                     ),
                   ),
                 ),
+
+                /// Top App Bar
                 Positioned(
                   left: 12,
                   right: 12,
@@ -164,6 +166,8 @@ class _BookingDetailViewRentalScreenState
                     ),
                   ),
                 ),
+
+                /// Image Dots
                 Positioned(
                   bottom: 13,
                   right: 0,
@@ -414,7 +418,7 @@ class _BookingDetailViewRentalScreenState
                                 ),
                               ),
                               Text(
-                                product?.model ?? "---",
+                                "${product?.name} - ${product?.model}",
                                 style: StyleGuide.textStyle3.copyWith(
                                   color: const Color(0xFF414141),
                                 ),
