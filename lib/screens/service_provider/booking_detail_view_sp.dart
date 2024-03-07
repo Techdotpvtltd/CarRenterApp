@@ -372,42 +372,38 @@ class _BookingDetailViewSPState extends State<BookingDetailViewSP> {
               ),
 
               /// On Going and Completed
-              Visibility(
-                visible: widget.booking.cancelationDate == null &&
-                    widget.booking.status == BookingStatus.paid,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Visibility(
-                      visible: widget.booking.cancelationDate == null &&
-                          widget.booking.status == BookingStatus.paid,
-                      child: Flexible(
-                        child: RoundedButton(
-                          title: "Mark On-Going",
-                          onPressed: () {},
-                          height: 45,
-                          textSize: 14,
-                          withBorderOnly: true,
-                          buttonColor: Color(BookingStatus.ongoing.colorCode),
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Visibility(
+                    visible: widget.booking.cancelationDate == null &&
+                        widget.booking.status == BookingStatus.paid,
+                    child: Flexible(
+                      child: RoundedButton(
+                        title: "Mark On-Going",
+                        onPressed: () {},
+                        height: 45,
+                        textSize: 14,
+                        withBorderOnly: true,
+                        buttonColor: Color(BookingStatus.ongoing.colorCode),
                       ),
                     ),
-                    gapW10,
-                    Visibility(
-                      visible: widget.booking.cancelationDate == null &&
-                          widget.booking.status == BookingStatus.ongoing,
-                      child: Flexible(
-                        child: RoundedButton(
-                          title: "Completed",
-                          onPressed: () {},
-                          height: 45,
-                          textSize: 14,
-                          buttonColor: Color(BookingStatus.completed.colorCode),
-                        ),
+                  ),
+                  gapW10,
+                  Visibility(
+                    visible: widget.booking.cancelationDate == null &&
+                        widget.booking.status == BookingStatus.ongoing,
+                    child: Flexible(
+                      child: RoundedButton(
+                        title: "Completed",
+                        onPressed: () {},
+                        height: 45,
+                        textSize: 14,
+                        buttonColor: Color(BookingStatus.completed.colorCode),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

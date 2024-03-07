@@ -132,7 +132,7 @@ class BookingModel {
 
 enum BookingStatus {
   pending("Pending", 0xFF0000FF),
-  accepted("Accepted", 0xFF3474FF),
+  accepted("Payment Pending", 0xFF3474FF),
   rejected("Rejected", 0xFFFF0000),
   paid("Paid", 0xFF008000),
   completed("Completed", 0xFF229954),

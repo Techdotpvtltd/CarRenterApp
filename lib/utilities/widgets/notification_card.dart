@@ -172,27 +172,85 @@ class _NotificationCardState extends State<NotificationCard> {
                         textSize: 12,
                       )
                     : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          RoundedButton(
-                            title: "Reject",
-                            onPressed: () {},
-                            width: 122,
-                            height: 32,
-                            textSize: 12,
-                            withBorderOnly: true,
-                            buttonColor:
-                                Color(BookingStatus.rejected.colorCode),
+                          /// Accepted and rejected buttons
+                          Visibility(
+                            visible: !isRentalUser &&
+                                widget.booking.status == BookingStatus.pending,
+                            child: Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: RoundedButton(
+                                      title: "Reject",
+                                      onPressed: () {},
+                                      height: 32,
+                                      textSize: 12,
+                                      withBorderOnly: true,
+                                      buttonColor: Color(
+                                          BookingStatus.rejected.colorCode),
+                                    ),
+                                  ),
+                                  gapW4,
+                                  Expanded(
+                                    child: RoundedButton(
+                                      title: "Accept",
+                                      onPressed: () {},
+                                      height: 32,
+                                      textSize: 12,
+                                      buttonColor: Color(
+                                          BookingStatus.accepted.colorCode),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          gapW6,
-                          RoundedButton(
-                            title: "Accept",
-                            onPressed: () {},
-                            width: 122,
-                            height: 32,
-                            textSize: 12,
-                            buttonColor:
-                                Color(BookingStatus.accepted.colorCode),
+
+                          /// OnGoing and Completed Buttons
+                          Visibility(
+                            visible: !isRentalUser &&
+                                (widget.booking.status == BookingStatus.paid ||
+                                    widget.booking.status ==
+                                        BookingStatus.ongoing),
+                            child: Expanded(
+                              child: Row(
+                                children: [
+                                  Visibility(
+                                    visible: !isRentalUser &&
+                                        widget.booking.status ==
+                                            BookingStatus.paid,
+                                    child: Expanded(
+                                      child: RoundedButton(
+                                        title: "Mark On-Going",
+                                        onPressed: () {},
+                                        height: 32,
+                                        textSize: 12,
+                                        buttonColor: Color(
+                                            BookingStatus.ongoing.colorCode),
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: !isRentalUser &&
+                                        widget.booking.status ==
+                                            BookingStatus.ongoing,
+                                    child: Expanded(
+                                      child: RoundedButton(
+                                        title: "Mark Completed",
+                                        onPressed: () {},
+                                        height: 32,
+                                        textSize: 12,
+                                        buttonColor: Color(
+                                            BookingStatus.completed.colorCode),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),

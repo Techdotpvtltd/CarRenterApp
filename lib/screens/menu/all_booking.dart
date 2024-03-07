@@ -235,7 +235,7 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
     if (widget.index == 1) {
       setState(() {
         filteredBookings = bookings
-            .where((element) => element.status == BookingStatus.paid)
+            .where((element) => element.status == BookingStatus.ongoing)
             .toList();
         filteredBookings.sort((a, b) => a.bookingDate.millisecondsSinceEpoch
             .compareTo(b.bookingDate.millisecondsSinceEpoch));
@@ -244,7 +244,7 @@ class _MainBookingWidgetState extends State<_MainBookingWidget> {
 
     if (widget.index == 2) {
       filteredBookings = bookings
-          .where((element) => element.bookingDate.isBefore(DateTime.now()))
+          .where((element) => element.status == BookingStatus.completed)
           .toList();
     }
   }
