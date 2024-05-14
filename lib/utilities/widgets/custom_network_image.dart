@@ -1,6 +1,4 @@
-// ignore: dangling_library_doc_comments
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -32,22 +30,24 @@ class CustomNetworkImage extends StatelessWidget {
       ),
       errorWidget: (context, url, error) => Container(
         color: Colors.grey,
-        child: LayoutBuilder(builder: (context, constraints) {
-          return url != "" &&
-                  error.toString().contains("No host specified in URI")
-              ? Image.file(
-                  File(imageUrl),
-                  height: height,
-                  width: width,
-                  fit: BoxFit.cover,
-                )
-              : Center(
-                  child: Icon(
-                    Icons.image,
-                    size: (height ?? constraints.maxHeight) / 2,
-                  ),
-                );
-        }),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return url != "" &&
+                    error.toString().contains("No host specified in URI")
+                ? Image.file(
+                    File(imageUrl),
+                    height: height,
+                    width: width,
+                    fit: BoxFit.cover,
+                  )
+                : Center(
+                    child: Icon(
+                      Icons.image,
+                      size: (height ?? constraints.maxHeight) / 2,
+                    ),
+                  );
+          },
+        ),
       ),
     );
   }

@@ -9,7 +9,6 @@ import 'package:beasy/utilities/constants/strings.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/extensions/navigation_service.dart';
 import 'package:beasy/utilities/widgets/background_widget.dart';
-import 'package:beasy/utilities/widgets/network_image_widget.dart';
 import 'package:beasy/screens/rental/components/product_card.dart';
 import 'package:beasy/screens/rental/components/product_section_widget.dart';
 import 'package:beasy/utilities/widgets/search_widget.dart';
@@ -23,6 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/rental/rental_product_event.dart';
 import '../../models/product_model.dart';
 import '../../repositories/repos/immutable_product_repo.dart';
+import '../../utilities/widgets/circle_network_image_widget.dart';
 import '../service_provider/components/error_widget.dart';
 import '../service_provider/components/loading_widget.dart';
 

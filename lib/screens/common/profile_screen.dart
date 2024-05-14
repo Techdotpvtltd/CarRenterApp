@@ -10,7 +10,7 @@ import 'package:beasy/utilities/widgets/custom_title_textfiled.dart';
 import 'package:beasy/utilities/widgets/dialogs/dialogs.dart';
 import 'package:beasy/utilities/widgets/dialogs/loaders.dart';
 import 'package:beasy/utilities/widgets/map_with_text_filed.dart';
-import 'package:beasy/utilities/widgets/network_image_widget.dart';
+import 'package:beasy/utilities/widgets/circle_network_image_widget.dart';
 import 'package:beasy/utilities/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

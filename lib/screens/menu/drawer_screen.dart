@@ -9,7 +9,6 @@ import 'package:beasy/utilities/constants/asstes.dart';
 import 'package:beasy/utilities/constants/constants.dart';
 import 'package:beasy/utilities/constants/style_guide.dart';
 import 'package:beasy/utilities/extensions/navigation_service.dart';
-import 'package:beasy/utilities/widgets/network_image_widget.dart';
 import 'package:beasy/screens/common/profile_screen.dart';
 import 'package:beasy/screens/menu/all_booking.dart';
 import 'package:beasy/screens/service_provider/sp_home_screen.dart';
@@ -19,6 +18,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import '../../blocs/auth/auth_state.dart';
 import '../../blocs/drawer/drawer_screen_state.dart';
+import '../../utilities/widgets/circle_network_image_widget.dart';
 import '../rental/bottom_navi.dart';
 import '../common/notification_screen.dart';
 
