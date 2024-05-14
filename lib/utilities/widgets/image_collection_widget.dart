@@ -6,6 +6,12 @@ import 'package:beasy/utilities/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+// Project: 	   CarRenterApp
+// File:    	   image_collection_widget
+// Path:    	   lib/utilities/widgets/image_collection_widget.dart
+// Author:       Ali Akbar
+// Date:        22-01-24 12:48:37 -- Monday
+// Description:
 
 class ImageCollectionWidget extends StatelessWidget {
   const ImageCollectionWidget(
